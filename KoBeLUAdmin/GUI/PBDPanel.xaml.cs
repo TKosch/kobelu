@@ -48,7 +48,7 @@ namespace KoBeLUAdmin.GUI
     {
         
         private MotionHistory m_MotionHistory;
-        private IBGFGDetector<Bgra> m_ForgroundDetector;
+        //private IBGFGDetector<Bgra> m_ForgroundDetector;
 
         private Image<Bgra, byte> m_LastImage;
 
@@ -414,77 +414,77 @@ namespace KoBeLUAdmin.GUI
             return med;
         }
 
-        private bool isUserWorking(Image<Bgra, byte> image)
-        {
-            bool ret = false;
-            using (MemStorage storage = new MemStorage()) //create storage for motion components
-            {
-                if (m_ForgroundDetector == null)
-                {
-                    //_forgroundDetector = new BGCodeBookModel<Bgr>();
-                    //_forgroundDetector = new FGDetector<Bgr>(Emgu.CV.CvEnum.FORGROUND_DETECTOR_TYPE.FGD);
-                    m_ForgroundDetector = new BGStatModel<Bgra>(image, Emgu.CV.CvEnum.BG_STAT_TYPE.FGD_STAT_MODEL);
-                }
+        //private bool isUserWorking(Image<Bgra, byte> image)
+        //{
+        //    bool ret = false;
+        //    using (MemStorage storage = new MemStorage()) //create storage for motion components
+        //    {
+        //        if (m_ForgroundDetector == null)
+        //        {
+        //            //_forgroundDetector = new BGCodeBookModel<Bgr>();
+        //            //_forgroundDetector = new FGDetector<Bgr>(Emgu.CV.CvEnum.FORGROUND_DETECTOR_TYPE.FGD);
+        //            m_ForgroundDetector = new BGStatModel<Bgra>(image, Emgu.CV.CvEnum.BG_STAT_TYPE.FGD_STAT_MODEL);
+        //        }
 
-                m_ForgroundDetector.Update(image);
+        //        m_ForgroundDetector.Update(image);
 
-                // capturedImageBox.Image = image;
+        //        // capturedImageBox.Image = image;
 
-                //update the motion history
-                m_MotionHistory.Update(m_ForgroundDetector.ForegroundMask);
+        //        //update the motion history
+        //        m_MotionHistory.Update(m_ForgroundDetector.ForegroundMask);
 
-                #region get a copy of the motion mask and enhance its color
-                double[] minValues, maxValues;
-                System.Drawing.Point[] minLoc, maxLoc;
-                m_MotionHistory.Mask.MinMax(out minValues, out maxValues, out minLoc, out maxLoc);
-                Image<Gray, Byte> motionMask = m_MotionHistory.Mask.Mul(255.0 / maxValues[0]);
-                #endregion
+        //        #region get a copy of the motion mask and enhance its color
+        //        double[] minValues, maxValues;
+        //        System.Drawing.Point[] minLoc, maxLoc;
+        //        m_MotionHistory.Mask.MinMax(out minValues, out maxValues, out minLoc, out maxLoc);
+        //        Image<Gray, Byte> motionMask = m_MotionHistory.Mask.Mul(255.0 / maxValues[0]);
+        //        #endregion
 
-                //create the motion image
-                Image<Bgra, Byte> motionImage = new Image<Bgra, byte>(motionMask.Size);
-                //display the motion pixels in blue (first channel)
-                motionImage[0] = motionMask;
+        //        //create the motion image
+        //        Image<Bgra, Byte> motionImage = new Image<Bgra, byte>(motionMask.Size);
+        //        //display the motion pixels in blue (first channel)
+        //        motionImage[0] = motionMask;
 
-                //Threshold to define a motion area, reduce the value to detect smaller motion
-                double minArea = 100;
+        //        //Threshold to define a motion area, reduce the value to detect smaller motion
+        //        double minArea = 100;
 
-                storage.Clear(); //clear the storage
-                Seq<MCvConnectedComp> motionComponents = m_MotionHistory.GetMotionComponents(storage);
+        //        storage.Clear(); //clear the storage
+        //        Seq<MCvConnectedComp> motionComponents = m_MotionHistory.GetMotionComponents(storage);
 
-                //iterate through each of the motion component
-                foreach (MCvConnectedComp comp in motionComponents)
-                {
-                    //reject the components that have small area;
-                    if (comp.area < minArea) continue;
+        //        //iterate through each of the motion component
+        //        foreach (MCvConnectedComp comp in motionComponents)
+        //        {
+        //            //reject the components that have small area;
+        //            if (comp.area < minArea) continue;
 
-                    // find the angle and motion pixel count of the specific area
-                    double angle, motionPixelCount;
-                    m_MotionHistory.MotionInfo(comp.rect, out angle, out motionPixelCount);
+        //            // find the angle and motion pixel count of the specific area
+        //            double angle, motionPixelCount;
+        //            m_MotionHistory.MotionInfo(comp.rect, out angle, out motionPixelCount);
 
-                    //reject the area that contains too few motion
-                    if (motionPixelCount < comp.area * 0.05) continue;
+        //            //reject the area that contains too few motion
+        //            if (motionPixelCount < comp.area * 0.05) continue;
 
-                    //Draw each individual motion in red
-                    // DrawMotion(motionImage, comp.rect, angle, new Bgr(Color.Red));
-                }
+        //            //Draw each individual motion in red
+        //            // DrawMotion(motionImage, comp.rect, angle, new Bgr(Color.Red));
+        //        }
 
-                // find and draw the overall motion angle
-                double overallAngle, overallMotionPixelCount;
-                m_MotionHistory.MotionInfo(motionMask.ROI, out overallAngle, out overallMotionPixelCount);
-                //                DrawMotion(motionImage, motionMask.ROI, overallAngle, new Bgr(Color.Green));
+        //        // find and draw the overall motion angle
+        //        double overallAngle, overallMotionPixelCount;
+        //        m_MotionHistory.MotionInfo(motionMask.ROI, out overallAngle, out overallMotionPixelCount);
+        //        //                DrawMotion(motionImage, motionMask.ROI, overallAngle, new Bgr(Color.Green));
 
-                //Display the amount of motions found on the current image
-                //UpdateText(String.Format("Total Motions found: {0}; Motion Pixel count: {1}", motionComponents.Total, overallMotionPixelCount));
-                //Console.WriteLine("motions: " + motionComponents.Total);
+        //        //Display the amount of motions found on the current image
+        //        //UpdateText(String.Format("Total Motions found: {0}; Motion Pixel count: {1}", motionComponents.Total, overallMotionPixelCount));
+        //        //Console.WriteLine("motions: " + motionComponents.Total);
 
-                if (motionComponents.Total > 0)
-                {
-                    ret = true;
-                }
+        //        if (motionComponents.Total > 0)
+        //        {
+        //            ret = true;
+        //        }
 
-            }
+        //    }
 
-            return ret;
-        }
+        //    return ret;
+        //}
     }
 }

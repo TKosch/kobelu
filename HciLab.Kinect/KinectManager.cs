@@ -35,6 +35,7 @@ using Emgu.CV.Structure;
 using HciLab.Kinect.DepthSmoothing;
 using HciLab.Utilities;
 using System.Drawing;
+using Emgu.CV.CvEnum;
 using HciLab.KoBeLU.InterfacesAndDataModel.Data;
 
 namespace HciLab.Kinect
@@ -170,7 +171,7 @@ namespace HciLab.Kinect
             if (m_KinectSettings.Ratio == 0)
                 m_KinectSettings.Ratio = 2;
 
-            Image<Bgra, Byte> colorFrameBuffer = pColorFrame.Resize((int)(pColorFrame.Width / m_KinectSettings.Ratio), (int)(pColorFrame.Height / m_KinectSettings.Ratio), Emgu.CV.CvEnum.INTER.CV_INTER_LINEAR);
+            Image<Bgra, Byte> colorFrameBuffer = pColorFrame.Resize((int)(pColorFrame.Width / m_KinectSettings.Ratio), (int)(pColorFrame.Height / m_KinectSettings.Ratio), Inter.Linear);
 
 
             int xS = (int)(m_KinectSettings.XScale / m_KinectSettings.Ratio);

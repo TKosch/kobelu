@@ -197,11 +197,11 @@ namespace KoBeLUAdmin.GUI
                 if (SettingsManager.Instance.Settings.ObjectsVisualFeedbackDisplay && (ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Count != 0))
                 {
                     //write boxes
-                    MCvFont font = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
+                    //MCvFont font = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
                     foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // draw ID
-                        pImage.Draw(z.Id + "", ref font, new System.Drawing.Point(z.X, z.Y), new Bgra(0,0,0,0));
+                        pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0,0,0,0));
                         // draw Frame
                         if (z.wasRecentlyTriggered())
                             pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 0);

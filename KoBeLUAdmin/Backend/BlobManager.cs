@@ -101,60 +101,63 @@ namespace KoBeLUAdmin.Backend
 
             #region using contour
 
+            
+            VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
+
             //only RETR_TYPE.CV_RETR_CCOMP dose work with Int32
-            for (Contour<System.Drawing.Point> contours = pImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_CCOMP); contours != null; contours = contours.HNext)
+            //for (CvInvoke.FindContours(pImage, contours, null, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple); contours != null; contours = contours.HNext)
+            CvInvoke.FindContours(pImage, contours, null, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple);
+            
+            VectorOfPoint convexHull = new VectorOfPoint();
+            CvInvoke.ConvexHull(contours, convexHull, true);
+
+            if (CvInvoke.BoundingRectangle(contours).Width > 0 && CvInvoke.BoundingRectangle(contours).Height > 0 && CvInvoke.ContourArea(convexHull) > pMinArea)
             {
-                Seq<System.Drawing.Point> convexHull = contours.GetConvexHull(ORIENTATION.CV_CLOCKWISE);
 
-                if (contours.BoundingRectangle.Width > 0 && contours.BoundingRectangle.Height > 0 && convexHull.Area > pMinArea)
-                {
-
-                    //Approximiere Kontur durch ein Polygon
-                    //using (MemStorage storage = new MemStorage()) //allocate storage for contour approximation
-                    //Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
+                ////Approximiere Kontur durch ein Polygon
+                ////using (MemStorage storage = new MemStorage()) //allocate storage for contour approximation
+                ////Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
 
 
+                //Polygon poly = new Polygon();
+                //for (int i = 0; i < convexHull.Size; i++) 
+                //{
+                //    poly.Points.Add(new Vector2(convexHull[i].X, convexHull[i].Y));
+                //}
 
-                    Polygon poly = new Polygon();
-                    foreach (Point p in convexHull)
-                    {
-                        poly.Points.Add(new Vector2(p.X, p.Y));
-                    }
+                //Rectangle bounds = CvInvoke.BoundingRectangle(contours);
+                //double summedValues = 0;
+                //int area = 0;
 
-                    Rectangle bounds = contours.BoundingRectangle;
-                    double summedValues = 0;
-                    int area = 0;
+                //bool[,] mask = new bool[bounds.Width, bounds.Height];
+                //Array.Clear(mask, 0, mask.Length);
 
-                    bool[,] mask = new bool[bounds.Width, bounds.Height];
-                    Array.Clear(mask, 0, mask.Length);
+                //for (int y = bounds.Y; y < bounds.Height + bounds.Y; y++)
+                //{
+                //    for (int x = bounds.X; x < bounds.Width + bounds.X; x++)
+                //    {
+                //        if (pImage.Data[y, x, 0] > 0 && convexHull.InContour(new PointF(x, y)) > 0)
+                //        {
+                //            summedValues += pImage.Data[y, x, 0];
+                //            area++;
+                //            mask[x - bounds.X, y - bounds.Y] = true;
+                //        }
+                //    }
+                //}
 
-                    for (int y = bounds.Y; y < bounds.Height + bounds.Y; y++)
-                    {
-                        for (int x = bounds.X; x < bounds.Width + bounds.X; x++)
-                        {
-                            if (pImage.Data[y, x, 0] > 0 && convexHull.InContour(new PointF(x, y)) > 0)
-                            {
-                                summedValues += pImage.Data[y, x, 0];
-                                area++;
-                                mask[x - bounds.X, y - bounds.Y] = true;
-                            }
-                        }
-                    }
-
-                    if (area > 0 && summedValues / area > pValueThreshold)
-                    {
-                        BlobBound bbound = new BlobBound(bounds, area, (int)summedValues, mask, poly);
-                        retList.Add(bbound);
-                        //outputImage.Draw(bbound.Points, GREEN, 1);
-                        outputImage.Draw(bounds, BLUE, 1);
-                        outputImage.Draw(convexHull, RED, 1);
-                    }
-                }
+                //if (area > 0 && summedValues / area > pValueThreshold)
+                //{
+                //    BlobBound bbound = new BlobBound(bounds, area, (int)summedValues, mask, poly);
+                //    retList.Add(bbound);
+                //    //outputImage.Draw(bbound.Points, GREEN, 1);
+                //    outputImage.Draw(bounds, BLUE, 1);
+                //    outputImage.Draw(convexHull, RED, 1);
+                //}
             }
 
             #endregion
 
-            CvInvoke.cvShowImage(pDetectRemoval.ToString() + "-DepthChanges", outputImage.Ptr);
+            CvInvoke.Imshow(pDetectRemoval.ToString() + "-DepthChanges", outputImage);
 
             retList.Sort((a, b) => a.Area.CompareTo(b.Area));
             retList.Reverse();
@@ -183,62 +186,62 @@ namespace KoBeLUAdmin.Backend
                 if (mode == false)
                 {
                     #region using cvBlob
-                    Emgu.CV.Cvb.CvBlobs resultingBlobs = new Emgu.CV.Cvb.CvBlobs();
-                    Emgu.CV.Cvb.CvBlobDetector bDetect = new Emgu.CV.Cvb.CvBlobDetector();
-                    uint numWebcamBlobsFound = bDetect.Detect(gray_image, resultingBlobs);
+                    //Emgu.CV.Cvb.CvBlobs resultingBlobs = new Emgu.CV.Cvb.CvBlobs();
+                    //Emgu.CV.Cvb.CvBlobDetector bDetect = new Emgu.CV.Cvb.CvBlobDetector();
+                    //uint numWebcamBlobsFound = bDetect.Detect(gray_image, resultingBlobs);
 
-                    using (MemStorage stor = new MemStorage())
-                    {
-                        foreach (Emgu.CV.Cvb.CvBlob targetBlob in resultingBlobs.Values)
-                        {
-                            if (targetBlob.Area > 200)
-                            {
-                                var contour = targetBlob.GetContour(stor);
+                    //using (MemStorage stor = new MemStorage())
+                    //{
+                    //    foreach (Emgu.CV.Cvb.CvBlob targetBlob in resultingBlobs.Values)
+                    //    {
+                    //        if (targetBlob.Area > 200)
+                    //        {
+                    //            var contour = targetBlob.GetContour(stor);
 
-                                MCvBox2D box = contour.GetMinAreaRect();
+                    //            MCvBox2D box = contour.GetMinAreaRect();
 
-                                PointF[] boxCorner = UtilitiesImage.ToPercent(contour.GetMinAreaRect().GetVertices(), gray_image.Width, gray_image.Height);
+                    //            PointF[] boxCorner = UtilitiesImage.ToPercent(contour.GetMinAreaRect().GetVertices(), gray_image.Width, gray_image.Height);
 
-                                PointF center = UtilitiesImage.ToPercent(contour.GetMinAreaRect().center, gray_image.Width, gray_image.Height);
+                    //            PointF center = UtilitiesImage.ToPercent(contour.GetMinAreaRect().center, gray_image.Width, gray_image.Height);
 
-                                RectangleF rect = UtilitiesImage.ToPercent(targetBlob.BoundingBox, gray_image.Width, gray_image.Height);
+                    //            RectangleF rect = UtilitiesImage.ToPercent(targetBlob.BoundingBox, gray_image.Width, gray_image.Height);
 
-                                Image<Gray, byte> newCropImg = UtilitiesImage.CropImage(colorBS.Convert<Gray, byte>(), rect);
-                                newBlobs.Add(new BlobObject(newCropImg, null, boxCorner, rect, center, 0, 0, 0 + ""));
-                                //stor.Clear();
-                            }
-                        }
-                    }
+                    //            Image<Gray, byte> newCropImg = UtilitiesImage.CropImage(colorBS.Convert<Gray, byte>(), rect);
+                    //            newBlobs.Add(new BlobObject(newCropImg, null, boxCorner, rect, center, 0, 0, 0 + ""));
+                    //            //stor.Clear();
+                    //        }
+                    //    }
+                    //}
                     #endregion
                 }
                 else
                 {
                     #region using contour
-                    using (MemStorage storage = new MemStorage())
-                    {
-                        //Find contours with no holes try CV_RETR_EXTERNAL to find holes
-                        Contour<System.Drawing.Point> contours = gray_image.FindContours(
-                         Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE,
-                         Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_EXTERNAL,
-                         storage);
+                    //using (MemStorage storage = new MemStorage())
+                    //{
+                    //    //Find contours with no holes try CV_RETR_EXTERNAL to find holes
+                    //    Contour<System.Drawing.Point> contours = gray_image.FindContours(
+                    //     Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE,
+                    //     Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_EXTERNAL,
+                    //     storage);
 
-                        for (int i = 0; contours != null; contours = contours.HNext)
-                        {
-                            i++;
+                    //    for (int i = 0; contours != null; contours = contours.HNext)
+                    //    {
+                    //        i++;
 
-                            //double area = contours.Area;
-                            if (contours.Area > 200)
-                            {
+                    //        //double area = contours.Area;
+                    //        if (contours.Area > 200)
+                    //        {
 
-                                PointF[] boxCorner = UtilitiesImage.ToPercent(contours.GetMinAreaRect().GetVertices(), gray_image.Width, gray_image.Height);
-                                PointF center = UtilitiesImage.ToPercent(contours.GetMinAreaRect().center, gray_image.Width, gray_image.Height);
-                                RectangleF rect = UtilitiesImage.ToPercent(contours.BoundingRectangle, gray_image.Width, gray_image.Height);
-                                Image<Bgra, byte> newCropImg = UtilitiesImage.CropImage(colorBS, rect);
-                                newBlobs.Add(new BlobObject(newCropImg.Convert<Gray, byte>(), null, boxCorner, rect, center, 0, 0, 0 + ""));
+                    //            PointF[] boxCorner = UtilitiesImage.ToPercent(contours.GetMinAreaRect().GetVertices(), gray_image.Width, gray_image.Height);
+                    //            PointF center = UtilitiesImage.ToPercent(contours.GetMinAreaRect().center, gray_image.Width, gray_image.Height);
+                    //            RectangleF rect = UtilitiesImage.ToPercent(contours.BoundingRectangle, gray_image.Width, gray_image.Height);
+                    //            Image<Bgra, byte> newCropImg = UtilitiesImage.CropImage(colorBS, rect);
+                    //            newBlobs.Add(new BlobObject(newCropImg.Convert<Gray, byte>(), null, boxCorner, rect, center, 0, 0, 0 + ""));
 
-                            }
-                        }
-                    }
+                    //        }
+                    //    }
+                    //}
                     #endregion
                 }
 

@@ -50,12 +50,14 @@ namespace KoBeLUAdmin.GUI
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TouchManager.Instance.setGroundTruth();
+            // not used
+            //TouchManager.Instance.setGroundTruth();
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            TouchManager.Instance.detect();
+            // not used
+            //TouchManager.Instance.detect();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)

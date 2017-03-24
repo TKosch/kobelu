@@ -89,7 +89,7 @@ namespace HciLab.Kinect
                 new Action(() =>
                 {
                     Image<Bgra, byte> tempDepth = pDepthImage.Convert<Bgra, byte>();
-                    tempDepth = tempDepth.Resize(sliderDepthRatio.Value, INTER.CV_INTER_LINEAR);
+                    tempDepth = tempDepth.Resize(sliderDepthRatio.Value, Inter.Linear);
 
                     Image<Bgra, byte> tempColor = pColorImage.Copy();
                     int xS = (int)sliderDepthX.Value;

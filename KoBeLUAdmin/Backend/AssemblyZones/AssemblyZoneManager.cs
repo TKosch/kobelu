@@ -78,12 +78,6 @@ namespace KoBeLUAdmin.Backend.AssembleyZones
         private Scene.Scene m_SceneOfAllAssemblyZones = new Scene.Scene();
 
         /// <summary>
-        /// Font that is used for UI drawinigns
-        /// </summary>
-        private static MCvFont UI_FONT = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
-
-
-        /// <summary>
         /// Singleton Constructor
         /// </summary>
         public static AssemblyZoneManager Instance
@@ -216,11 +210,11 @@ namespace KoBeLUAdmin.Backend.AssembleyZones
             
             Image<Gray, Byte> imageDeltaMaskByte;
             if(pDetectRemoval)
-                imageDeltaMaskByte = m_DepthCroppedSnapshot.Cmp(currentDepthImageCropped, Emgu.CV.CvEnum.CMP_TYPE.CV_CMP_LT);
+                imageDeltaMaskByte = m_DepthCroppedSnapshot.Cmp(currentDepthImageCropped, Emgu.CV.CvEnum.CmpType.LessThan);
             else
-                imageDeltaMaskByte = m_DepthCroppedSnapshot.Cmp(currentDepthImageCropped, Emgu.CV.CvEnum.CMP_TYPE.CV_CMP_GT);
+                imageDeltaMaskByte = m_DepthCroppedSnapshot.Cmp(currentDepthImageCropped, Emgu.CV.CvEnum.CmpType.GreaterThan);
 
-            CvInvoke.cvShowImage(pDetectRemoval.ToString() + "Snapshot", imageDeltaMaskByte.Ptr);
+            CvInvoke.Imshow(pDetectRemoval.ToString() + "Snapshot", imageDeltaMaskByte);
 
             Image<Gray, Int32> imageDeltaMaskInt = imageDeltaMaskByte.Convert<Int32>(delegate(Byte b)
             {
@@ -371,9 +365,9 @@ namespace KoBeLUAdmin.Backend.AssembleyZones
                 if (zone.IsSelected)
                 {
                     // draw ID
-                    pImage.Draw(zone.Id + "", ref UI_FONT, new System.Drawing.Point(zone.X, zone.Y), new Bgra(0, 0, 0, 0));
+                    pImage.Draw(zone.Id + "", new System.Drawing.Point(zone.X, zone.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
                     // draw PercentageMatched
-                    pImage.Draw((int)(zone.LastPercentageMatched * 100) + "%", ref UI_FONT, new System.Drawing.Point(zone.X, zone.Y + zone.Height), new Bgra(0, 0, 0, 0));
+                    pImage.Draw((int)(zone.LastPercentageMatched * 100) + "%", new System.Drawing.Point(zone.X, zone.Y + zone.Height), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
                     // draw Frame
                     if (zone.wasRecentlyTriggered())
                     {

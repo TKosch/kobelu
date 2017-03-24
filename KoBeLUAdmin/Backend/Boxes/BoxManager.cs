@@ -66,10 +66,6 @@ namespace KoBeLUAdmin.Backend.Boxes
         /// </summary>
         private Scene.Scene m_SceneOfAllBoxes = new Scene.Scene();
 
-        /// <summary>
-        /// Font that is used for UI drawinigns
-        /// </summary>
-        private static MCvFont UI_FONT = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
 
         /// <summary>
         /// Singleton Constructor
@@ -295,7 +291,7 @@ namespace KoBeLUAdmin.Backend.Boxes
             foreach (Box b in BoxManager.Instance.m_CurrentLayout.Boxes)
             {
                 // draw ID
-                pImage.Draw(b.Id + "", ref UI_FONT, new System.Drawing.Point(b.X, b.Y), new Bgra(0, 0, 0, 0));
+                pImage.Draw(b.Id + "", new System.Drawing.Point(b.X, b.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
 
                 // draw Frame
                 if (b.wasRecentlyTriggered())

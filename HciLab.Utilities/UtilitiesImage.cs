@@ -32,6 +32,7 @@ using Emgu.CV;
 using Emgu.CV.Features2D;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
+using Emgu.CV.XFeatures2D;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -43,6 +44,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using Emgu.CV.CvEnum;
 
 namespace HciLab.Utilities
 {
@@ -746,41 +748,42 @@ namespace HciLab.Utilities
         /// <param name="modelImage"></param>
         /// <param name="observedImage"></param>
         /// <param name="homography"></param>
-        public static void FindMatch(Image<Gray, Int32> modelImage, Image<Gray, Int32> observedImage, out HomographyMatrix homography)
+        public static void FindMatch(Image<Gray, Int32> modelImage, Image<Gray, Int32> observedImage, out Mat homography)
         {
             VectorOfKeyPoint modelKeyPoints, observedKeyPoints;
             Matrix<int> indices;
-            Matrix<byte> mask;
+            Mat mask;
             int k = 2;
             double uniquenessThreshold = 0.8;
-            SURFDetector surfCPU = new SURFDetector(500, false);
+            SURF surfCPU = new SURF(500);
 
             homography = null;
 
             //extract features from the object image
             modelKeyPoints = new VectorOfKeyPoint();
-            Matrix<float> modelDescriptors = surfCPU.DetectAndCompute(modelImage.Convert<Gray, byte>(), null, modelKeyPoints);
+            UMat modelDescriptors = new UMat();
+            surfCPU.DetectAndCompute(modelImage.Convert<Gray, byte>(), null, modelKeyPoints, modelDescriptors, false);
 
 
             // extract features from the observed image
             observedKeyPoints = new VectorOfKeyPoint();
-            Matrix<float> observedDescriptors = surfCPU.DetectAndCompute(observedImage.Convert<Gray, byte>(), null, observedKeyPoints);
-            BruteForceMatcher<float> matcher = new BruteForceMatcher<float>(DistanceType.L2);
+            UMat observedDescriptors = new UMat();
+            surfCPU.DetectAndCompute(observedImage.Convert<Gray, byte>(), null, observedKeyPoints, observedDescriptors, false);
+            BFMatcher matcher = new BFMatcher(DistanceType.L2);
             matcher.Add(modelDescriptors);
 
-            indices = new Matrix<int>(observedDescriptors.Rows, k);
-            Matrix<float> dist = new Matrix<float>(observedDescriptors.Rows, k);
-            matcher.KnnMatch(observedDescriptors, indices, dist, k, null);
-            mask = new Matrix<byte>(dist.Rows, 1);
-            mask.SetValue(255);
-            Features2DToolbox.VoteForUniqueness(dist, uniquenessThreshold, mask);
+            VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch();
+            matcher.KnnMatch(observedDescriptors, matches, k, null);
+            mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
+            mask.SetTo(new MCvScalar(255));
+            Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
 
-            int nonZeroCount = CvInvoke.cvCountNonZero(mask.Ptr);
+            int nonZeroCount = CvInvoke.CountNonZero(mask);
             if (nonZeroCount >= 4)
             {
-                nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints, indices, mask, 1.5, 20);
+                nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints, matches, mask, 1.5, 20);
                 if (nonZeroCount >= 4)
-                    homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints, observedKeyPoints, indices, mask, 2);
+                    homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints, observedKeyPoints, matches, mask, 2);
             }
 
         }
@@ -819,10 +822,12 @@ namespace HciLab.Utilities
         {
             Image<Bgra, byte> smallColor = CropImage(colorBS, rect);
 
-            SURFDetector surfCPU = new SURFDetector(500, false);
-            MKeyPoint[] modelKeyPoints = surfCPU.DetectKeyPoints(smallColor.Convert<Gray, byte>(), null);
+            SURF surfCPU = new SURF(500);
+            VectorOfKeyPoint modelKeyPoints = new VectorOfKeyPoint();
+            UMat modelDescriptors = new UMat();
+            surfCPU.DetectAndCompute(smallColor.Convert<Gray, byte>(), null, modelKeyPoints, modelDescriptors, true);
 
-            return modelKeyPoints.Count();
+            return modelKeyPoints.Size;
         }
 
 
@@ -842,20 +847,21 @@ namespace HciLab.Utilities
         /// <returns></returns>
         public static bool MatchIsSame(Image<Gray, byte> image1, Image<Gray, byte> image2, out VectorOfKeyPoint keypoints1, out VectorOfKeyPoint keypoints2, out  Matrix<float> symMatches)
         {
-            Feature2DBase<float> detector = new SURFDetector(100, false);
+            Feature2D detector = new SURF(100);
             bool isSame = false;
 
-            //1a. Detection of the SURF features
-            keypoints1 = detector.DetectKeyPointsRaw(image1, null);
-            keypoints2 = detector.DetectKeyPointsRaw(image2, null);
 
-            //1b. Extraction of the SURF descriptors
-            Matrix<float> descriptors1 = detector.ComputeDescriptorsRaw(image1, null, keypoints1);
-            Matrix<float> descriptors2 = detector.ComputeDescriptorsRaw(image2, null, keypoints2);
+            UMat descriptors1 = new UMat();
+            UMat descriptors2 = new UMat();
+            keypoints1 = new VectorOfKeyPoint();
+            keypoints2 = new VectorOfKeyPoint();
+            // detection and extraction of SURF descriptors and features
+            detector.DetectAndCompute(image1, null, keypoints1, descriptors1, true);
+            detector.DetectAndCompute(image2, null, keypoints2, descriptors2, true);
 
             //2. Match the two image descriptors
             //Construction of the match
-            BruteForceMatcher<float> matcher = new BruteForceMatcher<float>(DistanceType.L2);
+            BFMatcher matcher = new BFMatcher(DistanceType.L2);
             //from image 1 to image 2
             //based on k nearest neighbours (with k=2)
             matcher.Add(descriptors1);
@@ -866,17 +872,22 @@ namespace HciLab.Utilities
             Matrix<int> trainIdx1 = new Matrix<int>(n, k);
             //The resulting n*k matrix of distance value from the training descriptors
             Matrix<float> distance1 = new Matrix<float>(n, k);
-            matcher.KnnMatch(descriptors2, trainIdx1, distance1, k, null);
+
+            //matcher.KnnMatch(descriptors2, trainIdx1, distance1, k, null);
+            VectorOfVectorOfDMatch matches2 = new VectorOfVectorOfDMatch();
+            matcher.KnnMatch(descriptors2, matches2, k, null);
 
             //from image 1 to image 2
-            matcher = new BruteForceMatcher<float>(DistanceType.L2);
+            matcher = new BFMatcher(DistanceType.L2);
             matcher.Add(descriptors2);
             n = descriptors1.Rows;
             //The resulting n*k matrix of descriptor index from the training descriptors
             Matrix<int> trainIdx2 = new Matrix<int>(n, k);
             //The resulting n*k matrix of distance value from the training descriptors
             Matrix<float> distance2 = new Matrix<float>(n, k);
-            matcher.KnnMatch(descriptors1, trainIdx2, distance2, k, null);
+            VectorOfVectorOfDMatch matches1 = new VectorOfVectorOfDMatch();
+            matcher.KnnMatch(descriptors1, matches1, k, null);
+            //matcher.KnnMatch(descriptors1, trainIdx2, distance2, k, null);
 
             //3. Remove matches for which NN ratio is > than threshold
             int removed = RatioTest(ref trainIdx1, ref distance1);
@@ -900,25 +911,25 @@ namespace HciLab.Utilities
         public static bool MatchIsSame(Image<Gray, byte> image1, Image<Gray, byte> image2)
         {
             Matrix<float> symMatches;
-            Feature2DBase<float> detector = new SURFDetector(100, false);
+            Feature2D detector = new SURF(100);
             bool isSame = false;
 
-            //1a. Detection of the SURF features
-            VectorOfKeyPoint keypoints1 = detector.DetectKeyPointsRaw(image1, null);
-            VectorOfKeyPoint keypoints2 = detector.DetectKeyPointsRaw(image2, null);
+            UMat descriptors1 = new UMat();
+            UMat descriptors2 = new UMat();
+            VectorOfKeyPoint keypoints1 = new VectorOfKeyPoint();
+            VectorOfKeyPoint keypoints2 = new VectorOfKeyPoint();
+            // detection and extraction of SURF descriptors and features
+            detector.DetectAndCompute(image1, null, keypoints1, descriptors1, true);
+            detector.DetectAndCompute(image2, null, keypoints2, descriptors2, true);
 
             if (keypoints1.Size == 0 || keypoints2.Size == 0)
             {
                 return isSame;
             }
 
-            //1b. Extraction of the SURF descriptors
-            Matrix<float> descriptors1 = detector.ComputeDescriptorsRaw(image1, null, keypoints1);
-            Matrix<float> descriptors2 = detector.ComputeDescriptorsRaw(image2, null, keypoints2);
-
             //2. Match the two image descriptors
             //Construction of the match
-            BruteForceMatcher<float> matcher = new BruteForceMatcher<float>(DistanceType.L2);
+            BFMatcher matcher = new BFMatcher(DistanceType.L2);
             //from image 1 to image 2
             //based on k nearest neighbours (with k=2)
             matcher.Add(descriptors1);
@@ -929,18 +940,20 @@ namespace HciLab.Utilities
             Matrix<int> trainIdx1 = new Matrix<int>(n, k);
             //The resulting n*k matrix of distance value from the training descriptors
             Matrix<float> distance1 = new Matrix<float>(n, k);
-            matcher.KnnMatch(descriptors2, trainIdx1, distance1, k, null);
+            VectorOfVectorOfDMatch matches2 = new VectorOfVectorOfDMatch();
+            matcher.KnnMatch(descriptors2, matches2, k, null);
             //matcher.Dispose();
 
             //from image 1 to image 2
-            matcher = new BruteForceMatcher<float>(DistanceType.L2);
+            matcher = new BFMatcher(DistanceType.L2);
             matcher.Add(descriptors2);
             n = descriptors1.Rows;
             //The resulting n*k matrix of descriptor index from the training descriptors
             Matrix<int> trainIdx2 = new Matrix<int>(n, k);
             //The resulting n*k matrix of distance value from the training descriptors
             Matrix<float> distance2 = new Matrix<float>(n, k);
-            matcher.KnnMatch(descriptors1, trainIdx2, distance2, k, null);
+            VectorOfVectorOfDMatch matches1 = new VectorOfVectorOfDMatch();
+            matcher.KnnMatch(descriptors1, matches1, k, null);
 
             //3. Remove matches for which NN ratio is > than threshold
             int removed = RatioTest(ref trainIdx1, ref distance1);
@@ -1120,9 +1133,13 @@ namespace HciLab.Utilities
         public static void AnalyseObjectColor(Image<Gray, Int32> rgbImage)
         {
             //FeaturePoint
-            SURFDetector surfCPU = new SURFDetector(500, false);
-            MKeyPoint[] modelKeyPoints = surfCPU.DetectKeyPoints(rgbImage.Convert<Gray, byte>(), null);
-            int keyPoints = modelKeyPoints.Count();
+            SURF surfCPU = new SURF(500);
+            //extract features from the object image
+            VectorOfKeyPoint modelKeyPoints = new VectorOfKeyPoint();
+            UMat modelDescriptors = new UMat();
+            surfCPU.DetectAndCompute(rgbImage.Convert<Gray, byte>(), null, modelKeyPoints, modelDescriptors, true);
+            //MKeyPoint[] modelKeyPoints = surfCPU.DetectKeyPoints(rgbImage.Convert<Gray, byte>(), null);
+            int keyPoints = modelKeyPoints.Size;
 
             //Colorintensity
             int intensity = (int)rgbImage.GetAverage().Intensity;

@@ -38,123 +38,125 @@ using System.Drawing;
 
 namespace HciLab.Kinect
 {
-    public class TouchManager
-    {
-        private static TouchManager instance;
+    //public class TouchManager
+    //{
+    //    private static TouchManager instance;
         
-        private Image<Gray, int> m_GroundTruthImg = null;
+    //    private Image<Gray, int> m_GroundTruthImg = null;
 
-        private TouchManager()
-        {
-            KinectManager.Instance.allFramesReady += onAllFramesReady;
-        }
+    //    private TouchManager()
+    //    {
+    //        KinectManager.Instance.allFramesReady += onAllFramesReady;
+    //    }
 
-        public static TouchManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new TouchManager();
-                }
-                return instance;
-            }
-        }
+    //    public static TouchManager Instance
+    //    {
+    //        get
+    //        {
+    //            if (instance == null)
+    //            {
+    //                instance = new TouchManager();
+    //            }
+    //            return instance;
+    //        }
+    //    }
 
-        public void setGroundTruth()
-        {
-            m_GroundTruthImg = m_DepthImageCropped;
-        }
+    //    public void setGroundTruth()
+    //    {
+    //        m_GroundTruthImg = m_DepthImageCropped;
+    //    }
 
-        void onAllFramesReady(object pSource,
-            Image<Bgra, byte> pColorImage,
-            Image<Bgra, byte> pColorImageCropped,
-            Image<Gray, int> pDepthImage,
-            Image<Gray, int> pDepthImageCropped)
-        {
+    //    void onAllFramesReady(object pSource,
+    //        Image<Bgra, byte> pColorImage,
+    //        Image<Bgra, byte> pColorImageCropped,
+    //        Image<Gray, int> pDepthImage,
+    //        Image<Gray, int> pDepthImageCropped)
+    //    {
             
-            m_DepthImageCropped = pDepthImageCropped;
-        }
+    //        m_DepthImageCropped = pDepthImageCropped;
+    //    }
 
-        Image<Gray, int> m_DepthImageCropped = null;
+    //    Image<Gray, int> m_DepthImageCropped = null;
 
-        public void detect()
-        {
-            //new pDepthImageCropped diff on m_GroundTruthImg
-            //Image<Gray, Byte> imageDeltaMaskByte = m_GroundTruthImg.Cmp(m_DepthImageCropped.Add(new Gray(2*KinectManager.SCALE_FACTOR)), Emgu.CV.CvEnum.CMP_TYPE.CV_CMP_GT);
-            Image<Gray, Byte> imageDeltaMaskByte = m_GroundTruthImg.Cmp(m_DepthImageCropped, Emgu.CV.CvEnum.CMP_TYPE.CV_CMP_GE);
+    //    public void detect()
+    //    {
+    //        //new pDepthImageCropped diff on m_GroundTruthImg
+    //        //Image<Gray, Byte> imageDeltaMaskByte = m_GroundTruthImg.Cmp(m_DepthImageCropped.Add(new Gray(2*KinectManager.SCALE_FACTOR)), Emgu.CV.CvEnum.CMP_TYPE.CV_CMP_GT);
+    //        Image<Gray, Byte> imageDeltaMaskByte = m_GroundTruthImg.Cmp(m_DepthImageCropped, Emgu.CV.CvEnum.CmpType.GreaterEqual);
 
-            CvInvoke.cvShowImage("imageDeltaMask", imageDeltaMaskByte.Ptr);
-            Image<Gray, Int32> imageDeltaMaskInt = imageDeltaMaskByte.Convert<Int32>(delegate(Byte b)
-            {
-                if (b == 0)
-                    return 0;
-                else
-                    return Int32.MaxValue;
-            });
-            CvInvoke.cvShowImage("cimageDeltaMask ", imageDeltaMaskInt.Ptr);
+    //        CvInvoke.Imshow("imageDeltaMask", imageDeltaMaskByte.ToUMat());
+    //        Image<Gray, Int32> imageDeltaMaskInt = imageDeltaMaskByte.Convert<Int32>(delegate(Byte b)
+    //        {
+    //            if (b == 0)
+    //                return 0;
+    //            else
+    //                return Int32.MaxValue;
+    //        });
+    //        CvInvoke.Imshow("cimageDeltaMask ", imageDeltaMaskInt.ToUMat());
 
-            Image<Gray, Int32> imageDelta = m_GroundTruthImg.AbsDiff(m_DepthImageCropped).And(imageDeltaMaskInt);
+    //        Image<Gray, Int32> imageDelta = m_GroundTruthImg.AbsDiff(m_DepthImageCropped).And(imageDeltaMaskInt);
 
-            double valueThreshold;
-            int areaThreshold;
+    //        double valueThreshold;
+    //        int areaThreshold;
 
-            valueThreshold = 50;
-            areaThreshold = 30;
+    //        valueThreshold = 50;
+    //        areaThreshold = 30;
 
-            List<Vector2> listBlobBounds = FindAllBlob(imageDelta, areaThreshold, valueThreshold);
-        }
+    //        List<Vector2> listBlobBounds = FindAllBlob(imageDelta, areaThreshold, valueThreshold);
+    //    }
 
 
-        public static List<Vector2> FindAllBlob(Image<Gray, Int32> pImage, double pMinArea = 0.0, double pValueThreshold = 0.0)
-        {
-            List<Vector2> retList = new List<Vector2>();
+    //    public static List<Vector2> FindAllBlob(Image<Gray, Int32> pImage, double pMinArea = 0.0, double pValueThreshold = 0.0)
+    //    {
+    //        List<Vector2> retList = new List<Vector2>();
 
-            Image<Bgra, Byte> outputImage = pImage.Convert<Bgra, Byte>();
-            outputImage._GammaCorrect(0.5);
+    //        Image<Bgra, Byte> outputImage = pImage.Convert<Bgra, Byte>();
+    //        outputImage._GammaCorrect(0.5);
+            
+    //        //only RETR_TYPE.CV_RETR_CCOMP dose work with Int32
+    //        UMat contours = new UMat();
+            
+    //        for (CvInvoke.FindContours(pImage, contours, null, RetrType.Ccomp, ChainApproxMethod.ChainApproxSimple); contours != null; contours = contours.HNext)
+    //        {
+    //            Seq<System.Drawing.Point> convexHull = contours.GetConvexHull(Orientation.Clockwise);
 
-            //only RETR_TYPE.CV_RETR_CCOMP dose work with Int32
-            for (Contour<System.Drawing.Point> contours = pImage.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_SIMPLE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_CCOMP); contours != null; contours = contours.HNext)
-            {
-                Seq<System.Drawing.Point> convexHull = contours.GetConvexHull(ORIENTATION.CV_CLOCKWISE);
+    //            if (contours.BoundingRectangle.Width > 0 && contours.BoundingRectangle.Height > 0 && convexHull.Area > pMinArea)
+    //            {
 
-                if (contours.BoundingRectangle.Width > 0 && contours.BoundingRectangle.Height > 0 && convexHull.Area > pMinArea)
-                {
+    //                //Approximiere Kontur durch ein Polygon
+    //                //using (MemStorage storage = new MemStorage()) //allocate storage for contour approximation
+    //                //Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
 
-                    //Approximiere Kontur durch ein Polygon
-                    //using (MemStorage storage = new MemStorage()) //allocate storage for contour approximation
-                    //Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.05, storage);
+    //                Rectangle bounds = contours.BoundingRectangle;
+    //                int summedValues = 0;
+    //                int area = 0;
 
-                    Rectangle bounds = contours.BoundingRectangle;
-                    int summedValues = 0;
-                    int area = 0;
+    //                bool[,] mask = new bool[bounds.Width, bounds.Height];
+    //                Array.Clear(mask, 0, mask.Length);
 
-                    bool[,] mask = new bool[bounds.Width, bounds.Height];
-                    Array.Clear(mask, 0, mask.Length);
+    //                for (int y = bounds.Y; y < bounds.Height + bounds.Y; y++)
+    //                {
+    //                    for (int x = bounds.X; x < bounds.Width + bounds.X; x++)
+    //                    {
+    //                        if (pImage.Data[y, x, 0] > 0 && convexHull.InContour(new PointF(x, y)) > 0)
+    //                        {
+    //                            summedValues += pImage.Data[y, x, 0];
+    //                            area++;
+    //                            mask[x - bounds.X, y - bounds.Y] = true;
+    //                        }
+    //                    }
+    //                }
 
-                    for (int y = bounds.Y; y < bounds.Height + bounds.Y; y++)
-                    {
-                        for (int x = bounds.X; x < bounds.Width + bounds.X; x++)
-                        {
-                            if (pImage.Data[y, x, 0] > 0 && convexHull.InContour(new PointF(x, y)) > 0)
-                            {
-                                summedValues += pImage.Data[y, x, 0];
-                                area++;
-                                mask[x - bounds.X, y - bounds.Y] = true;
-                            }
-                        }
-                    }
+    //                if (area > 0 && summedValues / area > pValueThreshold)
+    //                {
+    //                    retList.Add(new Vector2(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2));
+    //                    outputImage.Draw(bounds, new Bgra(0, 0, 255, 0), 1);
+    //                }
+    //            }
+    //        }
 
-                    if (area > 0 && summedValues / area > pValueThreshold)
-                    {
-                        retList.Add(new Vector2(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2));
-                        outputImage.Draw(bounds, new Bgra(0, 0, 255, 0), 1);
-                    }
-                }
-            }
-
-            CvInvoke.cvShowImage("Touch points", outputImage.Ptr);
-            return retList;
-        }
-    }
+    //        CvInvoke.cvShowImage("Touch points", outputImage.Ptr);
+    //        return retList;
+    //    }
+    //}
 }

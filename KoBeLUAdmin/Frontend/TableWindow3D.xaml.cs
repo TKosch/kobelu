@@ -182,6 +182,8 @@ namespace KoBeLUAdmin.Frontend
                         s = new Scene.ScenePolygon(new Polygon(new Vector2[] { new Vector2(0+x, 0+y), new Vector2(50+x, 50+y), new Vector2(50+x, y) }), System.Windows.Media.Color.FromRgb(0, 255, 0));
                     else if (item == typeof(SceneAudio).ToString())
                         s = new Scene.SceneAudio(null);
+                    else if (item == typeof(SceneExternalVisualization).ToString())
+                        s = new Scene.SceneExternalVisualization(x, y, 100, 100, null);
 
                     if (s != null)
                         SceneManager.Instance.CurrentScene.Add(s);

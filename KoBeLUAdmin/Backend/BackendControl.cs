@@ -38,6 +38,10 @@ namespace KoBeLUAdmin.Backend
 {
     class BackendControl
     {
+        private string ipAdressGamification;
+        private int portGamification = 20000;
+        private string str = "";
+
         private static BackendControl m_Instance;
 
         private AdminView m_GuiHandle = null;
@@ -111,6 +115,8 @@ namespace KoBeLUAdmin.Backend
             // kill Leap
             /*if (LeapManager.Instance != null)
                 LeapManager.Instance.shutDownLeapMotion();*/
+
+            Network.NetworkManager.Instance.SendDataOverUDP(ipAdressGamification, portGamification, "x");
 
             // kill Object Recognition
             Environment.Exit(0);

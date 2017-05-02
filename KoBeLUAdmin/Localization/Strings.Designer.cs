@@ -131,7 +131,18 @@ namespace KoBeLUAdmin.Localization {
                 return ResourceManager.GetString("buttonDown", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ext. Visualization.
+        /// </summary>
+        public static string buttonExternalVisualization
+        {
+            get
+            {
+                return ResourceManager.GetString("buttonExternalVisualization", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Filter.
         /// </summary>

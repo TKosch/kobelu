@@ -137,6 +137,12 @@ namespace KoBeLUAdmin.GUI
             DragDrop.DoDragDrop((Button)sender, dragData, DragDropEffects.Move);
         }
 
+        private void buttonExternalVisualization_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DataObject dragData = new DataObject("SceneItem", typeof(SceneExternalVisualization).ToString());
+            DragDrop.DoDragDrop((Button)sender, dragData, DragDropEffects.Move);
+        }
+
         public SceneItem getCurrentSelected ()
         {
             return m_ListScenes.SelectedItem as SceneItem;

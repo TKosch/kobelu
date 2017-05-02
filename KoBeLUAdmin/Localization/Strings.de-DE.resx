@@ -615,4 +615,7 @@
   <data name="buttonAudio" xml:space="preserve">
     <value>Audio</value>
   </data>
+  <data name="buttonExternalVisualization" xml:space="preserve">
+    <value>Ext. Visualisierung</value>
+  </data>
 </root>

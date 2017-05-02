@@ -59,6 +59,7 @@
             <Button Height="30" Margin="5,5,5,5" Name="buttonVideo" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonVideo], FallbackValue='#Video'}" PreviewMouseLeftButtonDown="buttonVideo_PreviewMouseLeftButtonDown"/>
             <Button Height="30" Margin="5,5,5,5" Name="buttonPolygon" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonPolygon], FallbackValue='#Polygon'}" PreviewMouseLeftButtonDown="buttonPolygon_PreviewMouseLeftButtonDown"/>
             <Button Height="30" Margin="5,5,5,5" x:Name="buttonAudio" Content="{Binding .[Strings.buttonAudio], FallbackValue=#Audio, Source={StaticResource localization}}" PreviewMouseLeftButtonDown="buttonAudio_PreviewMouseLeftButtonDown"/>
-        </StackPanel>
+            <Button Height="30" Margin="5,5,5,5" Name="buttonExternalVisualization" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonExternalVisualization], FallbackValue='#ExternalVisualization'}" PreviewMouseLeftButtonDown="buttonExternalVisualization_PreviewMouseLeftButtonDown"/>
+	</StackPanel>
     </Grid>
 </UserControl>

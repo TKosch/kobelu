@@ -237,6 +237,7 @@
     <Compile Include="Network\NetworkTableStatus.cs" />
     <Compile Include="Network\ServerInfo.cs" />
     <Compile Include="Network\TableInfo.cs" />
+    <Compile Include="Scene\SceneExternalVisualization.cs" />
     <Compile Include="Scene\SceneAudio.cs" />
     <Compile Include="Scene\SceneCollectionExtension.cs" />
     <Compile Include="Statistics\StatsManager.cs" />

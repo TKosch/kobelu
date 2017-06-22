@@ -68,7 +68,8 @@ namespace KoBeLUAdmin.Scene
         private string ipAdressGamification;
         private int portGamification = 20000;
 
-        private int screenChecker; 
+        private int screenChecker;
+        private Process startedApplication = null;
 
         public SceneExternalVisualization()
             : base()
@@ -78,7 +79,17 @@ namespace KoBeLUAdmin.Scene
         public SceneExternalVisualization(double x, double y, double w, double h, string pFilename, double rotation = 0, double rotationCenterX = 0, double rotationCenterY = 0, double scale = 1.0f, int amount = 10)
             : base(x, y, w, h, rotation, rotationCenterX, rotationCenterY, scale)
         {
-            string visualizationPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\" + "Unity\\run2.exe";
+            string visualizationPath = string.Empty;
+            if (string.IsNullOrEmpty(m_Filename))
+            {
+                visualizationPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) +
+                                    "\\" + "Unity\\run2.exe";
+            }
+            else
+            {
+                Console.WriteLine("FILE NAME IS " + m_Filename);
+                visualizationPath = m_Filename;
+            }
             if (!System.IO.File.Exists(visualizationPath))
             {
 
@@ -92,21 +103,15 @@ namespace KoBeLUAdmin.Scene
             Debug.WriteLine("IP Adress: " + ipAdressGamification);
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
-            //TODO: Load dynamically from KoBeLU GUI Interface via an open... dialogue
             //TODO: Insert a Command via System.IO for finding the path separator dynamically and system-dependent --> This is just for stable coding
             startInfo.FileName = visualizationPath;
-            Process.Start(startInfo);
 
-            if (pFilename == null || pFilename.Equals(String.Empty))
+            if (startedApplication != null)
             {
-                m_ImageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                 Properties.Resources.placeholder.GetHbitmap(),
-                   IntPtr.Zero,
-                   System.Windows.Int32Rect.Empty,
-                   BitmapSizeOptions.FromWidthAndHeight(Properties.Resources.placeholder.Width, Properties.Resources.placeholder.Height));
+                startedApplication.Close();
             }
-            else
-                m_ImageSource = new BitmapImage(new Uri(m_Filename));
+
+            startedApplication = Process.Start(startInfo);
 
             Width = Properties.Resources.placeholder.Width;
             Debug.WriteLine("VISUALIZATION WIDTH: ---------------- " + Width);
@@ -161,10 +166,6 @@ namespace KoBeLUAdmin.Scene
             NetworkManager.Instance.SendDataOverUDP(ipAdressGamification, portGamification, "ic:0");
             Thread.Sleep(50);
             NetworkManager.Instance.SendDataOverUDP(ipAdressGamification, portGamification, "sc:" + getStepCount().ToString());
-
-            
-
-
 
         }
 
@@ -244,7 +245,19 @@ namespace KoBeLUAdmin.Scene
             }
 
             Screen[] screens = Screen.AllScreens;
-            System.Drawing.Rectangle bounds = screens[screenChecker].Bounds;
+
+            System.Drawing.Rectangle bounds;
+
+            if (screens.Length > screenChecker)
+            {
+                bounds = screens[screenChecker].Bounds;
+            }
+            else
+            {
+                // We will have two screens normally. This case will only be present in dry laptop-tests 
+                bounds = screens[0].Bounds;
+            }
+
             double xrect = bounds.X;
             double yrect = bounds.Y;
             Debug.WriteLine("BOUNDS OF RECTANGLE: " + bounds);
@@ -412,10 +425,6 @@ namespace KoBeLUAdmin.Scene
                 }
             }
 
-            
-
-
-
             Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
             {
                 try
@@ -451,8 +460,6 @@ namespace KoBeLUAdmin.Scene
                             {
                                 addTimeToPreviousTries();
                             }
-                            
-                            
                         }
                     }
 
@@ -881,8 +888,8 @@ namespace KoBeLUAdmin.Scene
 
         [Category("Source")]
         [DisplayName("File Path")]
-        [Description("The path to the image file")]
-        [EditorAttribute(typeof(ImageBrowseTypeEditor), typeof(ImageBrowseTypeEditor))]
+        [Description("The path to the executable file")]
+        [EditorAttribute(typeof(ExecutableBrowseTypeEditor), typeof(ExecutableBrowseTypeEditor))]
         public String FileName
         {
             get { return m_Filename; }
@@ -891,7 +898,14 @@ namespace KoBeLUAdmin.Scene
                 m_Filename = value;
                 try
                 {
-                    m_ImageSource = new BitmapImage(new Uri(m_Filename));
+                    if (startedApplication != null)
+                    {
+                        startedApplication.Close();
+                    }
+                    ProcessStartInfo startInfo = new ProcessStartInfo();
+                    //TODO: Insert a Command via System.IO for finding the path separator dynamically and system-dependent --> This is just for stable coding
+                    startInfo.FileName = m_Filename;
+                    startedApplication = Process.Start(startInfo);
                 }
                 catch
                 {

@@ -209,6 +209,7 @@
       <DependentUpon>PBDPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="GUI\TypeEditor\PolygonTypeEditor.cs" />
+    <Compile Include="GUI\TypeEditor\ExecutableBrowseTypeEditor.cs" />
     <Compile Include="GUI\TypeEditor\VideoBrowseTypeEditor.cs" />
     <Compile Include="GUI\TypeEditor\ImageBrowseTypeEditor.cs" />
     <Compile Include="GUI\ValidationRules\DoubleValidationRule.cs" />

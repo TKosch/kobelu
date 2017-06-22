@@ -81,6 +81,7 @@ namespace KoBeLUAdmin.Scene
             string visualizationPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments) + "\\" + "Unity\\run2.exe";
             if (!System.IO.File.Exists(visualizationPath))
             {
+
                 Debug.WriteLine("WARNING! PATH DOES NOT EXIST. NOT ADDING VISUALIZATION COMPONENT");
                 //TODO: It is internally added so we can see it in editor but it's just an empty object. Delete that!
                 return;

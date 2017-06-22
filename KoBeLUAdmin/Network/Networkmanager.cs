@@ -62,19 +62,37 @@ namespace KoBeLUAdmin.Network
         // Sends one data packet over UDP to the corresponding IPAddress and port
         public void SendDataOverUDP(string ipAddress, int port, string message)
         {
-            if (m_Socket != null && m_Socket.IsBound)
-            {
-                m_Socket.Close();
-            }
+            //if (m_Socket != null && m_Socket.IsBound)
+            //{
+            //    m_Socket.Close();
+            //}
 
-            if (SettingsManager.Instance.Settings.UDPStreamingEnabled)
+            //if (SettingsManager.Instance.Settings.UDPStreamingEnabled)
+            //{
+            //    m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //    IPAddress serverAddr = IPAddress.Parse(ipAddress);
+            //    IPEndPoint endPoint = new IPEndPoint(serverAddr, port);
+            //    byte[] buffer = Encoding.UTF8.GetBytes(message);
+            //    m_Socket.SendTo(buffer, endPoint);
+            //}
+
+            //if (m_Socket != null && m_Socket.IsBound)
+            //{
+            //    m_Socket.Close();
+            //}
+
+            //if (SettingsManager.Instance.Settings.UDPStreamingEnabled)
+            //{
+            m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            // TODO: Debug for localhost
+            if (ipAddress != null)
             {
-                m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 IPAddress serverAddr = IPAddress.Parse(ipAddress);
                 IPEndPoint endPoint = new IPEndPoint(serverAddr, port);
                 byte[] buffer = Encoding.UTF8.GetBytes(message);
                 m_Socket.SendTo(buffer, endPoint);
             }
+            //}
         }
 
         public Socket Socket

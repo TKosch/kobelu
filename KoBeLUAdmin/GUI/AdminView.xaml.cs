@@ -47,6 +47,7 @@ using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.GUI.Dialog;
 using KoBeLUAdmin.Localization;
 using KoBeLUAdmin.Model.Process;
+using KoBeLUAdmin.Network;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -106,7 +107,7 @@ namespace KoBeLUAdmin.GUI
             WorkflowManager.WorkingstepChanged += AdminView.Instance.refreshWorkflowUI;
 
             DebugInformationManager.Instance.start();
-
+            NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, "test");
             //KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             USBCameraDetector.UpdateConnectedUSBCameras();

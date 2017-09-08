@@ -242,7 +242,7 @@
     <Compile Include="Scene\SceneExternalVisualization.cs" />
     <Compile Include="Scene\SceneAudio.cs" />
     <Compile Include="Scene\SceneCollectionExtension.cs" />
-    <Compile Include="Serialization\CurrentWorkingStepSerialization.cs" />
+    <Compile Include="Serialization\SceneSerialization.cs" />
     <Compile Include="Statistics\StatsManager.cs" />
     <Compile Include="Statistics\WorkflowStats.cs" />
     <Compile Include="Statistics\WorkingStepStats.cs" />

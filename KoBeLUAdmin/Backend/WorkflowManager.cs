@@ -381,10 +381,11 @@ namespace KoBeLUAdmin.Backend
         private void SendWorkingStepInformation()
         {
 
-            CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
-            currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
-            currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
-            string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
+            SceneSerialization sceneSerialization = new SceneSerialization();
+            sceneSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
+            sceneSerialization.WorkflowPath = mCurrentWorkflowPath;
+            sceneSerialization.CurrentSceneItems = SceneManager.Instance.CurrentScene.Items;
+            string serializedWorkingStepInformation = JsonConvert.SerializeObject(sceneSerialization);
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 9850, serializedWorkingStepInformation);
         }
 

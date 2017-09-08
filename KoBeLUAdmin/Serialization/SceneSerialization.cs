@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HciLab.Utilities;
+using KoBeLUAdmin.Scene;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +8,14 @@ using System.Threading.Tasks;
 
 namespace KoBeLUAdmin.Serialization
 {
-    public class CurrentWorkingStepSerialization
+    public class SceneSerialization
     {
 
         private int mCurrentWorkingStepNumber;
         private string mWorkflowPath;
+        private CollectionWithItemNotify<SceneItem> mCurrentScene;
 
-        public CurrentWorkingStepSerialization()
+        public SceneSerialization()
         {
 
         }
@@ -41,6 +44,19 @@ namespace KoBeLUAdmin.Serialization
             set
             {
                 mWorkflowPath = value;
+            }
+        }
+
+        public CollectionWithItemNotify<SceneItem> CurrentSceneItems
+        {
+            get
+            {
+                return mCurrentScene;
+            }
+
+            set
+            {
+                mCurrentScene = value;
             }
         }
     }

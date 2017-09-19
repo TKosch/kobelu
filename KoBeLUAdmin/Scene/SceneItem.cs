@@ -192,7 +192,7 @@ namespace KoBeLUAdmin.Scene
         }
 
         
-        public SceneItem(double pX, double pY, double pWidth, double pHeight,
+        public SceneItem(double pX, double pY, double pWidth, double pHeight, 
             double pRotation = 0, double pRotationCenterX = 0, double pRotationCenterY = 0, double pScale = 1.0)
         {
             m_Id = SCENE_COUNT;

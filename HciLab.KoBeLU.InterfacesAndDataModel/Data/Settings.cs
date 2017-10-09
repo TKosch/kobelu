@@ -119,6 +119,11 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
         private double m_AdaptivityThresholdMedium;
         private double m_AdaptivityThresholdHard;
 
+        double m_ObjectDetectParam1 = 300;
+        int m_ObjectDetectParam2 = 2;
+        int m_ObjectDetectParam3 = 4;
+        int m_ObjectDetectParam4 = 2;
+
         public Settings()
         {
         }
@@ -797,6 +802,42 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             }
         }
 
+        public double ObjectDetectParam1
+        {
+            get { return m_ObjectDetectParam1; }
+            set
+            {
+                m_ObjectDetectParam1 = value;
+                NotifyPropertyChanged("ObjectDetectParam1");
+            }
+        }
+        public int ObjectDetectParam2
+        {
+            get { return m_ObjectDetectParam2; }
+            set
+            {
+                m_ObjectDetectParam2 = value;
+                NotifyPropertyChanged("ObjectDetectParam2");
+            }
+        }
+        public int ObjectDetectParam3
+        {
+            get { return m_ObjectDetectParam3; }
+            set
+            {
+                m_ObjectDetectParam3 = value;
+                NotifyPropertyChanged("ObjectDetectParam3");
+            }
+        }
+        public int ObjectDetectParam4
+        {
+            get { return m_ObjectDetectParam4; }
+            set
+            {
+                m_ObjectDetectParam4 = value;
+                NotifyPropertyChanged("ObjectDetectParam4");
+            }
+        }
 
         public SettingsTable SettingsTable
         {

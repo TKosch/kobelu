@@ -109,9 +109,9 @@ namespace KoBeLUAdmin.GUI
 
             //KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
+            CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
             USBCameraDetector.UpdateConnectedUSBCameras();
         }
-
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
@@ -224,6 +224,19 @@ namespace KoBeLUAdmin.GUI
                 );
         }
 
+        void Instance_OnAllOrgFramesReady(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, int> pDepthImage)
+        {
+            Dispatcher.Invoke(
+                System.Windows.Threading.DispatcherPriority.Normal,
+                new Action(
+                    () =>
+                    {
+                        ProcessOrgFrame(pColorImage, pDepthImage);
+                    }
+                )
+            );
+        }
+
         public void ProcessFrame(
             Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped,
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
@@ -253,10 +266,17 @@ namespace KoBeLUAdmin.GUI
                 m_GUI_BoxesPanel.DrawColorFrame(pColorImage);
             }
 
-            m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
+            //m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
             m_GUI_PBDPanel.checkIfUserIsWorking(pColorImageCropped);
 
             QRDetectManager.Instance.SimpleScan(pColorImageCropped);
+        }
+
+        public void ProcessOrgFrame(
+            Image<Bgra, byte> pColorImage,
+            Image<Gray, Int32> pDepthImage)
+        {
+            m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
         }
 
         private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject

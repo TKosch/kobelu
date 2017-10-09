@@ -38,6 +38,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Media;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Features2D;
+using Emgu.CV.Util;
+using Emgu.CV.XFeatures2D;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
 using KoBeLUAdmin.GUI;
@@ -258,30 +262,84 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             for (int i = 0; i < numRuns; i++)
             {
+                using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
+                {
+                    Mat mask;
+                    VectorOfKeyPoint modelKeyPoints;
+                    VectorOfKeyPoint observedKeyPoints;
+                    Mat homography;
+                    isDetect = RecognizeObject(sourceImage, toCompare, out modelKeyPoints, out observedKeyPoints,
+                        matches, out mask, out homography);
 
-                isDetect = UtilitiesImage.MatchIsSame(toCompare, sourceImage);
-
+                }
                 if (isDetect)
                 {
                     break;
                 }
             }
+            return isDetect;
+        }
 
-            // seriously no idea whats happening here but somehow this works
-            if (!isDetect)
+        public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        {
+            bool isDetect = false;
+
+            FindMatch(sourceImage.Mat, toCompare.Mat, out modelKeyPoints, out observedKeyPoints, matches, out mask, out homography);
+
+            if (homography != null)
             {
-                isDetect = UtilitiesImage.MatchIsSame(toCompare.Canny(10, 50), sourceImage.Canny(10, 50));
-                if (isDetect)
-                {
-                    isDetect = true;
-                }
-                else
-                {
-
-                }
+                isDetect = true;
             }
 
             return isDetect;
+        }
+
+        public static void FindMatch(Mat modelImage, Mat observedImage, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        {
+            //int k = 2;
+            int k = SettingsManager.Instance.Settings.ObjectDetectParam2;
+            double uniquenessThreshold = 0.8;
+            //double hessianThresh = 300;
+            double hessianThresh = SettingsManager.Instance.Settings.ObjectDetectParam1;
+            int nOctaves = SettingsManager.Instance.Settings.ObjectDetectParam3;
+            int nOctaveLayers = SettingsManager.Instance.Settings.ObjectDetectParam4;
+
+            homography = null;
+
+            modelKeyPoints = new VectorOfKeyPoint();
+            observedKeyPoints = new VectorOfKeyPoint();
+
+            using (UMat uModelImage = modelImage.ToUMat(AccessType.Read))
+            using (UMat uObservedImage = observedImage.ToUMat(AccessType.Read))
+            {
+                SURF surfCPU = new SURF(hessianThresh, nOctaves, nOctaveLayers);
+                //extract features from the object image
+                UMat modelDescriptors = new UMat();
+                surfCPU.DetectAndCompute(uModelImage, null, modelKeyPoints, modelDescriptors, false);
+
+                // extract features from the observed image
+                UMat observedDescriptors = new UMat();
+                surfCPU.DetectAndCompute(uObservedImage, null, observedKeyPoints, observedDescriptors, false);
+                BFMatcher matcher = new BFMatcher(DistanceType.L2);
+                matcher.Add(modelDescriptors);
+
+                matcher.KnnMatch(observedDescriptors, matches, k, null);
+                mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
+                mask.SetTo(new MCvScalar(255));
+
+                // filter ambiguous matches
+                Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
+
+                int nonZeroCount = CvInvoke.CountNonZero(mask);
+                if (nonZeroCount >= 4)
+                {
+                    nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints,
+                        matches, mask, 1.5, 20);
+                    if (nonZeroCount >= 4)
+                        homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
+                            observedKeyPoints, matches, mask, 2);
+                }
+            }
         }
 
 

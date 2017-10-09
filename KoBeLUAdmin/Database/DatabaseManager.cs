@@ -105,11 +105,18 @@ namespace KoBeLUAdmin.Database
 
             // TODO: Connecting to database doesn't work and causes an exception
             if (!File.Exists("objects.db"))
-                new NHibernate.Tool.hbm2ddl.SchemaExport(cfg).Execute(false, true, false);
+                try
+                {
+                    new NHibernate.Tool.hbm2ddl.SchemaExport(cfg).Execute(false, true, false);
+                    // Get ourselves an NHibernate Session
+                    sess = cfg.BuildSessionFactory().OpenSession();
+                }
+                catch (Exception e)
+                {
+                    // TODO: Catch exception
+                }
 
 
-            //// Get ourselves an NHibernate Session
-            sess = cfg.BuildSessionFactory().OpenSession();
         }
 
         /// <summary>

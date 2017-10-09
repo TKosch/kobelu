@@ -101,7 +101,7 @@ namespace KoBeLUAdmin.Scene
 
         protected override void reconstrctDrawable()
         {
-            this.Visual3DModel = Image3DGeo.Image(X, Y, Width, Height, m_ImageSource, 0);
+            this.Visual3DModel = Image3DGeo.Image(X, Y, Width, Height, m_ImageSource, Z);
             isFlashing();
         }
 

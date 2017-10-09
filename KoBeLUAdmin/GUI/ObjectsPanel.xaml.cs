@@ -38,6 +38,8 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Emgu.CV.Features2D;
+using Emgu.CV.Util;
 using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.Backend.ObjectDetection;
 using KoBeLUAdmin.ContentProviders;
@@ -63,6 +65,10 @@ namespace KoBeLUAdmin.GUI
         private const int m_BORDERWIDTHObject = 5;
 
         private bool m_TakeScreenShotFromZone = false;
+        bool m_TakeBackgroundScreenShot = false;
+
+        // TODO: put elsewhere
+        Image<Gray, Byte> m_BackgroundScreenShot = null;
 
         private ObjectDetectionZone m_SelectedZone = null;
 
@@ -72,6 +78,7 @@ namespace KoBeLUAdmin.GUI
         {
             InitializeComponent();
             m_TopBar.DataContext = SettingsManager.Instance.Settings;
+            m_ButtomBar.DataContext = SettingsManager.Instance.Settings;
             m_ObjectsListView.DataContext = DatabaseManager.Instance;
             m_ListBoxObjects.DataContext = ObjectDetectionManager.Instance.CurrentLayout;
         }
@@ -129,6 +136,12 @@ namespace KoBeLUAdmin.GUI
         //Code to be called within a certain part of the main ProccessFrame Method
         public void Object_ProccessFrame_Draw(bool hasToUpdateUI, Image<Bgra, Byte> pImage)
         {
+            if (m_TakeBackgroundScreenShot)
+            {
+                m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
+                m_TakeBackgroundScreenShot = false;
+            }
+
             if (m_TakeScreenShotFromZone)
             {
                 if (m_SelectedZone != null)
@@ -136,6 +149,16 @@ namespace KoBeLUAdmin.GUI
                     long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
                     if (now - m_ScreenshotTakenTimestamp > 200) // take picture after 200ms - frame should be gone by then
                     {
+                        UMat mask = null;
+                        UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
+                        if (m_BackgroundScreenShot != null)
+                        {
+                            mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                        }
+                        pImage.ToUMat().CopyTo(diff, mask);
+                        pImage = diff.ToImage<Bgra, Byte>();
+                        
+                        
                         // crop image
                         Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
                         pImage.ROI = boundingBox;
@@ -171,20 +194,37 @@ namespace KoBeLUAdmin.GUI
                     // walk over all objects
                     foreach (TrackableObject obj in Database.DatabaseManager.Instance.Objects)
                     {
-                        if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage))
+                        Mat homography;
+                        VectorOfKeyPoint modelKeyPoints;
+                        VectorOfKeyPoint observedKeyPoints;
+                        using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
                         {
-                            // YAY we found an object
-                            // trigger stuff
-                            WorkflowManager.Instance.OnObjectRecognized(obj);
+                            Mat mask;
+                            if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage,
+                                out modelKeyPoints, out observedKeyPoints, matches,
+                                out mask, out homography))
+                            {
+                                Mat result = new Mat();
+                                Features2DToolbox.DrawMatches(obj.EmguImage, modelKeyPoints, grayscaleImage, observedKeyPoints,
+               matches, result, new MCvScalar(255, 255, 255), new MCvScalar(255, 255, 255), mask);
 
-                            // update last seen timestamp
-                            obj.LastSeenTimeStamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                            obj.LastSeenZoneId = zone.Id;
+                                // YAY we found an object
+                                UtilitiesImage.ToImage(featureView, result.ToImage<Bgra, byte>());
 
-                            // display visual feedback
-                            Scene.SceneText textItem = ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone, obj.Name);
-                            SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
+                                // trigger stuff
+                                WorkflowManager.Instance.OnObjectRecognized(obj);
 
+                                // update last seen timestamp
+                                obj.LastSeenTimeStamp = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
+                                obj.LastSeenZoneId = zone.Id;
+
+                                // display visual feedback
+                                Scene.SceneText textItem =
+                                    ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone,
+                                        obj.Name);
+                                SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
+
+                            }
                         }
                     }
                     
@@ -204,9 +244,9 @@ namespace KoBeLUAdmin.GUI
                         pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0,0,0,0));
                         // draw Frame
                         if (z.wasRecentlyTriggered())
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 0);
+                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 2);
                         else
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(255, 255, 255, 0), 0);
+                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(255, 255, 255, 0), 2);
                     }
                 }
 
@@ -433,26 +473,26 @@ namespace KoBeLUAdmin.GUI
         private AllEnums.Direction isMouseOnObj(System.Windows.Point pPoint, ObjectDetectionZone pRect)
         {
             if (pPoint.X >= pRect.X && pPoint.X <= (pRect.X + pRect.Width)
-                    && pPoint.Y >= pRect.Y - (BOX_BORDERWIDTH / 2)
-                    && pPoint.Y <= pRect.Y + (BOX_BORDERWIDTH / 2))
+                    && pPoint.Y >= pRect.Y - (BOX_BORDERWIDTH)
+                    && pPoint.Y <= pRect.Y + (BOX_BORDERWIDTH))
             {
                 return AllEnums.Direction.NORTH;
             }
             else if (pPoint.X >= pRect.X && pPoint.X <= (pRect.X + pRect.Width)
-                    && pPoint.Y >= pRect.Y + pRect.Height - (BOX_BORDERWIDTH / 2)
-                && pPoint.Y <= pRect.Y + (BOX_BORDERWIDTH / 2) + pRect.Height)
+                    && pPoint.Y >= pRect.Y + pRect.Height - (BOX_BORDERWIDTH)
+                && pPoint.Y <= pRect.Y + (BOX_BORDERWIDTH) + pRect.Height)
             {
                 return AllEnums.Direction.SOUTH;
             }
             else if (pPoint.Y >= pRect.Y && pPoint.Y <= (pRect.Y + pRect.Height)
-                    && pPoint.X >= pRect.X - (BOX_BORDERWIDTH / 2)
-                    && pPoint.X <= pRect.X + (BOX_BORDERWIDTH / 2))
+                    && pPoint.X >= pRect.X - (BOX_BORDERWIDTH)
+                    && pPoint.X <= pRect.X + (BOX_BORDERWIDTH))
             {
                 return AllEnums.Direction.WEST;
             }
             else if (pPoint.Y >= pRect.Y && pPoint.Y <= (pRect.Y + pRect.Height)
-                    && pPoint.X >= pRect.X + pRect.Width - (BOX_BORDERWIDTH / 2)
-                    && pPoint.X <= pRect.X + (BOX_BORDERWIDTH / 2) + pRect.Width)
+                    && pPoint.X >= pRect.X + pRect.Width - (BOX_BORDERWIDTH)
+                    && pPoint.X <= pRect.X + (BOX_BORDERWIDTH) + pRect.Width)
             {
                 return AllEnums.Direction.EAST;
             }
@@ -506,6 +546,11 @@ namespace KoBeLUAdmin.GUI
                 SceneManager.Instance.DisableObjectScenes = true;
 
             }
+        }
+
+        private void buttonBackgroundScreenShot_Click(object sender, RoutedEventArgs e)
+        {
+            m_TakeBackgroundScreenShot = true;
         }
 
         internal void Refresh()

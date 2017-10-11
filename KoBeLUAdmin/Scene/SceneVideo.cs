@@ -151,7 +151,8 @@ namespace KoBeLUAdmin.Scene
             }
             else
             {
-                m_VideoDrawing.Player.Clock.Controller.Stop();
+                //m_VideoDrawing.Player.Clock.Controller.Stop();
+                m_VideoDrawing.Player.Clock.Controller.Begin();
             }
         }
 

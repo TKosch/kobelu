@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d"
              xmlns:helpers="clr-namespace:KoBeLUAdmin.Localization"
-             d:DesignHeight="600" d:DesignWidth="800">
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DesignHeight="600" d:DesignWidth="1116.822">
 
     <UserControl.Resources>
         <helpers:LocalizationHelper x:Key="localization"/>
@@ -14,7 +15,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="0.4*" MinWidth="250"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -32,12 +33,13 @@
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonLoadDetectionZoneLayout], FallbackValue='#Load detection zonelayout'}" Click="buttonLoadBoxObjectLayout_Click" />
 
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonScreenshot], FallbackValue='#Screenshot'}" Click="buttonObjectScreenShot_Click" IsEnabled="True"/>
-
+            <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonBackgroundMask], FallbackValue='#BackgroundMask'}" Click="buttonBackgroundScreenShot_Click" IsEnabled="True"/>
+            
         </StackPanel>
         <Viewbox Grid.Row="1" Grid.Column="0" x:Name="imageViewbox" x:FieldModifier="protected"  Margin="5,5,5,5" MouseMove="image_MouseMove" MouseUp="image_MouseUp" MouseLeftButtonDown="image_MouseDown">
             <Image x:Name="image" x:FieldModifier="protected" />
         </Viewbox>
-        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,5,5">
+        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="5,5,5,5">
             <ListView Margin="5,5,5,5" x:Name="m_ObjectsListView" x:FieldModifier="protected" ItemsSource="{Binding Objects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="ObjectsListView_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
@@ -64,7 +66,36 @@
             </ListView>
         </DockPanel>
 
+        <StackPanel Grid.Row="2" Grid.Column="3">
+            <Viewbox  x:Name="featureViewbox" x:FieldModifier="protected"  Margin="5,5,5,5">
+                <Image x:Name="featureView" x:FieldModifier="protected" />
+            </Viewbox>
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" x:Name="m_ButtomBar" x:FieldModifier="protected">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="90"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Margin="5,5,5,5" Content="Thresh." HorizontalContentAlignment="Right" />
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="1" Margin="5,5,5,5" Value="{Binding ObjectDetectParam1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                <Label Grid.Row="0" Grid.Column="2" Margin="5,5,5,5" Content="k" HorizontalContentAlignment="Right" />
+                <xctk:IntegerUpDown Grid.Row="0" Grid.Column="3" Margin="5,5,5,5" Value="{Binding ObjectDetectParam2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Grid.Row="1" Grid.Column="0" Margin="5,5,5,5" Content="nOct" HorizontalContentAlignment="Right" />
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" Margin="5,5,5,5" Value="{Binding ObjectDetectParam3, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                <Label Grid.Row="1" Grid.Column="2" Margin="5,5,5,5" Content="nOctL" HorizontalContentAlignment="Right"/>
+                <xctk:IntegerUpDown Grid.Row="1" Grid.Column="3" Margin="5,5,5,5" Value="{Binding ObjectDetectParam4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            </Grid>
+        </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="1">
             <ListBox x:Name="m_ListBoxObjects" x:FieldModifier="protected" Margin="5,5,5,5" ItemsSource="{Binding ObjectDetectionZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

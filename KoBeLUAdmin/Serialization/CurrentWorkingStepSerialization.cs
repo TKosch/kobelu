@@ -12,6 +12,7 @@ namespace KoBeLUAdmin.Serialization
 
         private int mCurrentWorkingStepNumber;
         private string mSceneItemType;
+        private SceneItem sceneItemProperties;
         private string mWorkflowPath;
 
         public CurrentWorkingStepSerialization()
@@ -42,6 +43,19 @@ namespace KoBeLUAdmin.Serialization
             set
             {
                 mSceneItemType = value;
+            }
+        }
+
+        public SceneItem SceneItemProperties
+        {
+            get
+            {
+                return sceneItemProperties;
+            }
+
+            set
+            {
+                sceneItemProperties = value;
             }
         }
 

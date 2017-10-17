@@ -387,6 +387,7 @@ namespace KoBeLUAdmin.Backend
                 CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
                 currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
                 currentWorkingStepSerialization.SceneItemType = sceneItem.GetType().ToString();
+                currentWorkingStepSerialization.SceneItemProperties = sceneItem;
                 currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
                 string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
                 Console.WriteLine(serializedWorkingStepInformation);

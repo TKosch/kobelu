@@ -380,12 +380,17 @@ namespace KoBeLUAdmin.Backend
 
         private void SendWorkingStepInformation()
         {
-
-            CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
-            currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
-            currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
-            string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
-            NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, serializedWorkingStepInformation);
+            foreach (var sceneItem in SceneManager.Instance.CurrentScene.SceneItems)
+            {
+                CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
+                currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
+                currentWorkingStepSerialization.SceneItemType = sceneItem.GetType().ToString();
+                currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
+                string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
+                Console.WriteLine(serializedWorkingStepInformation);
+                // always send data to localhost and port 20000
+                NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, serializedWorkingStepInformation);
+            }
         }
 
         public void PreviousWorkingStep()

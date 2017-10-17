@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KoBeLUAdmin.Scene;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,11 +11,11 @@ namespace KoBeLUAdmin.Serialization
     {
 
         private int mCurrentWorkingStepNumber;
+        private string mSceneItemType;
         private string mWorkflowPath;
 
         public CurrentWorkingStepSerialization()
         {
-
         }
 
 
@@ -28,6 +29,19 @@ namespace KoBeLUAdmin.Serialization
             set
             {
                 mCurrentWorkingStepNumber = value;
+            }
+        }
+
+        public string SceneItemType
+        {
+            get
+            {
+                return mSceneItemType;
+            }
+
+            set
+            {
+                mSceneItemType = value;
             }
         }
 

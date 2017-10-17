@@ -104,12 +104,12 @@ namespace KoBeLUAdmin.Database
             // DEBUG: run this code to recreate the database file (ALL CONTENT WILL BE DELETED)
 
             // TODO: Connecting to database doesn't work and causes an exception
-            if (!File.Exists("objects.db"))
-                new NHibernate.Tool.hbm2ddl.SchemaExport(cfg).Execute(false, true, false);
+            //if (!File.Exists("objects.db"))
+            //    new NHibernate.Tool.hbm2ddl.SchemaExport(cfg).Execute(false, true, false);
 
 
             //// Get ourselves an NHibernate Session
-            sess = cfg.BuildSessionFactory().OpenSession();
+            //sess = cfg.BuildSessionFactory().OpenSession();
         }
 
         /// <summary>

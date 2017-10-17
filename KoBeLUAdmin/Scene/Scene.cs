@@ -162,6 +162,15 @@ namespace KoBeLUAdmin.Scene
             NotifyPropertyChanged("Clear");
         }
 
+
+        public CollectionWithItemNotify<SceneItem> SceneItems
+        {
+            get
+            {
+                return m_Items;
+            }
+        }
+
         public delegate void SelectedItemChangedHandler(object pSource, SceneItem pScene);
 
         public event SelectedItemChangedHandler selectedItemChanged;

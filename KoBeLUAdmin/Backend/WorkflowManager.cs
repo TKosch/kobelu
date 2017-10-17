@@ -47,6 +47,8 @@ using KoBeLUAdmin.GUI;
 using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
 using KoBeLUAdmin.Statistics;
+using Newtonsoft.Json;
+using KoBeLUAdmin.Serialization;
 
 namespace KoBeLUAdmin.Backend
 {
@@ -104,6 +106,7 @@ namespace KoBeLUAdmin.Backend
         private int m_BoxErrorCounter = 0;   // counting the picking errors
         private int m_AssemblyErrors = 0;    // counting the assembly errors
         private int m_producedParts = 0;     // counting the produced parts
+        private string mCurrentWorkflowPath = "";
 
         private int m_ErrorFreeCount = 0;
         private int m_ErrorCount = 0;
@@ -208,9 +211,11 @@ namespace KoBeLUAdmin.Backend
             dlg.FilterIndex = 2;
             dlg.RestoreDirectory = true;
 
+
             if (dlg.ShowDialog() != DialogResult.OK)
                 return false;
 
+            mCurrentWorkflowPath = dlg.FileName;
             return loadWorkflow(dlg.FileName);
         }
 
@@ -331,7 +336,7 @@ namespace KoBeLUAdmin.Backend
 
             SceneManager.Instance.CurrentScene = new Scene.Scene();
         }
-
+       
         public void restartWorkflow()
         {
             if (StateManager.Instance.State == AllEnums.State.WORKFLOW_PLAYING)
@@ -361,9 +366,9 @@ namespace KoBeLUAdmin.Backend
                         //Trigger Step Started Event
                         OnWorkingStepStarted();
 
-
                         // load next scene onto scenemanager
                         LoadCurrentWorkingStep();
+
                         string stepCsv = "Step" + (m_CurrentWorkingStepNumber - 1);
                         this.saveToCSV(stepCsv);
                     }
@@ -372,6 +377,21 @@ namespace KoBeLUAdmin.Backend
                         // finished
                     }
                 }
+            }
+        }
+
+        private void SendWorkingStepInformation()
+        {
+            foreach (var sceneItem in SceneManager.Instance.CurrentScene.SceneItems)
+            {
+                CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
+                currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
+                currentWorkingStepSerialization.SceneItemType = sceneItem.GetType().ToString();
+                currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
+                string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
+                Console.WriteLine(serializedWorkingStepInformation);
+                // always send data to localhost and port 20000
+                NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, serializedWorkingStepInformation);
             }
         }
 
@@ -445,6 +465,8 @@ namespace KoBeLUAdmin.Backend
             {
                 m_CurrentNetworkTableDependency = null;
             }
+
+            SendWorkingStepInformation();    
 
         }
 

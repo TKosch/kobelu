@@ -32,6 +32,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using KoBeLUAdmin.ContentProviders;
+using System;
 
 namespace KoBeLUAdmin.Network
 {
@@ -54,10 +55,12 @@ namespace KoBeLUAdmin.Network
             }
         }
 
+
         public NetworkManager()
         {
 
         }
+
 
         // Sends one data packet over UDP to the corresponding IPAddress and port
         public void SendDataOverUDP(string ipAddress, int port, string message)
@@ -71,6 +74,23 @@ namespace KoBeLUAdmin.Network
                 m_Socket.SendTo(buffer, endPoint);
             }
         }
+
+        public void StartAsyncUDPServer(int port)
+        {
+            // create socket and start async udp server
+            UdpClient socket = new UdpClient(port); 
+            socket.BeginReceive(new AsyncCallback(OnUDPData), socket);
+        }
+
+
+        public void OnUDPData(IAsyncResult result)
+        {
+            UdpClient socket = result.AsyncState as UdpClient;
+            IPEndPoint source = new IPEndPoint(0, 0);
+            byte[] message = socket.EndReceive(result, ref source);
+            socket.BeginReceive(new AsyncCallback(OnUDPData), socket);
+        }
+
 
         public Socket Socket
         {

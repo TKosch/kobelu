@@ -108,6 +108,8 @@ namespace KoBeLUAdmin.GUI
 
             DebugInformationManager.Instance.start();
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, "test");
+            HciLab.Utilities.MessageReceiver.ServerReceiveData serverReceiveData = new HciLab.Utilities.MessageReceiver.ServerReceiveData(20001, true);
+            serverReceiveData.Start();
             //KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;

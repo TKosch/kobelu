@@ -52,8 +52,10 @@ namespace HciLab.Utilities.MessageReceiver
         private Socket m_Listener = null;
         private Thread m_ListenerThread = null;
 
+        private bool useUdp = false;
 
-        public ServerReceiveData (int pPort) {
+
+        public ServerReceiveData (int pPort, bool useUDP = false) {
             m_Port = pPort;
             m_Bytes = new Byte[UtilitiesNetwork.BufferSize];
 
@@ -64,8 +66,17 @@ namespace HciLab.Utilities.MessageReceiver
             m_IpAddress = m_IpHostInfo.AddressList[0];
             m_LocalEndPoint = new IPEndPoint(m_IpAddress, pPort);
 
-            // Create a TCP/IP socket.
-            m_Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            useUdp = useUDP;
+
+            if (!useUdp)
+            {
+                // Create a TCP/IP socket.
+                m_Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            }
+            else
+            {
+                m_Listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            }
                       
 
             /*Console.WriteLine("\nPress ENTER to continue...");
@@ -85,18 +96,26 @@ namespace HciLab.Utilities.MessageReceiver
 
         private void StartListener()
         {
-            // Bind the socket to the local endpoint and 
-            // listen for incoming connections.
-            try
+            UdpClient client = null;
+            if (m_Listener.ProtocolType == ProtocolType.Tcp)
             {
-                m_Listener.Bind(m_LocalEndPoint);
-                m_Listener.Listen(10);
+                // Bind the socket to the local endpoint and 
+                // listen for incoming connections.
+                try
+                {
+                    m_Listener.Bind(m_LocalEndPoint);
+                    m_Listener.Listen(10);
 
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    return;
+                }
             }
-            catch (Exception e)
+            else // Current implementation only uses Udp as alternative
             {
-                Console.WriteLine(e.ToString());
-                return;
+                client = new UdpClient(m_Port);
             }
 
             // Start listening for connections.
@@ -104,18 +123,37 @@ namespace HciLab.Utilities.MessageReceiver
             {
                 Console.WriteLine("Waiting for a connection...");
                 // Program is suspended while waiting for an incoming connection.
-                Socket handler = m_Listener.Accept();
+                Socket handler = null;
+                if(m_Listener.ProtocolType == ProtocolType.Tcp)
+                    handler = m_Listener.Accept();
                 m_Data = null;
 
                 // An incoming connection needs to be processed.
-                while (true)
+                if (handler != null)
                 {
-                    m_Bytes = new byte[UtilitiesNetwork.BufferSize];
-                    int bytesRec = handler.Receive(m_Bytes);
-                    m_Data += Encoding.UTF8.GetString(m_Bytes, 0, bytesRec);
-                    if (m_Data.IndexOf("<EOF>") > -1)
+                    while (true)
                     {
-                        break;
+                        m_Bytes = new byte[UtilitiesNetwork.BufferSize];
+                        int bytesRec = handler.Receive(m_Bytes);
+                        m_Data += Encoding.UTF8.GetString(m_Bytes, 0, bytesRec);
+                        if (m_Data.IndexOf("<EOF>") > -1)
+                        {
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    IPEndPoint anyIP = new IPEndPoint(IPAddress.Any, 0);
+                    try
+                    {
+                        byte[] data = client.Receive(ref anyIP);
+                        m_Data = Encoding.UTF8.GetString(data);
+                        System.Diagnostics.Debug.WriteLine("DEBUG: Received Message is: " + m_Data);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
                     }
                 }
                 // Show the data on the console.
@@ -131,9 +169,12 @@ namespace HciLab.Utilities.MessageReceiver
                 // Echo the data back to the client.
                 byte[] msg = Encoding.UTF8.GetBytes(m_Data);
 
-                handler.Send(msg);
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                if (handler != null)
+                {
+                    handler.Send(msg);
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                }
             }
         }
 

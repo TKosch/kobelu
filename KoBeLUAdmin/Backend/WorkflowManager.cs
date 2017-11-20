@@ -365,6 +365,9 @@ namespace KoBeLUAdmin.Backend
 
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
 
+                    string NextWorkingStepMessageToCore = "{'call': 'next_working_step','Step Number':" + "'" + CurrentWorkingStepNumber + "'" + "}";
+                    NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, NextWorkingStepMessageToCore);
+
                     if (m_CurrentWorkingStepNumber < LoadedWorkflow.WorkingSteps.Count)
                     {
                         //Trigger Step Started Event
@@ -405,6 +408,10 @@ namespace KoBeLUAdmin.Backend
             if (m_CurrentWorkingStepNumber > 0)
             {
                 m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber - 1;
+
+                string PreviousWorkingStepMessageToCore = "{'call': 'previous_working_step','Step Number':" + "'" + CurrentWorkingStepNumber + "'" + "}";
+                NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, PreviousWorkingStepMessageToCore);
+
                 OnWorkingStepStarted();
 
                 LoadCurrentWorkingStep();

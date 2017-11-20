@@ -216,6 +216,8 @@ namespace KoBeLUAdmin.Backend
                 return false;
 
             mCurrentWorkflowPath = dlg.FileName;
+            string messageToCore = "{'call': 'load_workflow','path':"+ "'"+mCurrentWorkflowPath+ "'"+"}";
+            NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, messageToCore);
             return loadWorkflow(dlg.FileName);
         }
 
@@ -287,6 +289,8 @@ namespace KoBeLUAdmin.Backend
 
             this.m_CsvNameTime = m_StartTime;
             this.saveToCSV("Start");
+            string startMessageToCore = "{ 'call': 'start_workflow','workflow':" + "'" + m_LoadedWorkflow.Id+ "'"+ "}";
+            NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, startMessageToCore);
         }
 
         private void Instance_OnCodeDetected(object sender, CodeDetectedEventArgs e)

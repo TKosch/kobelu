@@ -216,7 +216,7 @@ namespace KoBeLUAdmin.Backend
                 return false;
 
             mCurrentWorkflowPath = dlg.FileName;
-            string messageToCore = "{'call': 'load_workflow','path':"+ "'"+mCurrentWorkflowPath+ "'"+"}";
+            string messageToCore = "{\"call\": \"load_workflow\",\"path\":" + "\"" + mCurrentWorkflowPath+ "\"" + "}";
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, messageToCore);
             return loadWorkflow(dlg.FileName);
         }
@@ -289,7 +289,7 @@ namespace KoBeLUAdmin.Backend
 
             this.m_CsvNameTime = m_StartTime;
             this.saveToCSV("Start");
-            string startMessageToCore = "{ 'call': 'start_workflow','workflow':" + "'" + m_LoadedWorkflow.Id+ "'"+ "}";
+            string startMessageToCore = "{ \"call\": \"start_workflow\",\"workflow\":" + "\"" + m_LoadedWorkflow.Id+ "\""+ "}";
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, startMessageToCore);
         }
 
@@ -365,7 +365,7 @@ namespace KoBeLUAdmin.Backend
 
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
 
-                    string NextWorkingStepMessageToCore = "{'call': 'next_working_step','Step Number':" + "'" + CurrentWorkingStepNumber + "'" + "}";
+                    string NextWorkingStepMessageToCore = "{\"call\": \"next_working_step\",\"Step Number\":" + "\"" + CurrentWorkingStepNumber + "\"" + "}";
                     NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, NextWorkingStepMessageToCore);
 
                     if (m_CurrentWorkingStepNumber < LoadedWorkflow.WorkingSteps.Count)
@@ -409,7 +409,7 @@ namespace KoBeLUAdmin.Backend
             {
                 m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber - 1;
 
-                string PreviousWorkingStepMessageToCore = "{'call': 'previous_working_step','Step Number':" + "'" + CurrentWorkingStepNumber + "'" + "}";
+                string PreviousWorkingStepMessageToCore = "{\"call\": \"previous_working_step\",\"Step Number\":" + "\"" + CurrentWorkingStepNumber + "\"" + "}";
                 NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, PreviousWorkingStepMessageToCore);
 
                 OnWorkingStepStarted();

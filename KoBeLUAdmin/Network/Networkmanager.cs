@@ -89,6 +89,7 @@ namespace KoBeLUAdmin.Network
             IPEndPoint source = new IPEndPoint(0, 0);
             byte[] message = socket.EndReceive(result, ref source);
             socket.BeginReceive(new AsyncCallback(OnUDPData), socket);
+            // TODO: Processing of incoming KobGUI messages
         }
 
 

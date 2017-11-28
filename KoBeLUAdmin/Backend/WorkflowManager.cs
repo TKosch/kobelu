@@ -216,6 +216,7 @@ namespace KoBeLUAdmin.Backend
                 return false;
 
             mCurrentWorkflowPath = dlg.FileName;
+            // TODO: replace this with the serialization class
             string messageToCore = "{\"call\": \"load_workflow\",\"path\":" + "\"" + mCurrentWorkflowPath+ "\"" + "}";
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, messageToCore);
             return loadWorkflow(dlg.FileName);
@@ -289,6 +290,7 @@ namespace KoBeLUAdmin.Backend
 
             this.m_CsvNameTime = m_StartTime;
             this.saveToCSV("Start");
+            // TODO: Replace with serialization class
             string startMessageToCore = "{ \"call\": \"start_workflow\",\"workflow\":" + "\"" + m_LoadedWorkflow.Id+ "\""+ "}";
             NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, startMessageToCore);
         }
@@ -364,7 +366,7 @@ namespace KoBeLUAdmin.Backend
                     m_BoxErrorCounter = 0;
 
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
-
+                    // TODO: replace with serialization class
                     string NextWorkingStepMessageToCore = "{\"call\": \"next_working_step\",\"Step Number\":" + "\"" + CurrentWorkingStepNumber + "\"" + "}";
                     NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, NextWorkingStepMessageToCore);
 
@@ -397,9 +399,8 @@ namespace KoBeLUAdmin.Backend
                 currentWorkingStepSerialization.SceneItemProperties = sceneItem;
                 currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
                 string serializedWorkingStepInformation = JsonConvert.SerializeObject(currentWorkingStepSerialization);
-                Console.WriteLine(serializedWorkingStepInformation);
                 // always send data to localhost and port 20000
-                NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, serializedWorkingStepInformation);
+                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, serializedWorkingStepInformation);
             }
         }
 
@@ -408,7 +409,7 @@ namespace KoBeLUAdmin.Backend
             if (m_CurrentWorkingStepNumber > 0)
             {
                 m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber - 1;
-
+                // TODO: Replace this with the serialization class
                 string PreviousWorkingStepMessageToCore = "{\"call\": \"previous_working_step\",\"Step Number\":" + "\"" + CurrentWorkingStepNumber + "\"" + "}";
                 NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, PreviousWorkingStepMessageToCore);
 

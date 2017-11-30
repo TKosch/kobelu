@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         x:Class="KoBeLUAdmin.GUI.AdminView"
         xmlns:helpers="clr-namespace:KoBeLUAdmin.Localization"
-        Title="MotionEAP" Height="800" Width="1280" 
+        Title="KoBeLU" Height="800" Width="1280" 
     MinHeight="800" MinWidth="1024" Closing="Window_Closing">
 
 

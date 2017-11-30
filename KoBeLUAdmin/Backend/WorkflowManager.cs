@@ -408,8 +408,16 @@ namespace KoBeLUAdmin.Backend
                 currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
                 CurrentWorkingStepSerialization = mCurrentWorkingStepSerialization;
                 string message = JsonConvert.SerializeObject(currentWorkingStepSerialization);
-                // always send data to localhost and port 20000
                 NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
+
+                DrawingAreaSerialization drawingAreaSerialization = new DrawingAreaSerialization();
+                drawingAreaSerialization.Call = "drawing_area_offset";
+                drawingAreaSerialization.DrawingAreaX = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X;
+                drawingAreaSerialization.DrawingAreaY = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y;
+                drawingAreaSerialization.DrawingAreaWidth = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width;
+                drawingAreaSerialization.DrawingAreaHeight = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height;
+                string message_drawing = JsonConvert.SerializeObject(drawingAreaSerialization);
+                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message_drawing);
             }
         }
 

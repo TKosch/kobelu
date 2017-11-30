@@ -107,6 +107,7 @@ namespace KoBeLUAdmin.Backend
         private int m_AssemblyErrors = 0;    // counting the assembly errors
         private int m_producedParts = 0;     // counting the produced parts
         private string mCurrentWorkflowPath = "";
+        private CurrentWorkingStepSerialization mCurrentWorkingStepSerialization;
 
         private int m_ErrorFreeCount = 0;
         private int m_ErrorCount = 0;
@@ -220,7 +221,6 @@ namespace KoBeLUAdmin.Backend
             loadWorkflowSerialization.Call = "load_workflow";
             loadWorkflowSerialization.Workflowpath = mCurrentWorkflowPath;
             string message = JsonConvert.SerializeObject(loadWorkflowSerialization);
-            Console.WriteLine(message);
             NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
             return loadWorkflow(dlg.FileName);
         }
@@ -406,6 +406,7 @@ namespace KoBeLUAdmin.Backend
                 currentWorkingStepSerialization.SceneItemType = sceneItem.GetType().ToString();
                 currentWorkingStepSerialization.SceneItemProperties = sceneItem;
                 currentWorkingStepSerialization.WorkflowPath = mCurrentWorkflowPath;
+                CurrentWorkingStepSerialization = mCurrentWorkingStepSerialization;
                 string message = JsonConvert.SerializeObject(currentWorkingStepSerialization);
                 // always send data to localhost and port 20000
                 NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
@@ -914,9 +915,9 @@ namespace KoBeLUAdmin.Backend
 
             }
         }
-        #endregion
-        
 
+        public CurrentWorkingStepSerialization CurrentWorkingStepSerialization { get => mCurrentWorkingStepSerialization; set => mCurrentWorkingStepSerialization = value; }
+        #endregion
         #region EVENTS
         protected void OnWorkflowLoaded()
         {

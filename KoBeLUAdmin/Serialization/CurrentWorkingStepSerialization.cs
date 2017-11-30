@@ -1,4 +1,5 @@
 ﻿using KoBeLUAdmin.Scene;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace KoBeLUAdmin.Serialization
         {
         }
 
-
+        [JsonProperty(PropertyName = "currentworkingstepnumber")]
         public int CurrentWorkingStepNumber
         {
             get
@@ -33,6 +34,7 @@ namespace KoBeLUAdmin.Serialization
             }
         }
 
+        [JsonProperty(PropertyName = "sceneitemtype")]
         public string SceneItemType
         {
             get
@@ -46,6 +48,7 @@ namespace KoBeLUAdmin.Serialization
             }
         }
 
+        [JsonProperty(PropertyName = "sceneitemproperties")]
         public SceneItem SceneItemProperties
         {
             get
@@ -59,6 +62,7 @@ namespace KoBeLUAdmin.Serialization
             }
         }
 
+        [JsonProperty(PropertyName = "workflowpath")]
         public string WorkflowPath
         {
             get

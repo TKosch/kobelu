@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,9 @@ namespace KoBeLUAdmin.Serialization
         {
         }
 
+        [JsonProperty(PropertyName = "call")]
         public string Call { get => mCall; set => mCall = value; }
+        [JsonProperty(PropertyName = "currentworkingstepnumber")]
         public int CurrentWorkingStepNumber { get => mCurrentWorkingStepNumber; set => mCurrentWorkingStepNumber = value; }
     }
 }

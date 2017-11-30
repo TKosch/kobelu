@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,10 @@ namespace KoBeLUAdmin.Serialization
         public LoadWorkflowSerialization()
         {
         }
-
+        
+        [JsonProperty(PropertyName="call")]
         public string Call { get => mCall; set => mCall = value; }
+        [JsonProperty(PropertyName = "workflowpath")]
         public string Workflowpath { get => mWorkflowpath; set => mWorkflowpath = value; }
     }
 }

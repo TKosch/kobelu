@@ -38,7 +38,7 @@ using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using HciLab.KoBeLU.InterfacesAndDataModel.Data;
-using HciLab.Utilities;
+// using HciLab.Utilities;
 
 namespace HciLab.Kinect
 {
@@ -169,7 +169,7 @@ namespace HciLab.Kinect
                     //Auschnitt zurück setzen
                     tempColor.ROI = new Rectangle(0, 0, pColorImage.Width, pColorImage.Height);
 
-                    UtilitiesImage.ToImage(m_Image, tempColor);
+                    HciLab.Utilities.UtilitiesImage.ToImage(m_Image, tempColor);
                 })
             );
         }

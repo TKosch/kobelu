@@ -107,10 +107,11 @@ namespace KoBeLUAdmin.GUI
             WorkflowManager.WorkingstepChanged += AdminView.Instance.refreshWorkflowUI;
 
             DebugInformationManager.Instance.start();
-            NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, "test");
-            HciLab.Utilities.MessageReceiver.ServerReceiveData serverReceiveData = new HciLab.Utilities.MessageReceiver.ServerReceiveData(20001, true);
-            serverReceiveData.Start();
+            // NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, "test");
+            // HciLab.Utilities.MessageReceiver.ServerReceiveData serverReceiveData = new HciLab.Utilities.MessageReceiver.ServerReceiveData(20001, true);
+            // serverReceiveData.Start();
             //KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
+            NetworkManager.Instance.StartAsyncUDPServer(20001);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
             USBCameraDetector.UpdateConnectedUSBCameras();

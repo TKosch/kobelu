@@ -33,6 +33,9 @@ using System.Net.Sockets;
 using System.Text;
 using KoBeLUAdmin.ContentProviders;
 using System;
+using Newtonsoft.Json.Linq;
+using KoBeLUAdmin.Backend;
+using Newtonsoft.Json;
 
 namespace KoBeLUAdmin.Network
 {
@@ -88,10 +91,35 @@ namespace KoBeLUAdmin.Network
             UdpClient socket = result.AsyncState as UdpClient;
             IPEndPoint source = new IPEndPoint(0, 0);
             byte[] message = socket.EndReceive(result, ref source);
+            string encoded_message = Encoding.UTF8.GetString(message, 0, message.Length);
+            ParseMessage(encoded_message);
             socket.BeginReceive(new AsyncCallback(OnUDPData), socket);
-            // TODO: Processing of incoming KobGUI messages
         }
 
+        private void ParseMessage(string encoded_message)
+        {
+            // deserialize incoming JSON
+            dynamic jsonResponse = JObject.Parse(encoded_message);
+            switch (jsonResponse.call)
+            {
+                case "load_workflow":
+                    string workflowpath = jsonResponse.path;
+                    WorkflowManager.Instance.loadWorkflow();
+                    break;
+                case "get_workflow_data":
+                    string message = JsonConvert.SerializeObject(WorkflowManager.Instance.CurrentWorkingStepSerialization);
+                    NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
+                    break;
+                case "start_workflow":
+                    WorkflowManager.Instance.restartWorkflow();
+                    break;
+                case "stop_workflow":
+                    WorkflowManager.Instance.stopWorkflow();
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public Socket Socket
         {

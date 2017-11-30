@@ -221,7 +221,6 @@ namespace KoBeLUAdmin.Backend
             loadWorkflowSerialization.Call = "load_workflow";
             loadWorkflowSerialization.Workflowpath = mCurrentWorkflowPath;
             string message = JsonConvert.SerializeObject(loadWorkflowSerialization);
-            Console.WriteLine(message);
             NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
             return loadWorkflow(dlg.FileName);
         }

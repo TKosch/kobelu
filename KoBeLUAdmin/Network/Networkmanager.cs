@@ -36,6 +36,7 @@ using System;
 using Newtonsoft.Json.Linq;
 using KoBeLUAdmin.Backend;
 using Newtonsoft.Json;
+using System.Windows;
 
 namespace KoBeLUAdmin.Network
 {
@@ -81,7 +82,7 @@ namespace KoBeLUAdmin.Network
         public void StartAsyncUDPServer(int port)
         {
             // create socket and start async udp server
-            UdpClient socket = new UdpClient(port); 
+            UdpClient socket = new UdpClient(port);
             socket.BeginReceive(new AsyncCallback(OnUDPData), socket);
         }
 
@@ -100,25 +101,36 @@ namespace KoBeLUAdmin.Network
         {
             // deserialize incoming JSON
             dynamic jsonResponse = JObject.Parse(encoded_message);
-            switch (jsonResponse.call)
-            {
-                case "load_workflow":
-                    string workflowpath = jsonResponse.path;
-                    WorkflowManager.Instance.loadWorkflow();
-                    break;
-                case "get_workflow_data":
-                    string message = JsonConvert.SerializeObject(WorkflowManager.Instance.CurrentWorkingStepSerialization);
-                    NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
-                    break;
-                case "start_workflow":
-                    WorkflowManager.Instance.restartWorkflow();
-                    break;
-                case "stop_workflow":
-                    WorkflowManager.Instance.stopWorkflow();
-                    break;
-                default:
-                    break;
-            }
+            string call = jsonResponse.call.ToString();
+
+            Application.Current.Dispatcher.BeginInvoke(
+                System.Windows.Threading.DispatcherPriority.Normal,
+                new Action(
+                    () =>
+                    {
+
+                        switch (call)
+                        {
+                            case "load_workflow":
+                                string workflowpath = jsonResponse.path.ToString();
+                                WorkflowManager.Instance.loadWorkflow(workflowpath);
+                                break;
+                            case "get_workflow_data":
+                                string message = JsonConvert.SerializeObject(WorkflowManager.Instance.CurrentWorkingStepSerialization);
+                                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
+                                break;
+                            case "start_workflow":
+                                WorkflowManager.Instance.startWorkflow();
+                                break;
+                            case "stop_workflow":
+                                WorkflowManager.Instance.stopWorkflow();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                )
+            );
         }
 
         public Socket Socket

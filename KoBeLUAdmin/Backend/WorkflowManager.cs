@@ -261,6 +261,15 @@ namespace KoBeLUAdmin.Backend
             {
                 StateManager.Instance.SetNewState(this, AllEnums.State.WORKFLOW_PLAYING);
 
+                DrawingAreaSerialization drawingAreaSerialization = new DrawingAreaSerialization();
+                drawingAreaSerialization.Call = "drawing_area_offset";
+                drawingAreaSerialization.DrawingAreaX = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X;
+                drawingAreaSerialization.DrawingAreaY = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y;
+                drawingAreaSerialization.DrawingAreaWidth = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width;
+                drawingAreaSerialization.DrawingAreaHeight = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height;
+                string message_drawing = JsonConvert.SerializeObject(drawingAreaSerialization);
+                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message_drawing);
+
                 DoStartWorkflow();
             }
         }
@@ -401,15 +410,6 @@ namespace KoBeLUAdmin.Backend
         {
             foreach (var sceneItem in SceneManager.Instance.CurrentScene.SceneItems)
             {
-                DrawingAreaSerialization drawingAreaSerialization = new DrawingAreaSerialization();
-                drawingAreaSerialization.Call = "drawing_area_offset";
-                drawingAreaSerialization.DrawingAreaX = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X;
-                drawingAreaSerialization.DrawingAreaY = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y;
-                drawingAreaSerialization.DrawingAreaWidth = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width;
-                drawingAreaSerialization.DrawingAreaHeight = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height;
-                string message_drawing = JsonConvert.SerializeObject(drawingAreaSerialization);
-                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message_drawing);
-
                 CurrentWorkingStepSerialization currentWorkingStepSerialization = new CurrentWorkingStepSerialization();
                 currentWorkingStepSerialization.CurrentWorkingStepNumber = CurrentWorkingStepNumber;
                 currentWorkingStepSerialization.SceneItemType = sceneItem.GetType().ToString();

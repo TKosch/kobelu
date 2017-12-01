@@ -98,11 +98,12 @@ namespace KoBeLUAdmin.Frontend
         public TableWindow3D()
         {
             InitializeComponent();
-            
+
             //This serves as a transparent x,y Plane for Editor interaction
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
-            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(-1000.0, -1000.0, 2000.0, 2000.0, System.Windows.Media.Colors.Black, -0.05);
+            //m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(-1000.0, -1000.0, 2000.0, 2000.0, System.Windows.Media.Colors.Red, -0.05);
+            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, 1920.0, 1080.0, System.Windows.Media.Colors.Black, -0.05);
 
             double w = CalibrationManager.Instance.GetProjectionArea().Width;
             double h = CalibrationManager.Instance.GetProjectionArea().Height;

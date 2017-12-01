@@ -4,7 +4,7 @@
         Title="TableWindow" Height="768" Width="1024" AllowsTransparency="True" Topmost="True" WindowStyle="None" Background="#00000000">
     <Viewport3D Name="m_Viewport" ClipToBounds="True" MouseUp="OnViewportMouseUp" MouseDown="OnViewportMouseDown" MouseMove="OnViewportMouseMove" MouseEnter="OnViewPortMouseEnter" MouseLeave="OnViewPortMouseLeave" MouseWheel="OnViewportMouseWheel" Drop="ViewPort_Drop" DragEnter="ViewPort_DragEnter" >
             <Viewport3D.Camera>
-            <PerspectiveCamera Position="360,280,450"  FarPlaneDistance="10000" LookDirection="0,-0.1,-1" UpDirection="0,1,0" NearPlaneDistance="1" FieldOfView="45" />
+            <PerspectiveCamera Position="360,260,450"  FarPlaneDistance="10000" LookDirection="0,-0.1,-1" UpDirection="0,1,0" NearPlaneDistance="1" FieldOfView="1" />
             </Viewport3D.Camera>
         <ModelVisual3D x:Name="m_Light" x:FieldModifier="protected" >
                 <ModelVisual3D.Content>

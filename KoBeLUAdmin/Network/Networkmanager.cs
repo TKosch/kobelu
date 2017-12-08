@@ -125,6 +125,12 @@ namespace KoBeLUAdmin.Network
                             case "stop_workflow":
                                 WorkflowManager.Instance.stopWorkflow();
                                 break;
+                            case "previous_step":
+                                WorkflowManager.Instance.PreviousWorkingStep();
+                                break;
+                            case "next_step":
+                                WorkflowManager.Instance.NextWorkingStep(HciLab.KoBeLU.InterfacesAndDataModel.AllEnums.WorkingStepEndConditionTrigger.WORKFLOWPANEL_BUTTON);
+                                break;
                             default:
                                 break;
                         }

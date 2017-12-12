@@ -380,7 +380,6 @@ namespace KoBeLUAdmin.Backend
                     m_BoxErrorCounter = 0;
 
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
-                    //string NextWorkingStepMessageToCore = "{\"call\": \"next_working_step\",\"Step Number\":" + "\"" + CurrentWorkingStepNumber + "\"" + "}";
                     NextWorkingStepSerialization nextWorkingStepSerialization = new NextWorkingStepSerialization();
                     nextWorkingStepSerialization.Call = "next_working_step";
                     nextWorkingStepSerialization.CurrentWorkingStep = CurrentWorkingStepNumber;
@@ -401,6 +400,10 @@ namespace KoBeLUAdmin.Backend
                     else
                     {
                         // finished
+                        WorkflowFinishedSerialization workflowFinishedSerialization = new WorkflowFinishedSerialization();
+                        nextWorkingStepSerialization.Call = "workflow_finished";
+                        string workflow_finished_message = JsonConvert.SerializeObject(workflowFinishedSerialization);
+                        NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, workflow_finished_message);
                     }
                 }
             }

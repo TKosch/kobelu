@@ -39,6 +39,7 @@ using System.Windows.Media.Media3D;
 using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Scene;
+using System.Drawing;
 
 namespace KoBeLUAdmin.Frontend
 {
@@ -103,7 +104,8 @@ namespace KoBeLUAdmin.Frontend
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
             //m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(-1000.0, -1000.0, 2000.0, 2000.0, System.Windows.Media.Colors.Red, -0.05);
-            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, 1920.0, 1080.0, System.Windows.Media.Colors.Black, -0.05);
+            Rectangle projectorResolution = ScreenManager.getProjectorResolution();
+            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, System.Windows.Media.Colors.Black, -0.05);
 
             double w = CalibrationManager.Instance.GetProjectionArea().Width;
             double h = CalibrationManager.Instance.GetProjectionArea().Height;
@@ -125,7 +127,7 @@ namespace KoBeLUAdmin.Frontend
             
             if (ScreenManager.isSecondScreenConnected())
             {
-                System.Drawing.Rectangle projectorResolution = ScreenManager.getProjectorResolution();
+                //System.Drawing.Rectangle projectorResolution = ScreenManager.getProjectorResolution();
                 Left = projectorResolution.Left;
                 Top = projectorResolution.Top;
                 Width = projectorResolution.Width;
@@ -142,9 +144,12 @@ namespace KoBeLUAdmin.Frontend
             
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
 
-            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, 1280, 800, 0, 0);
+            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, projectorResolution.Width, projectorResolution.Height, 0, 0);
+
             m_CheckerBoardVisual = new ModelVisual3D();
-            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, 690.0, 430.0, m_CbImage, -0.01);
+            //m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, 690.0, 430.0, m_CbImage, -0.01);
+            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, m_CbImage, -0.01);
+
 
             CalibrationManager.Instance.changedCalibrationMode += new CalibrationManager.ChangedCalibrationModeHandler(Instance_changedCalibrationMode);
             this.InvalidateVisual();
@@ -170,9 +175,9 @@ namespace KoBeLUAdmin.Frontend
                     if (item == typeof(SceneRect).ToString())
                         s = new Scene.SceneRect(x, y, 50, 50, System.Windows.Media.Color.FromRgb(0, 255, 0));       
                     else if (item == typeof(SceneText).ToString())
-                        s = new Scene.SceneText(x, y, "Text", System.Windows.Media.Color.FromRgb(255, 255, 255), 10.0, new FontFamily("Arial"));
+                        s = new Scene.SceneText(x, y, "Text", System.Windows.Media.Color.FromRgb(255, 255, 255), 10.0, new System.Windows.Media.FontFamily("Arial"));
                     else if (item == typeof(SceneTextViewer).ToString())
-                        s = new Scene.SceneTextViewer( x, y, 0.2, 0.2, "Text", new FontFamily("Arial"), 10.0, System.Windows.Media.Color.FromRgb(255, 255, 255));
+                        s = new Scene.SceneTextViewer( x, y, 0.2, 0.2, "Text", new System.Windows.Media.FontFamily("Arial"), 10.0, System.Windows.Media.Color.FromRgb(255, 255, 255));
                     else if (item == typeof(SceneCircle).ToString())
                         s = new Scene.SceneCircle(x, y, 10, 0.0, Math.PI * 2.0, System.Windows.Media.Color.FromRgb(0, 255, 0));
                     else if (item == typeof(SceneImage).ToString())

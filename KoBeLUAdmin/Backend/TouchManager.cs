@@ -2,8 +2,10 @@
 using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using HciLab.Kinect;
+using KoBeLUAdmin.ContentProviders;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +18,14 @@ namespace KoBeLUAdmin.Backend
         private Image<Gray, byte> touch;
         private VectorOfVectorOfPoint contours = new VectorOfVectorOfPoint();
         private VectorOfPointF touchPoints;
+        Image<Gray, byte> touchRoi;
+        Rectangle roi;
 
         public TouchManager()
         {
+            roi = new Rectangle(SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X, SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y,
+                SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width,
+                SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height);
         }
 
 
@@ -26,7 +33,10 @@ namespace KoBeLUAdmin.Backend
         {
             Image<Gray, byte> image = KinectManager.Instance.KinectConnector.DepthImgByte;
             touch = image.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & image.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
-            CvInvoke.Imshow("Test", touch);
+            touchRoi = touch;
+            touchRoi.ROI = roi;
+
+            CvInvoke.Imshow("Test", touchRoi);
         }
 
     }

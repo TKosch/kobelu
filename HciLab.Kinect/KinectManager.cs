@@ -267,24 +267,24 @@ namespace HciLab.Kinect
 
             m_DepthImg = depthFrameBuffer.Convert<Gray, float>().SmoothGaussian(5).Convert<Gray, Int32>();
             // m_DepthImg = pDepthFrame.Convert<Gray, float>().Convert<Gray, Int32>();
-
+            m_DepthImgCropped = newDepthImgCropped;
             //Shmoothing
-            if (m_SmoothingOn)
-            {
-                /*this.m_SmoothingFilter.InnerBandThreshold = (int)InnerBandThresholdInput.Value;
-                this.m_SmoothingFilter.OuterBandThreshold = (int)OuterBandThresholdInput.Value;
-                this.m_SmoothingAverage.AverageFrameCount = (int)AverageFrameCountInput.Value;
-                this.m_SmoothingMaximum.MaximumFrameCount = (int)AverageFrameCountInput.Value;*/
+            //if (m_SmoothingOn)
+            //{
+            //    /*this.m_SmoothingFilter.InnerBandThreshold = (int)InnerBandThresholdInput.Value;
+            //    this.m_SmoothingFilter.OuterBandThreshold = (int)OuterBandThresholdInput.Value;
+            //    this.m_SmoothingAverage.AverageFrameCount = (int)AverageFrameCountInput.Value;
+            //    this.m_SmoothingMaximum.MaximumFrameCount = (int)AverageFrameCountInput.Value;*/
 
-                //depthImg = this.m_SmoothingFilter.CreateFilteredDepthArray(pDepthFrame, m_KinectConnector.GetDepthFrameDescription().Width, m_KinectConnector.GetDepthFrameDescription().Height);
-                //depthImg = this.m_SmoothingMaximum.CreateMaximumDepthArray(depthPixel, depthFrame.Width, depthFrame.Height);
-                m_DepthImgCropped = this.m_SmoothingAverage.CreateAverageDepthArray(newDepthImgCropped);
+            //    //depthImg = this.m_SmoothingFilter.CreateFilteredDepthArray(pDepthFrame, m_KinectConnector.GetDepthFrameDescription().Width, m_KinectConnector.GetDepthFrameDescription().Height);
+            //    //depthImg = this.m_SmoothingMaximum.CreateMaximumDepthArray(depthPixel, depthFrame.Width, depthFrame.Height);
+            //    m_DepthImgCropped = this.m_SmoothingAverage.CreateAverageDepthArray(newDepthImgCropped);
 
-            }
-            else
-            {
-                m_DepthImgCropped = newDepthImgCropped;
-            }
+            //}
+            //else
+            //{
+            //    m_DepthImgCropped = newDepthImgCropped;
+            //}
 
 
             OnAllFramesReady(this, colorImg, colorImgCropped, m_DepthImg, m_DepthImgCropped);

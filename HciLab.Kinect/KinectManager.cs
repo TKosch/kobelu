@@ -265,10 +265,10 @@ namespace HciLab.Kinect
             // Image<Gray, Int32> newDepthImgCropped = m_DepthImg;
 
 
-            m_DepthImg = depthFrameBuffer.Convert<Gray, float>().SmoothGaussian(5).Convert<Gray, Int32>();
+            m_DepthImg = depthFrameBuffer.Convert<Gray, Int32>();
             // m_DepthImg = pDepthFrame.Convert<Gray, float>().Convert<Gray, Int32>();
             m_DepthImgCropped = newDepthImgCropped;
-            //Shmoothing
+            //Smoothing
             //if (m_SmoothingOn)
             //{
             //    /*this.m_SmoothingFilter.InnerBandThreshold = (int)InnerBandThresholdInput.Value;

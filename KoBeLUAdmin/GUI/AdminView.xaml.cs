@@ -62,6 +62,8 @@ namespace KoBeLUAdmin.GUI
 
         private bool m_IsSendingUPDData;
 
+        private TouchManager mTouchManager = new TouchManager();
+
         /// <summary>
         /// Singleton Constructor
         /// </summary>
@@ -245,6 +247,8 @@ namespace KoBeLUAdmin.GUI
             Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped,
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
+
+            mTouchManager.DetectTouch(10, 20);
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);
 

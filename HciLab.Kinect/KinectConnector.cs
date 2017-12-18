@@ -45,6 +45,9 @@ namespace HciLab.Kinect
         /// </summary>
         private const Int16 MapDepthToByte = 8000 / Int16.MaxValue;
 
+
+        private const int MapDepthToByteImage = 8000 / 256;
+
         private KinectSensor m_Sensor = null;
         private MultiSourceFrameReader m_reader;
 
@@ -53,7 +56,8 @@ namespace HciLab.Kinect
 
         private Image<Bgra, Byte> m_ColorImg = null;
         private Image<Gray, Int16> m_DepthImg = null;
-
+        private Image<Gray, byte> mDepthImgByte = null;
+        private byte[] depthPixels = null;
         byte[] m_ColorImgArrayBuffer;
 
         public FrameDescription GetColorFrameDescription()
@@ -84,7 +88,8 @@ namespace HciLab.Kinect
 
                     m_reader = m_Sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Depth);
                     m_reader.MultiSourceFrameArrived += KinectConnector_MultiSourceFrameArrived;
-
+                    this.depthPixels = new byte[this.m_DepthFrameDescription.Width * this.m_DepthFrameDescription.Height];
+                    DepthImgByte = new Image<Gray, byte>(m_DepthFrameDescription.Width, m_DepthFrameDescription.Height);
                     m_Sensor.IsAvailableChanged += m_Sensor_IsAvailableChanged;
 
                     // open the sensor
@@ -157,6 +162,13 @@ namespace HciLab.Kinect
                             // verify data and write the color data to the display bitmap
                             if (((this.m_DepthFrameDescription.Width * this.m_DepthFrameDescription.Height) == (depthBuffer.Size / this.m_DepthFrameDescription.BytesPerPixel)))
                             {
+
+                                // Note: In order to see the full range of depth (including the less reliable far field depth)
+                                // we are setting maxDepth to the extreme potential depth threshold
+                                ushort maxDepth = ushort.MaxValue;
+
+                                this.ProcessDepthFrameData(depthBuffer.UnderlyingBuffer, depthBuffer.Size, depthFrame.DepthMinReliableDistance, maxDepth);
+
                                 int size = m_DepthFrameDescription.Width * m_DepthFrameDescription.Height * 2;
                                 byte[] managedArray = new byte[size];
                                 Marshal.Copy(depthBuffer.UnderlyingBuffer, managedArray, 0, size);
@@ -166,6 +178,10 @@ namespace HciLab.Kinect
 
                                 t = t.ConvertScale<Int16>(KinectManager.SCALE_FACTOR, 0);
                                 m_DepthImg = t;
+
+                                DepthImgByte.Bytes = depthPixels;
+                                //CvInvoke.Imshow("test", DepthImgByte);
+
                             }
                         }
                     }
@@ -177,6 +193,33 @@ namespace HciLab.Kinect
             catch (Exception ex)
             {
                 // ignore if the frame is no longer available
+            }
+        }
+
+        /// <summary>
+        /// Directly accesses the underlying image buffer of the DepthFrame to 
+        /// create a displayable bitmap.
+        /// This function requires the /unsafe compiler option as we make use of direct
+        /// access to the native memory pointed to by the depthFrameData pointer.
+        /// </summary>
+        /// <param name="depthFrameData">Pointer to the DepthFrame image data</param>
+        /// <param name="depthFrameDataSize">Size of the DepthFrame image data</param>
+        /// <param name="minDepth">The minimum reliable depth value for the frame</param>
+        /// <param name="maxDepth">The maximum reliable depth value for the frame</param>
+        private unsafe void ProcessDepthFrameData(IntPtr depthFrameData, uint depthFrameDataSize, ushort minDepth, ushort maxDepth)
+        {
+            // depth frame data is a 16 bit value
+            ushort* frameData = (ushort*)depthFrameData;
+
+            // convert depth to a visual representation
+            for (int i = 0; i < (int)(depthFrameDataSize / this.m_DepthFrameDescription.BytesPerPixel); ++i)
+            {
+                // Get the depth for this pixel
+                ushort depth = frameData[i];
+
+                // To convert to a byte, we're mapping the depth value to the byte range.
+                // Values outside the reliable depth range are mapped to 0 (black).
+                this.depthPixels[i] = (byte)(depth >= minDepth && depth <= maxDepth ? (depth / MapDepthToByteImage) : 0);
             }
         }
 
@@ -196,6 +239,8 @@ namespace HciLab.Kinect
         }
 
         static int test = 0;
+
+        public Image<Gray, byte> DepthImgByte { get => mDepthImgByte; set => mDepthImgByte = value; }
 
         public delegate void AllFramesReadyHandler(object pSource, Image<Bgra, Byte> pColorFrame, Image<Gray, Int16> pDepthFrame);
 

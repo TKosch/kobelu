@@ -93,7 +93,6 @@ namespace KoBeLUAdmin.GUI
         public void ProcessFrame(Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped,
              Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
-
             if (pColorImage != null)
             {
                 m_ColorImage = pColorImage;

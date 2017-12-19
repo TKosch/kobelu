@@ -24,9 +24,10 @@ namespace KoBeLUAdmin.Backend
 
         public TouchManager()
         {
-            roi = new Rectangle(SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X, SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y,
-                SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width,
-                SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height);
+            //roi = new Rectangle(SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X, SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y,
+            //    SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.X + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Width,
+            //    SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Y + SettingsManager.Instance.Settings.SettingsTable.KinectDrawing.Height);
+            roi = new Rectangle(200, 100, 200, 200);
         }
 
 
@@ -41,7 +42,7 @@ namespace KoBeLUAdmin.Backend
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[contours.Size];
             touchPoints = new VectorOfPointF();
 
-            //CvInvoke.Imshow("Test", touchRoi);
+            CvInvoke.Imshow("Test", touchRoi);
 
             for (int i = 0; i < contours.Size; i++)
             {

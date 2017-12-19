@@ -248,7 +248,7 @@ namespace KoBeLUAdmin.GUI
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
 
-            mTouchManager.DetectTouch(10, 20);
+            mTouchManager.DetectTouch(31, 33, 55);
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);
 

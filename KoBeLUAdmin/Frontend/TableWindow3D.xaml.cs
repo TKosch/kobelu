@@ -40,6 +40,9 @@ using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Scene;
 using System.Drawing;
+using HciLab.Utilities.Mash3D;
+using Emgu.CV.Util;
+using KoBeLUAdmin.GUI;
 
 namespace KoBeLUAdmin.Frontend
 {
@@ -69,6 +72,7 @@ namespace KoBeLUAdmin.Frontend
         private ModelVisual3D m_CheckerBoardVisual;
 
         private ModelVisual3D m_BlackPlane = new ModelVisual3D();
+        private ModelVisual3D m_TestCircle = new ModelVisual3D();
         
         private Point3D m_HoveredPoint = new Point3D(0, 0, 0);
 
@@ -260,8 +264,26 @@ namespace KoBeLUAdmin.Frontend
             {
                 m_Viewport.Children.Clear();
                 m_Viewport.Children.Add(m_Light);
-
                 m_Viewport.Children.Add(m_BlackPlane);
+                VectorOfPointF touchPoints = AdminView.Instance.TouchPoints;
+                Rectangle projectorResolution = ScreenManager.getProjectorResolution();
+                Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
+                double x = 0;
+                double y = 0;
+                if (touchPoints != null)
+                {
+                    for (int i = 0; i < touchPoints.Size; i++)
+                    {
+                        if (touchPoints[i].X != 0 && touchPoints[i].Y != 0)
+                        {
+                            x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchPoints[i].X) * scaleFactor.X;
+                            y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchPoints[i].Y) * scaleFactor.Y;
+                            m_TestCircle.Content = Circle3DGeo.GetCircleModel(x, y, 30, System.Windows.Media.Colors.Green, 1);
+                        }
+                    }
+                    m_Viewport.Children.Add(m_TestCircle);
+                }
+                
 
                 foreach (Scene.Scene m in SceneManager.Instance.getAllScenes())
                 {

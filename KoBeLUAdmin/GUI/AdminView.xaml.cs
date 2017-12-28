@@ -499,7 +499,7 @@ namespace KoBeLUAdmin.GUI
             }
         }
 
-        public VectorOfPointF TouchPoints { get => TouchPoints; set => TouchPoints = value; }
+        public VectorOfPointF TouchPoints { get => mTouchPoints; set => mTouchPoints = value; }
         public bool ReferenceImageCaptured { get => mReferenceImageCaptured; set => mReferenceImageCaptured = value; }
     }
 }

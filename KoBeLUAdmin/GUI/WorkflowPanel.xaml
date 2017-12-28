@@ -49,5 +49,6 @@
         <Label Margin="135,10,0,0" x:Name="m_OutputProducedParts" Content="{Binding SelfStatus.ProducedParts, FallbackValue=-, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Right" Grid.Row="4" HorizontalAlignment="Left" Width="30" />
         <Button x:Name="m_buttonResetPartsProduced" Content="Set to 0" HorizontalAlignment="Left" Margin="273,13,0,0" Grid.Row="4" VerticalAlignment="Top" Width="75" Click="m_buttonResetPartsProduced_Click" Padding="1"/>
         <Label Content="Server Info" HorizontalAlignment="Left" Margin="138,32,0,0" Grid.Row="3" VerticalAlignment="Top" Grid.RowSpan="2" Height="25" FontSize="11"/>
+        <Button Content="Update Reference Image" HorizontalAlignment="Left" Margin="55,259,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
     </Grid>
 </UserControl>

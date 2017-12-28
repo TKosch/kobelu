@@ -36,26 +36,26 @@ using System.Threading.Tasks;
 
 namespace HciLab.Kinect.DepthSmoothing
 {
-    internal class AveragedSmoothing
+    public class AveragedSmoothing
     {
         /// <summary>
         /// Will specify how many frames to hold in the Queue for averaging 
         /// </summary>
         private int m_MaximumFrameCount = 12;
 
-        private Queue<Image<Gray, Int32>> averageQueue = new Queue<Image<Gray, Int32>>();
+        private Queue<Image<Gray, byte>> averageQueue = new Queue<Image<Gray, byte>>();
 
         public static readonly int MaxAverageFrameCount = 12;
 
-        public Image<Gray, Int32> CreateAverageDepthArray(Image<Gray, Int32> pImageToSmooth)
+        public Image<Gray, byte> CreateAverageDepthArray(Image<Gray, byte> pImageToSmooth)
         {
 
             // This is a method of Weighted Moving Average per pixel coordinate across several frames of depth data.
             // This means that newer frames are linearly weighted heavier than older frames to reduce motion tails,
             // while still having the effect of reducing noise flickering.
 
-            Image<Gray, Int32> buffer = null;
-            foreach (Image<Gray, Int32> item in averageQueue)
+            Image<Gray, byte> buffer = null;
+            foreach (Image<Gray, byte> item in averageQueue)
             {
                 buffer = item;
                 break;
@@ -69,7 +69,7 @@ namespace HciLab.Kinect.DepthSmoothing
 
             long[,] sumDepthArray = new long[pImageToSmooth.Width, pImageToSmooth.Height];
             int[,] sumIsKnownDepth = new int[pImageToSmooth.Width, pImageToSmooth.Height];
-            Int32[, ,] averagedDepthArray = new Int32[pImageToSmooth.Height, pImageToSmooth.Width, 1];
+            byte[, ,] averagedDepthArray = new byte[pImageToSmooth.Height, pImageToSmooth.Width, 1];
 
             int Count = 1;
 
@@ -78,7 +78,7 @@ namespace HciLab.Kinect.DepthSmoothing
 
             // We first create a single array, summing all of the pixels of each frame on a weighted basis
             // and determining the denominator that we will be using later.
-            foreach (Image<Gray, Int32> img in averageQueue)
+            foreach (Image<Gray, byte> img in averageQueue)
             {
                 // Process each row in parallel
                 Parallel.For(0, pImageToSmooth.Height-1, y =>
@@ -106,13 +106,13 @@ namespace HciLab.Kinect.DepthSmoothing
                 for (int x = 0; x < pImageToSmooth.Width; x++)
                 {
                     if (sumIsKnownDepth[x,y] != 0)
-                        averagedDepthArray[y, x, 0] = (Int32)(sumDepthArray[x, y] / sumIsKnownDepth[x, y]);
+                        averagedDepthArray[y, x, 0] = (byte)(sumDepthArray[x, y] / sumIsKnownDepth[x, y]);
                     else
                         averagedDepthArray[y, x, 0] = 0;
                 }
             });
 
-            Image<Gray, Int32> ret = new Image<Gray, Int32>(pImageToSmooth.Width, pImageToSmooth.Height);
+            Image<Gray, byte> ret = new Image<Gray, byte>(pImageToSmooth.Width, pImageToSmooth.Height);
             ret.Data = averagedDepthArray;
             return ret;
         }

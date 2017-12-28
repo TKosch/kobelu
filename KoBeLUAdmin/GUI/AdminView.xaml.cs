@@ -48,6 +48,7 @@ using KoBeLUAdmin.GUI.Dialog;
 using KoBeLUAdmin.Localization;
 using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
+using Emgu.CV.Util;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -63,6 +64,11 @@ namespace KoBeLUAdmin.GUI
         private bool m_IsSendingUPDData;
 
         private TouchManager mTouchManager = new TouchManager();
+
+        private VectorOfPointF mTouchPoints;
+
+        private Image<Gray, Int32> mReferenceDepthImage;
+        private bool mReferenceImageCaptured = false;
 
         /// <summary>
         /// Singleton Constructor
@@ -109,13 +115,10 @@ namespace KoBeLUAdmin.GUI
             WorkflowManager.WorkingstepChanged += AdminView.Instance.refreshWorkflowUI;
 
             DebugInformationManager.Instance.start();
-            // NetworkManager.Instance.SendDataOverUDP("127.0.0.1", 20000, "test");
-            // HciLab.Utilities.MessageReceiver.ServerReceiveData serverReceiveData = new HciLab.Utilities.MessageReceiver.ServerReceiveData(20001, true);
-            // serverReceiveData.Start();
-            //KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
             NetworkManager.Instance.StartAsyncUDPServer(20001);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
+
             USBCameraDetector.UpdateConnectedUSBCameras();
         }
 
@@ -247,8 +250,14 @@ namespace KoBeLUAdmin.GUI
             Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped,
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
+            if (!ReferenceImageCaptured)
+            {
+                mReferenceDepthImage = pDepthImageCropped;
+                ReferenceImageCaptured = true;
+            }
 
-            mTouchManager.DetectTouch(31, 33, 55);
+            mTouchPoints = mTouchManager.DetectTouch(pDepthImageCropped, mReferenceDepthImage, 140, 300);
+
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);
 
@@ -489,6 +498,9 @@ namespace KoBeLUAdmin.GUI
                 return false;
             }
         }
+
+        public VectorOfPointF TouchPoints { get => TouchPoints; set => TouchPoints = value; }
+        public bool ReferenceImageCaptured { get => mReferenceImageCaptured; set => mReferenceImageCaptured = value; }
     }
 }
     

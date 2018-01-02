@@ -124,9 +124,18 @@ namespace KoBeLUAdmin.Backend
                     
                     double x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchpoint_array[i].X) * scaleFactor.X;
                     double y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchpoint_array[i].Y) * scaleFactor.Y;
-                    
+
+
+                    TuioCursor currentCursor = GetClosestTuioCursor((float) x, (float) y);
                     // update TUIO cursor
-                    this.updateTuioCursor(new TuioCursor(SESSIONID, CURSORID, (float) x, (float) y));
+                    if (currentCursor == null)
+                    {
+                        this.addTuioCursor(new TuioCursor(new TuioCursor(SESSIONID, CURSORID, (float) x, (float) y)));
+                    }
+                    else
+                    {
+                        this.updateTuioCursor(currentCursor);
+                    }
                 }
             }
 
@@ -134,6 +143,24 @@ namespace KoBeLUAdmin.Backend
             TouchPoints = new VectorOfPointF();
             TouchPoints.Push(touchpoint_array);
 
+        }
+
+        public TuioCursor GetClosestTuioCursor(float xp, float yp)
+        {
+            TuioCursor closestCursor = null;
+            float closestDistance = 1.0f;
+
+            for (long i = 0; i < mCursorList.Count; i++)
+            {
+                float distance = mCursorList[i].getDistance(xp, yp);
+                if (distance < closestDistance)
+                {
+                    closestCursor = mCursorList[i];
+                    closestDistance = distance;
+                }
+            }
+
+            return closestCursor;
         }
 
         public TuioClient Client { get => mClient; set => mClient = value; }

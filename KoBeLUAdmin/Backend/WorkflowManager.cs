@@ -366,7 +366,7 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
-        public void NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger trigger)
+        public void NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger trigger, bool pUpdateReferenceImage = true)
         {
             if (StateManager.Instance.State == AllEnums.State.WORKFLOW_PLAYING)
             {
@@ -396,6 +396,7 @@ namespace KoBeLUAdmin.Backend
 
                         string stepCsv = "Step" + (m_CurrentWorkingStepNumber - 1);
                         this.saveToCSV(stepCsv);
+                        AdminView.Instance.ReferenceImageCaptured = pUpdateReferenceImage;
                     }
                     else
                     {

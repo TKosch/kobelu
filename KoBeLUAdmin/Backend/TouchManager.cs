@@ -32,7 +32,6 @@ namespace KoBeLUAdmin.Backend
             mForeground = pReferenceImage - pImage;
             mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-            //CvInvoke.Imshow("test", mTouch);
 
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
             mTouchPoints = new VectorOfPointF();
@@ -47,12 +46,6 @@ namespace KoBeLUAdmin.Backend
             }
 
             mTouchPoints.Push(touchpoint_array);
-
-            //for (int i = 0; i < mTouchPoints.Size; i++)
-            //{
-            //    if (mTouchPoints[i].X != 0 && mTouchPoints[i].Y != 0)
-            //        Console.WriteLine("Touch detected at position: " + mTouchPoints[i].X + " " + mTouchPoints[i].Y);
-            //}
 
             return mTouchPoints;
         }

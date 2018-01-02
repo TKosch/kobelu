@@ -72,7 +72,6 @@ namespace KoBeLUAdmin.Frontend
         private ModelVisual3D m_CheckerBoardVisual;
 
         private ModelVisual3D m_BlackPlane = new ModelVisual3D();
-        private ModelVisual3D m_TestCircle = new ModelVisual3D();
         
         private Point3D m_HoveredPoint = new Point3D(0, 0, 0);
 
@@ -278,10 +277,8 @@ namespace KoBeLUAdmin.Frontend
                         {
                             x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchPoints[i].X) * scaleFactor.X;
                             y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchPoints[i].Y) * scaleFactor.Y;
-                            m_TestCircle.Content = Circle3DGeo.GetCircleModel(x, y, 30, System.Windows.Media.Colors.Green, 1);
                         }
                     }
-                    m_Viewport.Children.Add(m_TestCircle);
                 }
                 
 

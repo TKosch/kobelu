@@ -3,6 +3,7 @@ using Emgu.CV.Structure;
 using Emgu.CV.Util;
 using HciLab.Kinect;
 using HciLab.Kinect.DepthSmoothing;
+using HciLab.Utilities.Mathematics.Core;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Frontend;
 using KoBeLUAdmin.GUI;
@@ -116,10 +117,20 @@ namespace KoBeLUAdmin.Backend
                     MCvScalar center = CvInvoke.Mean(mContours[i]);
                     touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);
 
+                    // adjust coordinates to the projector resolution
+                    Rectangle projectorResolution = ScreenManager.getProjectorResolution();
+                    // TODO: replace hard coded values with calibration resolution
+                    Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
+                    
+                    double x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchpoint_array[i].X) * scaleFactor.X;
+                    double y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchpoint_array[i].Y) * scaleFactor.Y;
+                    
                     // update TUIO cursor
-                    this.updateTuioCursor(new TuioCursor(SESSIONID, CURSORID, touchpoint_array[i].X, touchpoint_array[i].Y));
+                    this.updateTuioCursor(new TuioCursor(SESSIONID, CURSORID, (float) x, (float) y));
                 }
             }
+
+            // push unprocessed "raw" touch points into the exposed array
             TouchPoints = new VectorOfPointF();
             TouchPoints.Push(touchpoint_array);
 

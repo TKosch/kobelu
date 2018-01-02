@@ -108,7 +108,6 @@ namespace KoBeLUAdmin.Backend
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
 
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
-            TouchPoints = new VectorOfPointF();
 
             for (int i = 0; i < mContours.Size; i++)
             {
@@ -121,7 +120,7 @@ namespace KoBeLUAdmin.Backend
                     this.updateTuioCursor(new TuioCursor(SESSIONID, CURSORID, touchpoint_array[i].X, touchpoint_array[i].Y));
                 }
             }
-
+            TouchPoints = new VectorOfPointF();
             TouchPoints.Push(touchpoint_array);
 
         }

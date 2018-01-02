@@ -19,6 +19,9 @@ namespace KoBeLUAdmin.Backend
     public class TouchManager : TuioListener
     {
 
+        private const long SESSIONID = 1;
+        private const int CURSORID = 1;
+
         private Image<Gray, byte> mTouch;
         private Image<Gray, Int32> mForeground;
         private VectorOfVectorOfPoint mContours = new VectorOfVectorOfPoint();
@@ -113,10 +116,14 @@ namespace KoBeLUAdmin.Backend
                 {
                     MCvScalar center = CvInvoke.Mean(mContours[i]);
                     touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);
+
+                    // update TUIO cursor
+                    this.updateTuioCursor(new TuioCursor(SESSIONID, CURSORID, touchpoint_array[i].X, touchpoint_array[i].Y));
                 }
             }
 
             TouchPoints.Push(touchpoint_array);
+
         }
 
         public TuioClient Client { get => mClient; set => mClient = value; }

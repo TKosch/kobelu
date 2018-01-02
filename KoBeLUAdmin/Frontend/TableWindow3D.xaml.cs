@@ -264,22 +264,22 @@ namespace KoBeLUAdmin.Frontend
                 m_Viewport.Children.Clear();
                 m_Viewport.Children.Add(m_Light);
                 m_Viewport.Children.Add(m_BlackPlane);
-                VectorOfPointF touchPoints = AdminView.Instance.TouchPoints;
-                Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
-                double x = 0;
-                double y = 0;
-                if (touchPoints != null)
-                {
-                    for (int i = 0; i < touchPoints.Size; i++)
-                    {
-                        if (touchPoints[i].X != 0 && touchPoints[i].Y != 0)
-                        {
-                            x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchPoints[i].X) * scaleFactor.X;
-                            y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchPoints[i].Y) * scaleFactor.Y;
-                        }
-                    }
-                }
+                // commented code for scaling touch points to the projector resolution
+                //Rectangle projectorResolution = ScreenManager.getProjectorResolution();
+                //Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
+                //double x = 0;
+                //double y = 0;
+                //if (touchPoints != null)
+                //{
+                //    for (int i = 0; i < touchPoints.Size; i++)
+                //    {
+                //        if (touchPoints[i].X != 0 && touchPoints[i].Y != 0)
+                //        {
+                //            x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchPoints[i].X) * scaleFactor.X;
+                //            y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchPoints[i].Y) * scaleFactor.Y;
+                //        }
+                //    }
+                //}
                 
 
                 foreach (Scene.Scene m in SceneManager.Instance.getAllScenes())

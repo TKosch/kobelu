@@ -95,10 +95,11 @@ namespace KoBeLUAdmin.Backend
             );
         }
 
-        public void shoutDownApplication()
+        public void shutdownApplication()
         {
 
             SettingsManager.Instance.save();
+            AdminView.Instance.TuioClient.disconnect();
             try
             {
                 EnsensoManager.Instance.stopEnsensoCapturing();

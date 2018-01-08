@@ -83,6 +83,9 @@
     <Reference Include="LeapCSharp.NET4.0">
       <HintPath>..\libs\LeapCSharp.NET4.0.dll</HintPath>
     </Reference>
+    <Reference Include="libTUIO">
+      <HintPath>..\libs\libTUIO.dll</HintPath>
+    </Reference>
     <Reference Include="MouseKeyboardActivityMonitor, Version=3.0.1.9571, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\libs\MouseKeyboardActivityMonitor.dll</HintPath>
@@ -128,9 +131,6 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="TCD.System.TUIO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TCD.System.TUIO.1.0.6\lib\net45\TCD.System.TUIO.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -171,6 +171,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Backend\TouchManager.cs" />
+    <Compile Include="Backend\TuioServer.cs" />
     <Compile Include="Backend\USBCameraDetector.cs" />
     <Compile Include="Backend\QRDetectManager.cs" />
     <Compile Include="Backend\StateManager.cs" />

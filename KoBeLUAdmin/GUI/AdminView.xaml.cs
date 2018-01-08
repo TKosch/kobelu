@@ -49,7 +49,6 @@ using KoBeLUAdmin.Localization;
 using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
 using Emgu.CV.Util;
-using TCD.System.TUIO;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -64,8 +63,7 @@ namespace KoBeLUAdmin.GUI
 
         private bool m_IsSendingUPDData;
 
-        private TouchManager mTouchManager = new TouchManager(20002);
-        private TuioClient mTuioClient;
+        private TouchManager mTouchManager = new TouchManager();
 
         private Image<Gray, Int32> mReferenceDepthImage;
         private bool mReferenceImageCaptured = false;
@@ -120,7 +118,6 @@ namespace KoBeLUAdmin.GUI
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
 
             USBCameraDetector.UpdateConnectedUSBCameras();
-            TuioClient = mTouchManager.Client;
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -501,7 +498,6 @@ namespace KoBeLUAdmin.GUI
         }
 
         public bool ReferenceImageCaptured { get => mReferenceImageCaptured; set => mReferenceImageCaptured = value; }
-        public TuioClient TuioClient { get => mTuioClient; set => mTuioClient = value; }
     }
 }
     

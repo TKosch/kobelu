@@ -13,93 +13,20 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TCD.System.TUIO;
 
 namespace KoBeLUAdmin.Backend
 {
-    public class TouchManager : TuioListener
+    public class TouchManager
     {
-
-        private const long SESSIONID = 1;
-        private const int CURSORID = 1;
 
         private Image<Gray, byte> mTouch;
         private Image<Gray, Int32> mForeground;
         private VectorOfVectorOfPoint mContours = new VectorOfVectorOfPoint();
         private VectorOfPointF mTouchPoints;
-        private TuioClient mClient;
-        private Dictionary<long, TuioTouchObject> mObjectList;
-        private Dictionary<long, TuioCursor> mCursorList;
-        private object cursorSync = new object();
-        private object objectSync = new object();
-        private bool verbose;
 
-        public TouchManager(int pTUIOPort)
+        public TouchManager()
         {
-            verbose = true;
-            mObjectList = new Dictionary<long, TuioTouchObject>();
-            mCursorList = new Dictionary<long, TuioCursor>();
-
-            Client = new TuioClient(pTUIOPort);
-            Client.addTuioListener(this);
-            Client.connect();
         }
-
-        public void addTuioCursor(TuioCursor tcur)
-        {
-            lock (cursorSync)
-            {
-                mCursorList.Add(tcur.getSessionID(), tcur);
-            }
-            if (verbose) Console.WriteLine("add cur " + tcur.getCursorID() + " (" + tcur.getSessionID() + ") " + tcur.getX() + " " + tcur.getY());
-        }
-
-        public void addTuioObject(TuioObject tobj)
-        {
-            lock (objectSync)
-            {
-                mObjectList.Add(tobj.getSessionID(), new TuioTouchObject(tobj));
-            }
-            if (verbose) Console.WriteLine("add obj " + tobj.getSymbolID() + " (" + tobj.getSessionID() + ") " + tobj.getX() + " " + tobj.getX() + " " + tobj.getAngle());
-        }
-
-        public void refresh(TuioTime ftime)
-        {
-            TableWindow3D.Instance.InvalidateVisual();
-        }
-
-        public void removeTuioCursor(TuioCursor tcur)
-        {
-            lock (cursorSync)
-            {
-                mCursorList.Remove(tcur.getSessionID());
-            }
-            if (verbose) Console.WriteLine("del cur " + tcur.getCursorID() + " (" + tcur.getSessionID() + ")");
-        }
-
-        public void removeTuioObject(TuioObject tobj)
-        {
-            lock (objectSync)
-            {
-                mObjectList.Remove(tobj.getSessionID());
-            }
-            if (verbose) Console.WriteLine("del obj " + tobj.getSymbolID() + " (" + tobj.getSessionID()+ ")");
-        }
-
-        public void updateTuioCursor(TuioCursor tcur)
-        {
-            if (verbose) Console.WriteLine("set cur " + tcur.getCursorID() + " (" + tcur.getSessionID() + ") " + tcur.getX() + " " + tcur.getY() + " " + tcur.getMotionSpeed() + " " + tcur.getMotionAccel());
-        }
-
-        public void updateTuioObject(TuioObject tobj)
-        {
-            lock (objectSync)
-            {
-                mObjectList[tobj.getSessionID()].update(tobj);
-            }
-            if (verbose) Console.WriteLine("set obj " + tobj.getSessionID() + " " + tobj.getSessionID() + " " + tobj.getX() + " " + tobj.getY() + tobj.getMotionSpeed() + " " + tobj.getMotionAccel());
-        }
-
 
         public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin, double pTouchDepthMax, double pTouchMinArea = 10, double pTouchMaxArea = 45)
         {
@@ -124,18 +51,6 @@ namespace KoBeLUAdmin.Backend
                     
                     double x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchpoint_array[i].X) * scaleFactor.X;
                     double y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchpoint_array[i].Y) * scaleFactor.Y;
-
-
-                    TuioCursor currentCursor = GetClosestTuioCursor((float) x, (float) y);
-                    // update TUIO cursor
-                    if (currentCursor == null)
-                    {
-                        this.addTuioCursor(new TuioCursor(new TuioCursor(SESSIONID, CURSORID, (float) x, (float) y)));
-                    }
-                    else
-                    {
-                        this.updateTuioCursor(currentCursor);
-                    }
                 }
             }
 
@@ -145,40 +60,7 @@ namespace KoBeLUAdmin.Backend
 
         }
 
-        public TuioCursor GetClosestTuioCursor(float xp, float yp)
-        {
-            TuioCursor closestCursor = null;
-            float closestDistance = 1.0f;
-
-            for (long i = 0; i < mCursorList.Count; i++)
-            {
-                float distance = mCursorList[i].getDistance(xp, yp);
-                if (distance < closestDistance)
-                {
-                    closestCursor = mCursorList[i];
-                    closestDistance = distance;
-                }
-            }
-
-            return closestCursor;
-        }
-
-        public TuioClient Client { get => mClient; set => mClient = value; }
         public VectorOfPointF TouchPoints { get => mTouchPoints; set => mTouchPoints = value; }
-    }
-
-
-    public class TuioTouchObject : TuioObject
-    {
-
-        public TuioTouchObject(long s_id, int f_id, float xpos, float ypos, float angle) : base(s_id, f_id, xpos, ypos, angle)
-        {
-        }
-
-        public TuioTouchObject(TuioObject o) : base(o)
-        {
-        }
-
     }
 
 }

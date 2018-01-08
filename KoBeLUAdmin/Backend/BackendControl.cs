@@ -99,7 +99,6 @@ namespace KoBeLUAdmin.Backend
         {
 
             SettingsManager.Instance.save();
-            AdminView.Instance.TuioClient.disconnect();
             try
             {
                 EnsensoManager.Instance.stopEnsensoCapturing();

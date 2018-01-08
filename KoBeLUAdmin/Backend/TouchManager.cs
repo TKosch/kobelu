@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TUIO;
 
 namespace KoBeLUAdmin.Backend
 {
@@ -23,6 +24,20 @@ namespace KoBeLUAdmin.Backend
         private Image<Gray, Int32> mForeground;
         private VectorOfVectorOfPoint mContours = new VectorOfVectorOfPoint();
         private VectorOfPointF mTouchPoints;
+        private static TuioServer mTuioServer = new TuioServer("127.0.0.1", 20002, 65536);
+        private static TouchManager mInstance;
+
+        public static TouchManager Instance
+        {
+            get
+            {
+                if (mInstance == null)
+                {
+                    mInstance = new TouchManager();
+                }
+                return mInstance;
+            }
+        }
 
         public TouchManager()
         {
@@ -34,9 +49,8 @@ namespace KoBeLUAdmin.Backend
             mForeground = pReferenceImage - pImage;
             mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
-
+            TouchPoints = new VectorOfPointF();
             for (int i = 0; i < mContours.Size; i++)
             {
                 if (CvInvoke.ContourArea(mContours[i]) > pTouchMinArea)
@@ -46,21 +60,54 @@ namespace KoBeLUAdmin.Backend
 
                     // adjust coordinates to the projector resolution
                     Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                    // TODO: replace hard coded values with calibration resolution
-                    Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
-                    
-                    double x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchpoint_array[i].X) * scaleFactor.X;
-                    double y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchpoint_array[i].Y) * scaleFactor.Y;
+                    // scale to resolution
+                    Vector2 scaleFactor = new Vector2(projectorResolution.Width / pImage.Width, projectorResolution.Height / pImage.Height);
+
+                    double x = (touchpoint_array[i].X) * scaleFactor.X;
+                    double y = (touchpoint_array[i].Y) * scaleFactor.Y;
+                    touchpoint_array[i].X = (float)x;
+                    touchpoint_array[i].Y = (float)y;
+                    //Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
+                }
+            }
+            // push unprocessed "raw" touch points into the exposed array
+            TouchPoints.Push(touchpoint_array);
+            ProcessTUIO();
+        }
+
+        public void ProcessTUIO()
+        {
+            if (TuioServer == null)
+                return;
+
+            // init
+            TuioServer.initFrame(TuioTime.SessionTime);
+            for (int i = 0; i < TouchPoints.Size; i++)
+            {
+                if ((TouchPoints[i].X != 0) && (TouchPoints[i].Y != 0))
+                {
+                    TuioCursor tcur_new = TuioServer.addTuioCursor(TouchPoints[i].X, TouchPoints[i].Y);
                 }
             }
 
-            // push unprocessed "raw" touch points into the exposed array
-            TouchPoints = new VectorOfPointF();
-            TouchPoints.Push(touchpoint_array);
+            // commit TUIO cursors
+            TuioServer.stopUntouchedMovingCursors();
+            TuioServer.removeUntouchedStoppedCursors();
+            TuioServer.commitFrame();
+        }
 
+        public void ClearTUIO()
+        {
+            TuioServer.Clear();
+        }
+
+        public List<TuioCursor> GetCursors()
+        {
+            return this.TuioServer.getTuioCursors();
         }
 
         public VectorOfPointF TouchPoints { get => mTouchPoints; set => mTouchPoints = value; }
+        public TuioServer TuioServer { get => mTuioServer; set => mTuioServer = value; }
     }
 
 }

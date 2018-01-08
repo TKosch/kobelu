@@ -1,15 +1,14 @@
-﻿using System;
+﻿using OSC.NET;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Sockets;
+using TUIO;
 
-using OSC.NET;
-
-namespace TUIO
+namespace KoBeLUAdmin.Backend
 {
-    class TuioServer
+    public class TuioServer
     {
         private OSCTransmitter socket;
         private bool connected;
@@ -88,7 +87,7 @@ namespace TUIO
         }
 
 
-        # region Tuio controll
+        # region Tuio control
 
         public TuioCursor addTuioCursor(float x, float y)
         {

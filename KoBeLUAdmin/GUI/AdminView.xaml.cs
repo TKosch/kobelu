@@ -49,6 +49,7 @@ using KoBeLUAdmin.Localization;
 using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
 using Emgu.CV.Util;
+using System.Drawing;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -62,8 +63,6 @@ namespace KoBeLUAdmin.GUI
         private object m_ProcessFrameLock = new object();
 
         private bool m_IsSendingUPDData;
-
-        private TouchManager mTouchManager = new TouchManager();
 
         private Image<Gray, Int32> mReferenceDepthImage;
         private bool mReferenceImageCaptured = false;
@@ -248,13 +247,17 @@ namespace KoBeLUAdmin.GUI
             Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped,
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
+
+            Image<Gray, Int32> drawingImage = pDepthImage;
+            drawingImage.ROI = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing;
+
             if (!ReferenceImageCaptured)
             {
-                mReferenceDepthImage = pDepthImageCropped;
+                mReferenceDepthImage = drawingImage;
                 ReferenceImageCaptured = true;
             }
 
-            mTouchManager.DetectTouch(pDepthImageCropped, mReferenceDepthImage, 140, 300);
+            TouchManager.Instance.DetectTouch(drawingImage, mReferenceDepthImage, 140, 300);
 
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);

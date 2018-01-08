@@ -113,6 +113,10 @@ namespace KoBeLUAdmin.Backend
                 LeapManager.Instance.shutDownLeapMotion();*/
 
             // kill Object Recognition
+            if (TouchManager.Instance.TuioServer != null)
+            {
+                TouchManager.Instance.TuioServer.Close();
+            }
             Environment.Exit(0);
         }
     }

@@ -44,17 +44,18 @@ namespace KoBeLUAdmin.Backend
         {
         }
 
-        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin = 250, double pTouchDepthMax = 300, double pTouchMinArea = 5, double pTouchMaxArea = 45)
+        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin = 170, double pTouchDepthMax = 350, double pTouchMinArea = 5, double pTouchMaxArea = 15)
         {
             
             mForeground = pReferenceImage - pImage;
             mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
+            CvInvoke.Imshow("test", mTouch);
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
             TouchPoints = new VectorOfPointF();
             for (int i = 0; i < mContours.Size; i++)
             {
-                if (CvInvoke.ContourArea(mContours[i]) > pTouchMinArea)
+                if (CvInvoke.ContourArea(mContours[i]) > pTouchMinArea && CvInvoke.ContourArea(mContours[i]) < pTouchMaxArea)
                 {
                     MCvScalar center = CvInvoke.Mean(mContours[i]);
                     touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);

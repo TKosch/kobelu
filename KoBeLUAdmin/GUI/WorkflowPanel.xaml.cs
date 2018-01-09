@@ -210,10 +210,5 @@ namespace KoBeLUAdmin.GUI
                 CommunicationManager.Instance.ServerInfo.SelfStatus.ProducedParts = 0;
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            AdminView.Instance.ReferenceImageCaptured = false;
-        }
     }
 }

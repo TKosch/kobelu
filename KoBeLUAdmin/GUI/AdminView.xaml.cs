@@ -257,7 +257,7 @@ namespace KoBeLUAdmin.GUI
                 ReferenceImageCaptured = true;
             }
 
-            TouchManager.Instance.DetectTouch(drawingImage, mReferenceDepthImage, 140, 300);
+            TouchManager.Instance.DetectTouch(drawingImage, mReferenceDepthImage);
 
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);

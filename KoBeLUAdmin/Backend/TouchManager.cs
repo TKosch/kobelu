@@ -7,6 +7,7 @@ using HciLab.Utilities.Mathematics.Core;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Frontend;
 using KoBeLUAdmin.GUI;
+using KoBeLUAdmin.Model.Process;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -43,9 +44,9 @@ namespace KoBeLUAdmin.Backend
         {
         }
 
-        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin, double pTouchDepthMax, double pTouchMinArea = 10, double pTouchMaxArea = 45)
+        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin = 250, double pTouchDepthMax = 300, double pTouchMinArea = 5, double pTouchMaxArea = 45)
         {
-
+            
             mForeground = pReferenceImage - pImage;
             mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
@@ -57,14 +58,8 @@ namespace KoBeLUAdmin.Backend
                 {
                     MCvScalar center = CvInvoke.Mean(mContours[i]);
                     touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);
-
-                    // adjust coordinates to the projector resolution
-                    Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                    // scale to resolution
-                    Vector2 scaleFactor = new Vector2(projectorResolution.Width / pImage.Width, projectorResolution.Height / pImage.Height);
-
-                    double x = (touchpoint_array[i].X) * scaleFactor.X;
-                    double y = (touchpoint_array[i].Y) * scaleFactor.Y;
+                    double x = touchpoint_array[i].X / pImage.Width;
+                    double y = 1 - (touchpoint_array[i].Y / pImage.Height);
                     touchpoint_array[i].X = (float)x;
                     touchpoint_array[i].Y = (float)y;
                     //Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
@@ -86,7 +81,15 @@ namespace KoBeLUAdmin.Backend
             {
                 if ((TouchPoints[i].X != 0) && (TouchPoints[i].Y != 0))
                 {
-                    TuioCursor tcur_new = TuioServer.addTuioCursor(TouchPoints[i].X, TouchPoints[i].Y);
+                    TuioCursor cursor = TuioServer.getClosestTuioCursor(TouchPoints[i].X, TouchPoints[i].Y);
+                    if (cursor == null || cursor.TuioTime == TuioTime.SessionTime)
+                    {
+                        TuioServer.addTuioCursor(TouchPoints[i].X, TouchPoints[i].Y);
+                    }
+                    else
+                    {
+                        TuioServer.updateTuioCursor(cursor, TouchPoints[i].X, TouchPoints[i].Y);
+                    }
                 }
             }
 

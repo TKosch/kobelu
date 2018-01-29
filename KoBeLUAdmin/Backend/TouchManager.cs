@@ -55,7 +55,7 @@ namespace KoBeLUAdmin.Backend
                 System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
                 TouchPoints = new VectorOfPointF();
 
-                CvInvoke.Imshow("test", mTouch);
+                //CvInvoke.Imshow("test", mTouch);
 
                 for (int i = 0; i < mContours.Size; i++)
                 {

@@ -561,6 +561,7 @@
     </Resource>
     <Resource Include="Resources\de_DE.png" />
     <Resource Include="Resources\en_US.png" />
+    <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\target1.png" />
@@ -582,7 +583,6 @@
     <Content Include="lib\NxLib64CLIv4.0.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

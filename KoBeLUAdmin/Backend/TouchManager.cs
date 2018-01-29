@@ -49,7 +49,6 @@ namespace KoBeLUAdmin.Backend
             // TODO: check images sizes (exception is thrown when image size changes during runtime)
             mForeground = pReferenceImage - pImage;
             mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
-            //CvInvoke.Imshow("test", mTouch);
             CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
             System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
             TouchPoints = new VectorOfPointF();

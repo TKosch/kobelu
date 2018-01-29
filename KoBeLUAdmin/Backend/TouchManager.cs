@@ -46,29 +46,36 @@ namespace KoBeLUAdmin.Backend
 
         public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin = 170, double pTouchDepthMax = 350, double pTouchMinArea = 5, double pTouchMaxArea = 15)
         {
-            // TODO: check images sizes (exception is thrown when image size changes during runtime)
-            mForeground = pReferenceImage - pImage;
-            mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
-            CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
-            System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
-            TouchPoints = new VectorOfPointF();
-            for (int i = 0; i < mContours.Size; i++)
+            
+            if (pReferenceImage.ROI.Equals(pImage.ROI))
             {
-                if (CvInvoke.ContourArea(mContours[i]) > pTouchMinArea && CvInvoke.ContourArea(mContours[i]) < pTouchMaxArea)
+                mForeground = pReferenceImage - pImage;
+                mTouch = mForeground.Cmp(pTouchDepthMin, Emgu.CV.CvEnum.CmpType.GreaterThan) & mForeground.Cmp(pTouchDepthMax, Emgu.CV.CvEnum.CmpType.LessThan);
+                CvInvoke.FindContours(mTouch, mContours, null, Emgu.CV.CvEnum.RetrType.List, Emgu.CV.CvEnum.ChainApproxMethod.ChainApproxSimple);
+                System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
+                TouchPoints = new VectorOfPointF();
+
+                CvInvoke.Imshow("test", mTouch);
+
+                for (int i = 0; i < mContours.Size; i++)
                 {
-                    MCvScalar center = CvInvoke.Mean(mContours[i]);
-                    touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);
-                    double x = touchpoint_array[i].X / pImage.Width;
-                    double y = 1 - (touchpoint_array[i].Y / pImage.Height);
-                    touchpoint_array[i].X = (float)x;
-                    touchpoint_array[i].Y = (float)y;
-                    // DEBUG:
-                    //Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
+                    if (CvInvoke.ContourArea(mContours[i]) > pTouchMinArea && CvInvoke.ContourArea(mContours[i]) < pTouchMaxArea)
+                    {
+                        MCvScalar center = CvInvoke.Mean(mContours[i]);
+                        touchpoint_array[i] = new System.Drawing.PointF((float)center.V0, (float)center.V1);
+                        double x = touchpoint_array[i].X / pImage.Width;
+                        double y = 1 - (touchpoint_array[i].Y / pImage.Height);
+                        touchpoint_array[i].X = (float)x;
+                        touchpoint_array[i].Y = (float)y;
+                        // DEBUG:
+                        //Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
+                    }
                 }
+                // push unprocessed "raw" touch points into the exposed array
+                TouchPoints.Push(touchpoint_array);
+                ProcessTUIO();
             }
-            // push unprocessed "raw" touch points into the exposed array
-            TouchPoints.Push(touchpoint_array);
-            ProcessTUIO();
+
         }
 
         public void ProcessTUIO()

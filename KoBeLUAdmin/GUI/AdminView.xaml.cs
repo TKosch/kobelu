@@ -251,13 +251,13 @@ namespace KoBeLUAdmin.GUI
             Image<Gray, Int32> drawingImage = pDepthImage;
             drawingImage.ROI = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing;
 
-            if (!ReferenceImageCaptured)
+            if (!ReferenceImageCaptured || (!ReferenceDepthImage.ROI.Equals(drawingImage.ROI)))
             {
-                mReferenceDepthImage = drawingImage;
+                ReferenceDepthImage = drawingImage;
                 ReferenceImageCaptured = true;
             }
 
-            TouchManager.Instance.DetectTouch(drawingImage, mReferenceDepthImage);
+            TouchManager.Instance.DetectTouch(drawingImage, ReferenceDepthImage);
 
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);
@@ -501,6 +501,7 @@ namespace KoBeLUAdmin.GUI
         }
 
         public bool ReferenceImageCaptured { get => mReferenceImageCaptured; set => mReferenceImageCaptured = value; }
+        public Image<Gray, int> ReferenceDepthImage { get => mReferenceDepthImage; set => mReferenceDepthImage = value; }
     }
 }
     

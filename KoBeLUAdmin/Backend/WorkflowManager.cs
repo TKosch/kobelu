@@ -366,7 +366,7 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
-        public void NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger trigger, bool pUpdateReferenceImage = true)
+        public void NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger trigger, bool pUpdateReferenceImage = false)
         {
             if (StateManager.Instance.State == AllEnums.State.WORKFLOW_PLAYING)
             {

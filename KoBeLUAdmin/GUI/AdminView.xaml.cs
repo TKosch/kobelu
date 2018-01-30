@@ -259,7 +259,8 @@ namespace KoBeLUAdmin.GUI
                     ReferenceImageCaptured = true;
                     Console.WriteLine("Reference image captured");
                 }
-                TouchManager.Instance.DetectTouch(drawingImage, ReferenceDepthImage, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMinTouchDepth, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMaxTouchDepth);
+                TouchManager.Instance.DetectTouch(drawingImage, ReferenceDepthImage, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMinTouchDepth, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMaxTouchDepth,
+                    SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMinTouchArea, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMaxTouchArea);
             }
 
             if (tabControl1.SelectedItem.Equals(VideoItem))

@@ -81,6 +81,10 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
         private bool m_CheckBoxDisplayTouchDebugCoordinates;
         private int m_IntegerUpDownMinTouchDepth;
         private int m_IntegerUpDownMaxTouchDepth;
+
+        private int m_IntegerUpDownMinTouchArea;
+        private int m_IntegerUpDownMaxTouchArea;
+
         private bool m_CheckBoxDetectTouch;
 
         private Rectangle m_EnsensoDrawing = new Rectangle();
@@ -159,6 +163,8 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             m_CheckBoxDisplayTouchDebugCoordinates = info.GetBoolean("m_CheckBoxDisplayTouchDebugCoordinates");
             m_IntegerUpDownMinTouchDepth = info.GetInt32("m_IntegerUpDownMinTouchDepth");
             m_IntegerUpDownMaxTouchDepth = info.GetInt32("m_IntegerUpDownMaxTouchDepth");
+            m_IntegerUpDownMinTouchArea = info.GetInt32("m_IntegerUpDownMinTouchArea");
+            m_IntegerUpDownMaxTouchArea = info.GetInt32("m_IntegerUpDownMaxTouchArea");
             m_CheckBoxDetectTouch = info.GetBoolean("m_CheckBoxDetectTouch");
 
         }
@@ -201,6 +207,8 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             info.AddValue("m_CheckBoxDisplayTouchDebugCoordinates", m_CheckBoxDisplayTouchDebugCoordinates);
             info.AddValue("m_IntegerUpDownMinTouchDepth", m_IntegerUpDownMinTouchDepth);
             info.AddValue("m_IntegerUpDownMaxTouchDepth", m_IntegerUpDownMaxTouchDepth);
+            info.AddValue("m_IntegerUpDownMinTouchArea", m_IntegerUpDownMinTouchArea);
+            info.AddValue("m_IntegerUpDownMaxTouchArea", m_IntegerUpDownMaxTouchArea);
             info.AddValue("m_CheckBoxDetectTouch", m_CheckBoxDetectTouch);
         }
 
@@ -469,6 +477,28 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             {
                 m_IntegerUpDownMaxTouchDepth = value;
                 NotifyPropertyChanged("IntegerUpDownMaxTouchDepth");
+            }
+        }
+
+
+        public int IntegerUpDownMinTouchArea
+        {
+            get { return m_IntegerUpDownMinTouchArea; }
+            set
+            {
+                m_IntegerUpDownMinTouchArea = value;
+                NotifyPropertyChanged("IntegerUpDownMinTouchArea");
+            }
+        }
+
+
+        public int IntegerUpDownMaxTouchArea
+        {
+            get { return m_IntegerUpDownMaxTouchArea; }
+            set
+            {
+                m_IntegerUpDownMaxTouchArea = value;
+                NotifyPropertyChanged("IntegerUpDownMaxTouchArea");
             }
         }
 

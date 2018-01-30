@@ -40,11 +40,13 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
+
         public TouchManager()
         {
         }
 
-        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin, double pTouchDepthMax, double pTouchMinArea = 5, double pTouchMaxArea = 15)
+
+        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin, double pTouchDepthMax, double pTouchMinArea, double pTouchMaxArea)
         {
 
             if (pReferenceImage.ROI.Equals(pImage.ROI))

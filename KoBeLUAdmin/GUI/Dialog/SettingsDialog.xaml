@@ -78,7 +78,13 @@
             <xctk:IntegerUpDown Text="{Binding IntegerUpDownMinTouchDepth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="#Maximal touch depth"/>
             <xctk:IntegerUpDown Text="{Binding IntegerUpDownMaxTouchDepth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Content="#Record new background image"/>
+
+            <Label Content="#Minimal touch area"/>
+            <xctk:IntegerUpDown Text="{Binding IntegerUpDownMinTouchArea, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="#Maximal touch area"/>
+            <xctk:IntegerUpDown Text="{Binding IntegerUpDownMaxTouchArea, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+            <Button Content="#Record new background image" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Window>

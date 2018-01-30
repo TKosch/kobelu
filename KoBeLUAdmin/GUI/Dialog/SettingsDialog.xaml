@@ -10,7 +10,7 @@
         xmlns:GUI="clr-namespace:KoBeLUAdmin.GUI"
         xmlns:ValueConverter="clr-namespace:KoBeLUAdmin.GUI.ValueConverter"
         xmlns:ValidationRules="clr-namespace:KoBeLUAdmin.GUI.ValidationRules"
-        Title="SettingsDialog" Height="850" Width="850" Closing="Window_Closing" >
+        Title="SettingsDialog" Height="850" Width="850" >
 
     <Window.Resources>
         <helpers:LocalizationHelper x:Key="localization"/>
@@ -34,32 +34,24 @@
             <xctk:IntegerUpDown Text="{Binding IntegerUpDownYBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelWidth], FallbackValue='#Width:'}" Margin="5,5,5,5"/>
             <xctk:IntegerUpDown Text="{Binding IntegerUpDownXBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            
-
-            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelSmoothing], FallbackValue='#Smoothing'}" />
-            <CheckBox Margin="5,5,5,5" IsChecked="{Binding CheckBoxSmoothing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.radioButtonOn], FallbackValue='#On'}" />
-            
-            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelMaxDepth], FallbackValue='#Max depth:'}" />
-            <Button Margin="5,5,5,5" Content="SetToutch Ground" Click="Button_Click"/>
-            <Button Margin="5,5,5,5" Content="Detect Touch" Click="Button_Click_1"/>
         </StackPanel>
         <StackPanel x:Name="m_Settings" Grid.Row="0" Grid.Column="1">
-            <CheckBox Margin="5,5,5,5" IsChecked="{Binding TouchInvertDisplay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxInvertDisplay], FallbackValue='#Invert Display?'}" Height="10" />
-            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelOffset], FallbackValue='#Offset'}" Height="20" />
-            <TextBox Margin="5,5,5,5" Text="{Binding TouchOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="10" />
-            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelHeight], FallbackValue='#Height'}" Height="20"/>
-            <TextBox Margin="5,5,5,5" Text="{Binding TouchFieldHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="10" />
-            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelSmoothingSteps], FallbackValue='#Smoothing steps'}" Height="20" />
-            <TextBox Margin="5,5,5,5" Text="{Binding TouchSmoothingSteps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="10" />
-            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelMovingThreshold], FallbackValue='#Moving threshold'}" Height="20" />
-            <TextBox Margin="5,5,5,5" Text="{Binding TouchMovingThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="10" />
-            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelStoppingThreshold], FallbackValue='#Stopping threshold'}" Height="20" />
+            <CheckBox Margin="5,5,5,5" IsChecked="{Binding TouchInvertDisplay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxInvertDisplay], FallbackValue='#Invert Display?'}" Height="20" />
+            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelOffset], FallbackValue='#Offset'}" Height="25" />
+            <TextBox Margin="5,5,5,5" Text="{Binding TouchOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="20" />
+            <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelHeight], FallbackValue='#Height'}" Height="30"/>
+            <TextBox Margin="5,5,5,5" Text="{Binding TouchFieldHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="20" />
+            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelSmoothingSteps], FallbackValue='#Smoothing steps'}" Height="30" />
+            <TextBox Margin="5,5,5,5" Text="{Binding TouchSmoothingSteps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="20" />
+            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelMovingThreshold], FallbackValue='#Moving threshold'}" Height="30" />
+            <TextBox Margin="5,5,5,5" Text="{Binding TouchMovingThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" Height="20" />
+            <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelStoppingThreshold], FallbackValue='#Stopping threshold'}" Height="30" />
             <TextBox Margin="5,5,5,5" Text="{Binding TouchStoppingThreshold, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" />
             <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelBoxFeedbackTimeout], FallbackValue='#Box feedback timeout'}" />
             <TextBox Margin="5,5,5,5" Text="{Binding BoxFeedbackTimeout, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding AdaptivityEnabled, Delay=1000, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.checkboxAdaptivityEnabled], FallbackValue=#Enable automatic Adaptivity, Source={StaticResource localization}}" />
             <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelAdaptivityThresholdMedium], FallbackValue='#Adaptivity Threshold to Medium'}" />
-            <TextBox Margin="5,5,5,5" Text="{Binding AdaptivityThresholdMedium, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" TextChanged="TextBox_TextChanged"  />
+            <TextBox Margin="5,5,5,5" Text="{Binding AdaptivityThresholdMedium, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}"  />
             <Label Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelAdaptivityThresholdHard], FallbackValue='#Adaptivity Threshold to Hard'}" />
             <TextBox Margin="5,5,5,5" Text="{Binding Path=AdaptivityThresholdHard, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=1000}" />
             <Label Margin="0,5,5,5" Content="{Binding .[Strings.labelNetworkSettings], FallbackValue=#NetworkSettings, Source={StaticResource localization}}" FontWeight="Bold" />
@@ -77,7 +69,16 @@
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding ShowDemoAnimation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxShowDemoAnimation], FallbackValue='#Show demo animation?'}" />
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding EditMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxEnableEditMode], FallbackValue='#Enable edit mode?'}" />
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding EnableFaultBoxMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxEnableFaultDetection], FallbackValue='#Enable box fault detection'}"/>
-            <CheckBox Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxEnableEnsensoSmoothing], FallbackValue='Enable Ensenso Smoothing'}" IsChecked="{Binding CheckBoxEnableEnsensoSmoothing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <CheckBox Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxEnableEnsensoSmoothing], FallbackValue='#Enable Ensenso Smoothing'}" IsChecked="{Binding CheckBoxEnableEnsensoSmoothing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="#Touch detection:" Margin="0,0,0,0"/>
+            <CheckBox Margin="5,5,5,5" IsChecked="{Binding DetectTouch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.detectTouch], FallbackValue='#Detect touch', Source={StaticResource localization}}"/>
+            <CheckBox Margin="5,5,5,5" IsChecked="{Binding DisplayTouchVideoFeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.displayTouchVideoFeed], FallbackValue='#Display touch video feed', Source={StaticResource localization}}"/>
+            <CheckBox Margin="5,5,5,5" IsChecked="{Binding DisplayTouchDebugCoordinates, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.displayTouchDebugCoordinates], FallbackValue='#Display debug coordinates', Source={StaticResource localization}}"/>
+            <Label Content="#Minimal touch depth"/>
+            <xctk:IntegerUpDown Text="{Binding IntegerUpDownMinTouchDepth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="#Maximal touch depth"/>
+            <xctk:IntegerUpDown Text="{Binding IntegerUpDownMaxTouchDepth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Content="#Record new background image"/>
         </StackPanel>
     </Grid>
 </Window>

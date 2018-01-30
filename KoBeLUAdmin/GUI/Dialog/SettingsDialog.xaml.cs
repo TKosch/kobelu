@@ -48,23 +48,6 @@ namespace KoBeLUAdmin.GUI
             this.m_TableSettings.DataContext = SettingsManager.Instance.Settings.SettingsTable;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            // not used
-            //TouchManager.Instance.setGroundTruth();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            // not used
-            //TouchManager.Instance.detect();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void m_UDPCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             this.m_UDPAdressTextField.IsEnabled = true;
@@ -75,8 +58,10 @@ namespace KoBeLUAdmin.GUI
             this.m_UDPAdressTextField.IsEnabled = false;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
+            // re-capture reference image
+            AdminView.Instance.ReferenceImageCaptured = false;
         }
     }
 }

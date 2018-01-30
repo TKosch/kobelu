@@ -44,9 +44,9 @@ namespace KoBeLUAdmin.Backend
         {
         }
 
-        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin = 170, double pTouchDepthMax = 350, double pTouchMinArea = 5, double pTouchMaxArea = 15)
+        public void DetectTouch(Image<Gray, Int32> pImage, Image<Gray, Int32> pReferenceImage, double pTouchDepthMin, double pTouchDepthMax, double pTouchMinArea = 5, double pTouchMaxArea = 15)
         {
-            
+
             if (pReferenceImage.ROI.Equals(pImage.ROI))
             {
                 mForeground = pReferenceImage - pImage;
@@ -55,7 +55,11 @@ namespace KoBeLUAdmin.Backend
                 System.Drawing.PointF[] touchpoint_array = new System.Drawing.PointF[mContours.Size];
                 TouchPoints = new VectorOfPointF();
 
-                //CvInvoke.Imshow("test", mTouch);
+
+                if (SettingsManager.Instance.Settings.SettingsTable.DisplayTouchVideoFeed)
+                {
+                    CvInvoke.Imshow("Touch Video Feed", mTouch);
+                }
 
                 for (int i = 0; i < mContours.Size; i++)
                 {
@@ -67,8 +71,10 @@ namespace KoBeLUAdmin.Backend
                         double y = 1 - (touchpoint_array[i].Y / pImage.Height);
                         touchpoint_array[i].X = (float)x;
                         touchpoint_array[i].Y = (float)y;
-                        // DEBUG:
-                        //Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
+                        if (SettingsManager.Instance.Settings.SettingsTable.DisplayTouchDebugCoordinates)
+                        {
+                            Console.WriteLine("X: " + touchpoint_array[i].X + " Y: " + touchpoint_array[i].Y);
+                        }
                     }
                 }
                 // push unprocessed "raw" touch points into the exposed array

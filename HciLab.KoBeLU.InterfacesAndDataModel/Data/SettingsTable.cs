@@ -45,7 +45,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
     {
 
         // Version
-        private int m_SerVersion = 7;
+        private int m_SerVersion = 8;
 
         // all the important settings of this software
         // State of all checkboxes for debug mode
@@ -77,6 +77,11 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
         private String m_ImagePath = "";
         private bool m_CheckBoxBoxFaultDetection;
         private bool m_CheckBoxEnableEnsensoSmoothing;
+        private bool m_CheckBoxDisplayTouchVideoFeed;
+        private bool m_CheckBoxDisplayTouchDebugCoordinates;
+        private int m_IntegerUpDownMinTouchDepth;
+        private int m_IntegerUpDownMaxTouchDepth;
+        private bool m_CheckBoxDetectTouch;
 
         private Rectangle m_EnsensoDrawing = new Rectangle();
         private Rectangle m_EnsensoDrawing_AssemblyArea = new Rectangle();
@@ -147,6 +152,15 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             m_EnsensoDrawing = (Rectangle)info.GetValue("m_EnsensoDrawing", typeof(Rectangle));
             m_EnsensoDrawing_AssemblyArea = (Rectangle)info.GetValue("m_EnsensoDrawing_AssemblyArea", typeof(Rectangle));
 
+            if (SerVersion < 7)
+                return;
+
+            m_CheckBoxDisplayTouchVideoFeed = info.GetBoolean("m_CheckBoxDisplayTouchVideoFeed");
+            m_CheckBoxDisplayTouchDebugCoordinates = info.GetBoolean("m_CheckBoxDisplayTouchDebugCoordinates");
+            m_IntegerUpDownMinTouchDepth = info.GetInt32("m_IntegerUpDownMinTouchDepth");
+            m_IntegerUpDownMaxTouchDepth = info.GetInt32("m_IntegerUpDownMaxTouchDepth");
+            m_CheckBoxDetectTouch = info.GetBoolean("m_CheckBoxDetectTouch");
+
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -182,6 +196,12 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
 
             info.AddValue("m_EnsensoDrawing", m_EnsensoDrawing);
             info.AddValue("m_EnsensoDrawing_AssemblyArea", m_EnsensoDrawing_AssemblyArea);
+
+            info.AddValue("m_CheckBoxDisplayTouchVideoFeed", m_CheckBoxDisplayTouchVideoFeed);
+            info.AddValue("m_CheckBoxDisplayTouchDebugCoordinates", m_CheckBoxDisplayTouchDebugCoordinates);
+            info.AddValue("m_IntegerUpDownMinTouchDepth", m_IntegerUpDownMinTouchDepth);
+            info.AddValue("m_IntegerUpDownMaxTouchDepth", m_IntegerUpDownMaxTouchDepth);
+            info.AddValue("m_CheckBoxDetectTouch", m_CheckBoxDetectTouch);
         }
 
         public delegate void ShowDemoAnimationHandler(object pSource, bool pVisible);
@@ -408,6 +428,61 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
                 NotifyPropertyChanged("EnsensoDrawing_AssemblyArea");
             }
         }
+
+
+        public bool DisplayTouchVideoFeed
+        {
+            get { return m_CheckBoxDisplayTouchVideoFeed; }
+            set
+            {
+                m_CheckBoxDisplayTouchVideoFeed = value;
+                NotifyPropertyChanged("DisplayTouchVideoFeed");
+            }
+        }
+
+        public bool DisplayTouchDebugCoordinates
+        {
+            get { return m_CheckBoxDisplayTouchDebugCoordinates; }
+            set
+            {
+                m_CheckBoxDisplayTouchDebugCoordinates = value;
+                NotifyPropertyChanged("DisplayTouchDebugCoordinates");
+            }
+        }
+
+
+        public int IntegerUpDownMinTouchDepth
+        {
+            get { return m_IntegerUpDownMinTouchDepth; }
+            set
+            {
+                m_IntegerUpDownMinTouchDepth = value;
+                NotifyPropertyChanged("IntegerUpDownMinTouchDepth");
+            }
+        }
+
+
+        public int IntegerUpDownMaxTouchDepth
+        {
+            get { return m_IntegerUpDownMaxTouchDepth; }
+            set
+            {
+                m_IntegerUpDownMaxTouchDepth = value;
+                NotifyPropertyChanged("IntegerUpDownMaxTouchDepth");
+            }
+        }
+
+
+        public bool DetectTouch
+        {
+            get { return m_CheckBoxDetectTouch; }
+            set
+            {
+                m_CheckBoxDetectTouch = value;
+                NotifyPropertyChanged("DetectTouch");
+            }
+        }
+
 
     }
 }

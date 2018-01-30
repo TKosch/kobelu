@@ -260,19 +260,12 @@ namespace HciLab.Kinect
             CvInvoke.cvResetImageROI(colorFrameBuffer);
 
             colorImgCropped = UtilitiesImage.CropImage(colorImg, m_AssemblyArea);
-            // colorImgCropped = colorImg;
             Image<Gray, Int32> newDepthImgCropped = UtilitiesImage.CropImage(m_DepthImg, m_AssemblyArea);
-            // Image<Gray, Int32> newDepthImgCropped = m_DepthImg;
-
 
             m_DepthImg = depthFrameBuffer.Convert<Gray, Int32>();
-            // m_DepthImg = pDepthFrame.Convert<Gray, float>().Convert<Gray, Int32>();
             m_DepthImgCropped = newDepthImgCropped;
-            //Smoothing
             if (m_SmoothingOn)
             {
-                //depthImg = this.m_SmoothingFilter.CreateFilteredDepthArray(pDepthFrame, m_KinectConnector.GetDepthFrameDescription().Width, m_KinectConnector.GetDepthFrameDescription().Height);
-                //depthImg = this.m_SmoothingMaximum.CreateMaximumDepthArray(depthPixel, depthFrame.Width, depthFrame.Height);
                 m_DepthImgCropped = this.m_SmoothingAverage.CreateAverageDepthArray(newDepthImgCropped);
 
             }

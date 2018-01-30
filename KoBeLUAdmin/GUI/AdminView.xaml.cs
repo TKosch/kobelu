@@ -248,16 +248,19 @@ namespace KoBeLUAdmin.GUI
             Image<Gray, Int32> pDepthImage, Image<Gray, Int32> pDepthImageCropped)
         {
 
-            Image<Gray, Int32> drawingImage = pDepthImage;
-            drawingImage.ROI = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing;
-
-            if (!ReferenceImageCaptured || (!ReferenceDepthImage.ROI.Equals(drawingImage.ROI)))
+            if (SettingsManager.Instance.Settings.SettingsTable.DetectTouch)
             {
-                ReferenceDepthImage = drawingImage;
-                ReferenceImageCaptured = true;
-            }
+                Image<Gray, Int32> drawingImage = pDepthImage;
+                drawingImage.ROI = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing;
 
-            TouchManager.Instance.DetectTouch(drawingImage, ReferenceDepthImage);
+                if (!ReferenceImageCaptured || (!ReferenceDepthImage.ROI.Equals(drawingImage.ROI)))
+                {
+                    ReferenceDepthImage = drawingImage;
+                    ReferenceImageCaptured = true;
+                    Console.WriteLine("Reference image captured");
+                }
+                TouchManager.Instance.DetectTouch(drawingImage, ReferenceDepthImage, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMinTouchDepth, SettingsManager.Instance.Settings.SettingsTable.IntegerUpDownMaxTouchDepth);
+            }
 
             if (tabControl1.SelectedItem.Equals(VideoItem))
                 m_GUI_Video.ProcessFrame(pColorImage, pColorImageCropped, pDepthImage, pDepthImageCropped);

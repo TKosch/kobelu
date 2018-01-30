@@ -645,4 +645,13 @@
   <data name="buttonExternalVisualization" xml:space="preserve">
     <value>Ext. Visualization</value>
   </data>
+  <data name="displayTouchVideoFeed" xml:space="preserve">
+    <value>Display touch video feed</value>
+  </data>
+  <data name="displayTouchDebugCoordinates" xml:space="preserve">
+    <value>Display Touch Coordinates</value>
+  </data>
+  <data name="detectTouch" xml:space="preserve">
+    <value>Detect touch</value>
+  </data>
 </root>

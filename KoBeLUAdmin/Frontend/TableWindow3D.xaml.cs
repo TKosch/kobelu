@@ -118,6 +118,7 @@ namespace KoBeLUAdmin.Frontend
                 new Vector3D(0, 1, 0),
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV);
             m_Viewport.Camera = m_Camera;
+            m_Viewport.Children.Clear();
 
             m_Projection.Positions.Clear();
             m_Projection.Positions.Add(new Point3D(0, 0, 0));

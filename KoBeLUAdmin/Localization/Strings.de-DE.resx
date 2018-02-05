@@ -627,4 +627,7 @@
   <data name="detectTouch" xml:space="preserve">
     <value>Toucherkennung aktivieren</value>
   </data>
+  <data name="displayWPFProjectionPlane" xml:space="preserve">
+    <value>Zeige WPF Projektionsebene an</value>
+  </data>
 </root>

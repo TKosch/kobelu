@@ -45,7 +45,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
     {
 
         // Version
-        private int m_SerVersion = 8;
+        private int m_SerVersion = 9;
 
         // all the important settings of this software
         // State of all checkboxes for debug mode
@@ -81,6 +81,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
         private bool m_CheckBoxDisplayTouchDebugCoordinates;
         private int m_IntegerUpDownMinTouchDepth;
         private int m_IntegerUpDownMaxTouchDepth;
+        private bool m_CheckBoxDisplayWPFProjection;
 
         private int m_IntegerUpDownMinTouchArea;
         private int m_IntegerUpDownMaxTouchArea;
@@ -167,6 +168,12 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             m_IntegerUpDownMaxTouchArea = info.GetInt32("m_IntegerUpDownMaxTouchArea");
             m_CheckBoxDetectTouch = info.GetBoolean("m_CheckBoxDetectTouch");
 
+            if (SerVersion < 8)
+                return;
+
+            m_CheckBoxDisplayWPFProjection = info.GetBoolean("m_CheckBoxDisplayWPFProjection");
+
+
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
@@ -210,6 +217,8 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             info.AddValue("m_IntegerUpDownMinTouchArea", m_IntegerUpDownMinTouchArea);
             info.AddValue("m_IntegerUpDownMaxTouchArea", m_IntegerUpDownMaxTouchArea);
             info.AddValue("m_CheckBoxDetectTouch", m_CheckBoxDetectTouch);
+
+            info.AddValue("m_CheckBoxDisplayWPFProjection", m_CheckBoxDisplayWPFProjection);
         }
 
         public delegate void ShowDemoAnimationHandler(object pSource, bool pVisible);
@@ -510,6 +519,16 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             {
                 m_CheckBoxDetectTouch = value;
                 NotifyPropertyChanged("DetectTouch");
+            }
+        }
+
+        public bool DisplayWPFProjection
+        {
+            get { return m_CheckBoxDisplayWPFProjection; }
+            set
+            {
+                m_CheckBoxDisplayWPFProjection = value;
+                NotifyPropertyChanged("DisplayWPFProjection");
             }
         }
 

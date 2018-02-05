@@ -709,6 +709,15 @@ namespace KoBeLUAdmin.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display WPF projection plane.
+        /// </summary>
+        public static string displayWPFProjectionPlane {
+            get {
+                return ResourceManager.GetString("displayWPFProjectionPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actions.
         /// </summary>
         public static string labelActions {

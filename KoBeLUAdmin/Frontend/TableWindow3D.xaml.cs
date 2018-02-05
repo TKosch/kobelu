@@ -106,7 +106,6 @@ namespace KoBeLUAdmin.Frontend
             //This serves as a transparent x,y Plane for Editor interaction
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
-            //m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(-1000.0, -1000.0, 2000.0, 2000.0, System.Windows.Media.Colors.Red, -0.05);
             Rectangle projectorResolution = ScreenManager.getProjectorResolution();
             m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, System.Windows.Media.Colors.Black, -0.05);
 
@@ -119,6 +118,7 @@ namespace KoBeLUAdmin.Frontend
                 new Vector3D(0, 1, 0),
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV);
             m_Viewport.Camera = m_Camera;
+            m_Viewport.Children.Clear();
 
             m_Projection.Positions.Clear();
             m_Projection.Positions.Add(new Point3D(0, 0, 0));
@@ -256,55 +256,53 @@ namespace KoBeLUAdmin.Frontend
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
-            UpdateSceneManager();
-            SceneManager.Instance.Update();
 
-            if (CalibrationManager.Instance.IsInCalibrationMode == false)
+            if (SettingsManager.Instance.Settings.SettingsTable.DisplayWPFProjection)
             {
-                m_Viewport.Children.Clear();
-                m_Viewport.Children.Add(m_Light);
-                m_Viewport.Children.Add(m_BlackPlane);
-                // commented code for scaling touch points to the projector resolution
-                //Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                //Vector2 scaleFactor = new Vector2(projectorResolution.Width / 512, projectorResolution.Height / 361);
-                //double x = 0;
-                //double y = 0;
-                //if (touchPoints != null)
-                //{
-                //    for (int i = 0; i < touchPoints.Size; i++)
-                //    {
-                //        if (touchPoints[i].X != 0 && touchPoints[i].Y != 0)
-                //        {
-                //            x = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X + touchPoints[i].X) * scaleFactor.X;
-                //            y = (SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y + touchPoints[i].Y) * scaleFactor.Y;
-                //        }
-                //    }
-                //}
-                
-
-                foreach (Scene.Scene m in SceneManager.Instance.getAllScenes())
+                if (SettingsManager.Instance.Settings.SettingsTable.DisplayWPFProjection)
                 {
-                    m_Viewport.Children.Add(m);
-                    foreach (Scene.SceneItem s in m.Items)
-                    {
-                        
-                        if (s is Scene.Scene)
-                            Debugger.Break();
-                        if (s != null)
-                            if (m_Viewport.Children.Contains(s))
-                            {
-                                m_Viewport.Children.Remove(s);
-                            }
-                            m_Viewport.Children.Add(s);
+                    UpdateSceneManager();
+                    SceneManager.Instance.Update();
 
-                        if (s is Scene.ScenePolygon && (s as Scene.ScenePolygon).IsInEditMode)
+                    if (CalibrationManager.Instance.IsInCalibrationMode == false)
+                    {
+                        m_Viewport.Children.Clear();
+                        m_Viewport.Children.Add(m_Light);
+                        m_Viewport.Children.Add(m_BlackPlane);
+
+                        foreach (Scene.Scene m in SceneManager.Instance.getAllScenes())
                         {
-                            m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToWireFrame((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z + 1));
-                            m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToPoints((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z +2));   
+                            m_Viewport.Children.Add(m);
+                            foreach (Scene.SceneItem s in m.Items)
+                            {
+                        
+                                if (s is Scene.Scene)
+                                    Debugger.Break();
+                                if (s != null)
+                                    if (m_Viewport.Children.Contains(s))
+                                    {
+                                        m_Viewport.Children.Remove(s);
+                                    }
+                                    m_Viewport.Children.Add(s);
+
+                                if (s is Scene.ScenePolygon && (s as Scene.ScenePolygon).IsInEditMode)
+                                {
+                                    m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToWireFrame((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z + 1));
+                                    m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToPoints((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z +2));   
+                                }
+                            }
                         }
                     }
                 }
             }
+            else
+            {
+                if (m_Viewport.Children.Contains(m_BlackPlane))
+                {
+                    m_Viewport.Children.Remove(m_BlackPlane);
+                }
+            }
+
         }
 
         private void UpdateSceneManager()

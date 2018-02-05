@@ -654,4 +654,7 @@
   <data name="detectTouch" xml:space="preserve">
     <value>Detect touch</value>
   </data>
+  <data name="displayWPFProjectionPlane" xml:space="preserve">
+    <value>Display WPF projection plane</value>
+  </data>
 </root>

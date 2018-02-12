@@ -150,9 +150,8 @@ namespace KoBeLUAdmin.Frontend
             m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, projectorResolution.Width, projectorResolution.Height, 0, 0);
 
             m_CheckerBoardVisual = new ModelVisual3D();
-            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0, 0, 690.0, 430.0, m_CbImage, -0.01);
-            //m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, m_CbImage, -0.01);
-
+            //m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0, 0, 690.0, 430.0, m_CbImage, -0.01);
+            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, m_CbImage, -0.01);
 
             CalibrationManager.Instance.changedCalibrationMode += new CalibrationManager.ChangedCalibrationModeHandler(Instance_changedCalibrationMode);
             this.InvalidateVisual();

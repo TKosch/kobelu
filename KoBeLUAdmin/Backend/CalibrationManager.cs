@@ -172,11 +172,11 @@ namespace KoBeLUAdmin.Backend
             }
 
             // color corners of the checkerboard
-            Console.WriteLine(wFields);
-            g.FillRectangle(System.Drawing.Brushes.Blue, 0, 0, wField, hField);
-            g.FillRectangle(System.Drawing.Brushes.Red, (wField * wFields) - wField, 0, wField, hField);
-            g.FillRectangle(System.Drawing.Brushes.Green, 0, (hField * hFields) - hField, wField, hField);
-            g.FillRectangle(System.Drawing.Brushes.Yellow, (wField * wFields) - wField, (hField * hFields) - hField, wField, hField);
+            int rect_scale = 4;
+            g.FillRectangle(System.Drawing.Brushes.Blue, 0, 0, wField * rect_scale, hField * rect_scale);
+            g.FillRectangle(System.Drawing.Brushes.Red, (wField * wFields) - wField * rect_scale, 0, wField * rect_scale, hField * rect_scale);
+            g.FillRectangle(System.Drawing.Brushes.Green, 0, (hField * hFields) - hField * rect_scale, wField * rect_scale, hField * rect_scale);
+            g.FillRectangle(System.Drawing.Brushes.Yellow, (wField * wFields) - wField * rect_scale, (hField * hFields) - hField * rect_scale, wField * rect_scale, hField * rect_scale);
 
             return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                       bm.GetHbitmap(),

@@ -20,6 +20,9 @@ namespace KoBeLUAdmin.Serialization
         {
         }
 
+        [JsonProperty("call")]
+        public string Call { get; } = "working_step";
+
         [JsonProperty(PropertyName = "currentworkingstepnumber")]
         public int CurrentWorkingStepNumber
         {

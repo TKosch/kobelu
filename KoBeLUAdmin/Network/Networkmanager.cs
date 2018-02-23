@@ -99,7 +99,9 @@ namespace KoBeLUAdmin.Network
 
         private void ParseMessage(string encoded_message)
         {
-            // deserialize incoming JSON
+            if (string.IsNullOrEmpty(encoded_message) || encoded_message.Replace(" ", "") == "{}")
+                return;
+
             dynamic jsonResponse = JObject.Parse(encoded_message);
             string call = jsonResponse.call.ToString();
 
@@ -112,7 +114,7 @@ namespace KoBeLUAdmin.Network
                         switch (call)
                         {
                             case "load_workflow":
-                                string workflowpath = jsonResponse.path.ToString();
+                                string workflowpath = jsonResponse.workflowpath.ToString();
                                 WorkflowManager.Instance.loadWorkflow(workflowpath);
                                 break;
                             case "get_workflow_data":
@@ -125,10 +127,10 @@ namespace KoBeLUAdmin.Network
                             case "stop_workflow":
                                 WorkflowManager.Instance.stopWorkflow();
                                 break;
-                            case "previous_step":
+                            case "previous_working_step":
                                 WorkflowManager.Instance.PreviousWorkingStep();
                                 break;
-                            case "next_step":
+                            case "next_working_step":
                                 WorkflowManager.Instance.NextWorkingStep(HciLab.KoBeLU.InterfacesAndDataModel.AllEnums.WorkingStepEndConditionTrigger.WORKFLOWPANEL_BUTTON);
                                 break;
                             default:

@@ -133,6 +133,13 @@ namespace HciLab.Kinect
             SelectedCameraInterface = "OpenNI";
         }
 
+        public void enableRealsenseD415EventManagementSystem(string deviceName)
+        {
+
+            SelectedCameraInterface = "RealSense D415";
+        }
+
+
         public void SetImages(Image<Bgra, byte> colorImg, Image<Bgra, byte> colorImgCropped, Image<Gray, int> m_DepthImg, Image<Gray, int> m_DepthImgCropped)
         {
             ColorImage = colorImg;

@@ -335,6 +335,10 @@ namespace KoBeLUAdmin.GUI
                 {
                     CameraManager.Instance.enableOpenNIEventManagementSystem("Kinect");
                 }
+                else if ((m_ComboBoxSelectedCameras.SelectedItem.ToString().Equals(ProjectConstants.KINECTV1DESCRIPTION)))
+                {
+                    CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
+                }
             }
 
         }

@@ -77,8 +77,6 @@ namespace KoBeLUAdmin.Backend.CameraManager
                 string vendorId = "0x" + startingAtVendorId.Substring(0, 4);
                 string productId = "0x" + startingAtProductId.Substring(0, 4);
 
-                //Console.WriteLine("VendorId: " + vendorId + " ProductId: " + productId);
-
                 if (vendorId.Equals(ProjectConstants.KINECTV1VENDOR) && productId.Equals(ProjectConstants.KINECTV1PRODUCT))
                 {
                     if (!m_ConnectedUSBCameras.Contains(ProjectConstants.KINECTV1DESCRIPTION))
@@ -105,6 +103,13 @@ namespace KoBeLUAdmin.Backend.CameraManager
                     if (!m_ConnectedUSBCameras.Contains(ProjectConstants.STRUCTURESENSORDESCRIPTION))
                     {
                         m_ConnectedUSBCameras.Add(ProjectConstants.STRUCTURESENSORDESCRIPTION);
+                    }
+                }
+                if (vendorId.Equals(ProjectConstants.REALSENSED415VENDOR) && productId.Equals(ProjectConstants.REALSENSED415PRODUCT))
+                {
+                    if (!m_ConnectedUSBCameras.Contains(ProjectConstants.REALSENSED415DESCRIPTION))
+                    {
+                        m_ConnectedUSBCameras.Add(ProjectConstants.REALSENSED415DESCRIPTION);
                     }
                 }
             }

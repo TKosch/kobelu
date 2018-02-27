@@ -54,6 +54,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel
         public static readonly string KINECTV1VENDOR = "0x045E";
         public static readonly string KINECTV2VENDOR = "0x045E";
         public static readonly string STRUCTURESENSORVENDOR = "0x1D27";
+        public static readonly string REALSENSED415VENDOR = "0x8086";
 
         // product Id of supported cameras
         public static readonly string ENSENSON10PRODUCT = "0x1225";
@@ -61,12 +62,14 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel
         public static readonly string KINECTV2PRODUCT = "0x02C4";
         public static readonly string KINECTV2FWPRODUCT = "0x02D8"; //For Windows
         public static readonly string STRUCTURESENSORPRODUCT = "0x0600";
+        public static readonly string REALSENSED415PRODUCT = "0x0AD3";
 
         // description of supported cameras
         public static readonly string KINECTV1DESCRIPTION = "Microsoft Kinect v1";
         public static readonly string KINECTV2DESCRIPTION = "Microsoft Kinect v2";
         public static readonly string ENSENSON10DESCRIPTION = "Ensenso N10";
         public static readonly string STRUCTURESENSORDESCRIPTION = "Structure Sensor";
+        public static readonly string REALSENSED415DESCRIPTION = "Intel RealSense D415";
 
     }
 }

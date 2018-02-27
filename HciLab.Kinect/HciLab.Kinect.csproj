@@ -105,6 +105,7 @@
     <Compile Include="KinectConnector.cs" />
     <Compile Include="KinectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RealSenseManager.cs" />
     <Compile Include="SettingsKinect.cs" />
     <Compile Include="OpenNIManager.cs" />
     <Compile Include="CalibrateKinectDialog.xaml.cs">

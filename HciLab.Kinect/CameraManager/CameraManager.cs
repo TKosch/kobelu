@@ -135,7 +135,6 @@ namespace HciLab.Kinect
 
         public void enableRealsenseD415EventManagementSystem(string deviceName)
         {
-
             SelectedCameraInterface = "RealSense D415";
         }
 

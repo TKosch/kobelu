@@ -83,6 +83,10 @@
     <Reference Include="LeapCSharp.NET4.0">
       <HintPath>..\libs\LeapCSharp.NET4.0.dll</HintPath>
     </Reference>
+    <Reference Include="LibrealsenseWrapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\realsense_example\RealSense\RealSense\lib\LibrealsenseWrapper.dll</HintPath>
+    </Reference>
     <Reference Include="libTUIO">
       <HintPath>..\libs\libTUIO.dll</HintPath>
     </Reference>
@@ -580,7 +584,11 @@
     <None Include="Resources\placeholder.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lib\LibrealsenseWrapper.dll" />
     <Content Include="lib\NxLib64CLIv4.0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lib\realsense2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

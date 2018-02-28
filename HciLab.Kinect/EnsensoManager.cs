@@ -154,7 +154,6 @@ namespace HciLab.Kinect
                     Image<Gray, Int32> xFrame = new Image<Gray, float>(m_Bitmap).Convert<Gray, Int32>();
 
                     Image<Gray, Byte> grayImage = (new Image<Gray, float>(m_Bitmap)).Convert<Gray, Byte>();
-
                     //grayImage = grayImage.SmoothMedian(15);
                     colorFrame = grayImage.Convert<Bgra, Byte>();
 

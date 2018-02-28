@@ -3,10 +3,13 @@ using Emgu.CV.Structure;
 using Intel.RealSense;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -60,14 +63,49 @@ namespace HciLab.Kinect
                     while (!token.IsCancellationRequested)
                     {
                         var frames = pipeline.WaitForFrames();
-                        //var colorized_depth = colorizer.Colorize(frames.DepthFrame);
-                        // TODO: Add event to cameramanager
+                        VideoFrame depthFrame = colorizer.Colorize(frames.DepthFrame);
+                        VideoFrame colorFrame = frames.ColorFrame;
 
-                        byte[] byteDepthArray = new byte[frames.DepthFrame.Stride * frames.DepthFrame.Height];
-                        frames.DepthFrame.CopyTo(byteDepthArray);
-                        Image<Gray, Int16> depthImage = new Image<Gray, Int16>(frames.DepthFrame.Width, frames.DepthFrame.Height);
-                        depthImage.Bytes = byteDepthArray;
-                        //CameraManager.Instance.SetImages(colorFrame, colorFrame, xFrame, xFrame)
+                        if (depthFrame.Width == 0) return;
+
+                        byte[] byteDepthArray = new byte[depthFrame.Stride * depthFrame.Height];
+                        byte[] byteColorArray = new byte[colorFrame.Stride * colorFrame.Height];
+                        depthFrame.CopyTo(byteDepthArray);
+                        colorFrame.CopyTo(byteColorArray);
+
+                        BitmapSource bs_color = BitmapSource.Create(depthFrame.Width, depthFrame.Height,
+                            300, 300,
+                            System.Windows.Media.PixelFormats.Rgb24,
+                            null,
+                            byteColorArray,
+                            colorFrame.Stride);
+
+                        BitmapSource bs_depth = BitmapSource.Create(depthFrame.Width, depthFrame.Height,
+                            300, 300,
+                            System.Windows.Media.PixelFormats.Rgb24,
+                            null,
+                            byteDepthArray,
+                            depthFrame.Stride);
+
+                        //// encode color stream
+                        //System.IO.MemoryStream outStreamColor = new System.IO.MemoryStream();
+                        //BitmapEncoder encoderColor = new BmpBitmapEncoder();
+                        //encoderColor.Frames.Add(BitmapFrame.Create(bs_color));
+                        //encoderColor.Save(outStreamColor);
+                        //Bitmap bmColor = new System.Drawing.Bitmap(outStreamColor);
+                        //Image<Bgra, byte> colorImage = new Image<Bgra, byte>(bmColor);
+
+                        ////encode depth stream
+                        //System.IO.MemoryStream outStreamDepth = new System.IO.MemoryStream();
+                        //BitmapEncoder encoderDepth = new BmpBitmapEncoder();
+                        //encoderDepth.Frames.Add(BitmapFrame.Create(bs_depth));
+                        //encoderDepth.Save(outStreamDepth);
+                        //Bitmap bmDepth = new System.Drawing.Bitmap(outStreamDepth);
+                        //Image<Bgra, byte> depthImage = new Image<Bgra, byte>(bmDepth);
+                        //Image<Gray, byte> depthImageTemp = depthImage.Convert<Gray, byte>();
+                        //Image<Gray, int> depthImageTemp2 = depthImageTemp.Convert<Gray, int>();
+
+                        //CameraManager.Instance.SetImages(colorImage, colorImage, depthImageTemp2, depthImageTemp2);
                     }
                 }, token);
             }
@@ -76,28 +114,6 @@ namespace HciLab.Kinect
                 Console.WriteLine("Error during RealSense D415 startup");
             }
         }
-
-        //private void UploadImage(Image img, VideoFrame frame)
-        //{
-        //    Dispatcher.Invoke(new Action(() =>
-        //    {
-        //        if (frame.Width == 0) return;
-
-        //        var bytes = new byte[frame.Stride * frame.Height];
-        //        frame.CopyTo(bytes);
-
-        //        var bs = BitmapSource.Create(frame.Width, frame.Height,
-        //                          300, 300,
-        //                          PixelFormats.Rgb24,
-        //                          null,
-        //                          bytes,
-        //                          frame.Stride);
-
-        //        var imgSrc = bs as ImageSource;
-
-        //        img.Source = imgSrc;
-        //    }));
-        //}
 
         public void StopRealSenseD415Capturing()
         {

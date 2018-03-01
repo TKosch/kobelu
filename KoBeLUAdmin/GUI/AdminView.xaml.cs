@@ -114,7 +114,7 @@ namespace KoBeLUAdmin.GUI
             DebugInformationManager.Instance.start();
             NetworkManager.Instance.StartAsyncUDPServer(20001);
             // DEBUG: Live determination of camera during startup
-            CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
+            //CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;

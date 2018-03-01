@@ -37,6 +37,7 @@ using Newtonsoft.Json.Linq;
 using KoBeLUAdmin.Backend;
 using Newtonsoft.Json;
 using System.Windows;
+using KoBeLUAdmin.GUI;
 
 namespace KoBeLUAdmin.Network
 {
@@ -110,7 +111,6 @@ namespace KoBeLUAdmin.Network
                 new Action(
                     () =>
                     {
-
                         switch (call)
                         {
                             case "load_workflow":
@@ -132,6 +132,10 @@ namespace KoBeLUAdmin.Network
                                 break;
                             case "next_working_step":
                                 WorkflowManager.Instance.NextWorkingStep(HciLab.KoBeLU.InterfacesAndDataModel.AllEnums.WorkingStepEndConditionTrigger.WORKFLOWPANEL_BUTTON);
+                                break;
+                            case "workflow_difficulty":
+                                string task_difficulty = jsonResponse.difficulty.ToString();
+                                WorkflowManager.Instance.AdaptivityLevelId = int.Parse(task_difficulty);
                                 break;
                             default:
                                 break;

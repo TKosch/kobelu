@@ -281,7 +281,7 @@ namespace KoBeLUAdmin.Backend
             Array.Clear(m_QSFullfilled, 0, m_QSFullfilled.Length);
             
             this.m_CurrentWorkingStepNumber = 0;
-            calculatedAdaptivityLevel = calculateAdaptivityLevel();
+            //calculatedAdaptivityLevel = calculateAdaptivityLevel();
             OnWorkflowStarted();
             OnWorkingStepStarted();
             LoadCurrentWorkingStep();
@@ -379,6 +379,8 @@ namespace KoBeLUAdmin.Backend
                     m_AssemblyErrors = 0;
                     m_BoxErrorCounter = 0;
 
+
+                    //SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
                     NextWorkingStepSerialization nextWorkingStepSerialization = new NextWorkingStepSerialization();
                     nextWorkingStepSerialization.Call = "next_working_step";
@@ -390,7 +392,7 @@ namespace KoBeLUAdmin.Backend
                     {
                         //Trigger Step Started Event
                         OnWorkingStepStarted();
-
+                        this.AdaptivityLevelId = SettingsManager.Instance.Settings.AdaptivityLevelId;
                         // load next scene onto scenemanager
                         LoadCurrentWorkingStep();
 
@@ -470,7 +472,7 @@ namespace KoBeLUAdmin.Backend
             {
                 LoadQSModeScene();
             } else {
-                SceneManager.Instance.CurrentScene = step.getAdaptiveScene(m_adaptivityLevelId).Scene;
+                SceneManager.Instance.CurrentScene = step.getAdaptiveScene(AdaptivityLevelId).Scene;
                 BackendControl.Instance.refreshGUI();
             }            
 
@@ -807,7 +809,7 @@ namespace KoBeLUAdmin.Backend
                 double errorRatio = (double)m_ErrorCount / (double)m_ErrorFreeCount;
                 if (errorRatio > SettingsManager.Instance.Settings.AdaptivityThresholdMedium) return 1;
                 else if (errorRatio > SettingsManager.Instance.Settings.AdaptivityThresholdHard) return 2;
-                else return 3;
+                else return AdaptivityLevelId;
             }
         }
 
@@ -915,9 +917,9 @@ namespace KoBeLUAdmin.Backend
             }
             set
             {
-                m_adaptivityLevelId = value;
                 //For now just remember last selected level in settings
                 SettingsManager.Instance.Settings.AdaptivityLevelId = value;
+                m_adaptivityLevelId = value;
                 //Change Scene if workflow is currently playing
                 if (StateManager.Instance.State == AllEnums.State.WORKFLOW_PLAYING)
                 {
@@ -1013,7 +1015,7 @@ namespace KoBeLUAdmin.Backend
         {
             //Error Tracking
             m_ErrorFreeStep = true;
-            //var calculatedAdaptivityLevel =  calculateAdaptivityLevel();
+            var calculatedAdaptivityLevel =  calculateAdaptivityLevel();
             if (AdaptivityLevelId != calculatedAdaptivityLevel)
             {
                 var oldLevel = AdaptivityLevelId;

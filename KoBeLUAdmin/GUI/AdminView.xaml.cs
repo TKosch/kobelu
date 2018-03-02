@@ -111,17 +111,13 @@ namespace KoBeLUAdmin.GUI
             //Refresh Workflow UI if Workingstep gets changed automatically
             WorkflowManager.WorkingstepChanged += AdminView.Instance.refreshWorkflowUI;
 
+            //CameraManager.Instance.enableRealsenseD415EventManagementSystem("RealSense D415");
             DebugInformationManager.Instance.start();
             NetworkManager.Instance.StartAsyncUDPServer(20001);
             
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
-
-            if (AdminView.Instance.IsRealSenseActive)
-            {
-                CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
-            }
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)

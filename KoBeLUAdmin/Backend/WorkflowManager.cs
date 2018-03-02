@@ -311,7 +311,7 @@ namespace KoBeLUAdmin.Backend
 
         private void Instance_OnCodeDetected(object sender, CodeDetectedEventArgs e)
         {
-            //Try to load workflow if not already loaded
+            // try to load workflow if not already loaded
             if (e.Text.Substring(Math.Max(0, e.Text.Length - 5)) == ".work" && e.Text != m_LoadedWorkflowFilename)
             {
                 string path = Directory.GetCurrentDirectory() + "\\" + ProjectConstants.WORKFLOW_DIR + "\\" + e.Text;
@@ -380,7 +380,7 @@ namespace KoBeLUAdmin.Backend
                     m_BoxErrorCounter = 0;
 
 
-                    //SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
+                    SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
                     NextWorkingStepSerialization nextWorkingStepSerialization = new NextWorkingStepSerialization();
                     nextWorkingStepSerialization.Call = "next_working_step";

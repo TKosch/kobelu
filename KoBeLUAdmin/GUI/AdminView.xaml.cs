@@ -113,11 +113,15 @@ namespace KoBeLUAdmin.GUI
 
             DebugInformationManager.Instance.start();
             NetworkManager.Instance.StartAsyncUDPServer(20001);
-            // DEBUG: Live determination of camera during startup
-            CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
+            
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
+
+            if (AdminView.Instance.IsRealSenseActive)
+            {
+                CameraManager.Instance.enableRealsenseD415EventManagementSystem("Realsense D415");
+            }
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -474,6 +478,18 @@ namespace KoBeLUAdmin.GUI
             get
             {
                 if (m_GUI_Video.m_ComboBoxSelectedCameras.SelectedItem.ToString().Equals(ProjectConstants.ENSENSON10DESCRIPTION))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public bool IsRealSenseActive
+        {
+            get
+            {
+                if (m_GUI_Video.m_ComboBoxSelectedCameras.SelectedItem.ToString().Equals(ProjectConstants.REALSENSED415DESCRIPTION))
                 {
                     return true;
                 }

@@ -116,7 +116,6 @@
       <DependentUpon>CalibrateKinectDialog.xaml</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Compile>
-    <Compile Include="SettingsRealSense.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HciLab.Utilities\HciLab.Utilities.csproj">

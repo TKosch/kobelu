@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using HciLab.KoBeLU.InterfacesAndDataModel.Data;
 using Intel.RealSense;
 using System;
 using System.Collections.Generic;
@@ -87,7 +88,6 @@ namespace HciLab.Kinect
 
                             depthFrame.CopyTo(mDepthPixels);
                             colorFrame.CopyTo(mColorPixels);
-
 
                             // color frame
                             Image<Rgb, byte> temp = new Image<Rgb, byte>(colorFrame.Width, colorFrame.Height);

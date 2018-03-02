@@ -31,6 +31,8 @@ namespace HciLab.Kinect
         private byte[] mColorPixels;
         private byte[] mDepthPixels;
         private const int SCALE_FACTOR = Int16.MaxValue / 1500;
+        private Image<Bgra, byte> mColorImage;
+        private Image<Gray, int> mDepthImage;
 
 
         public static RealSenseManager Instance
@@ -54,34 +56,26 @@ namespace HciLab.Kinect
         {
             try
             {
-                FrameQueue q = new FrameQueue();
-                using (var ctx = new Context())
+                pipeline = new Pipeline();
+                colorizer = new Colorizer();
+                var cfg = new Config();
+                cfg.EnableStream(Stream.Depth, 1280, 720);
+                cfg.EnableStream(Stream.Color, Format.Rgb8);
+
+                pipeline.Start(cfg);
+
+                var token = tokenSource.Token;
+
+                var t = Task.Factory.StartNew(() =>
                 {
-                    var devices = ctx.QueryDevices();
-
-                    if (devices.Count == 0) return;
-                    var dev = devices[0];
-                    var depthSensor = dev.Sensors[0];
-
-                    pipeline = new Pipeline();
-                    colorizer = new Colorizer();
-                    var cfg = new Config();
-                    cfg.EnableStream(Stream.Depth, 1280, 720);
-                    cfg.EnableStream(Stream.Color, Format.Rgb8);
-
-                    pipeline.Start(cfg);
-
-                    var token = tokenSource.Token;
-
-                    var t = Task.Factory.StartNew(() =>
+                    while (!token.IsCancellationRequested)
                     {
-                        while (!token.IsCancellationRequested)
+                        using (var frames = pipeline.WaitForFrames())
                         {
-                            var frames = pipeline.WaitForFrames();
+
+
                             VideoFrame depthFrame = frames.DepthFrame;
                             VideoFrame colorFrame = frames.ColorFrame;
-
-                            if (depthFrame.Width == 0) return;
 
                             mDepthPixels = new byte[depthFrame.Stride * depthFrame.Height * 2];
                             mColorPixels = new byte[colorFrame.Width * colorFrame.Height * 3];
@@ -90,30 +84,29 @@ namespace HciLab.Kinect
                             colorFrame.CopyTo(mColorPixels);
 
                             // color frame
-                            Image<Rgb, byte> temp = new Image<Rgb, byte>(colorFrame.Width, colorFrame.Height);
-                            temp.Bytes = mColorPixels;
-                            Image<Bgra, byte> colorImage = new Image<Bgra, byte>(temp.Width, temp.Height);
-                            CvInvoke.cvCopy(temp.Convert<Bgra, byte>().Ptr, colorImage.Ptr, IntPtr.Zero);
+                            Image<Rgb, byte> bufferedColorImage = new Image<Rgb, byte>(colorFrame.Width, colorFrame.Height);
+                            bufferedColorImage.Bytes = mColorPixels;
+                            mColorImage = bufferedColorImage.Convert<Bgra, byte>();
 
                             // depth frame
                             ushort maxDepth = ushort.MaxValue;
-                            ProcessDepthFrameData(depthFrame.Data, (uint) (depthFrame.Width * depthFrame.Height), depthFrame.BitsPerPixel / 8, 0, maxDepth);
+                            ProcessDepthFrameData(depthFrame.Data, (uint) (depthFrame.Width * depthFrame.Height), depthFrame.BitsPerPixel, 0, maxDepth);
 
                             int size = depthFrame.Width * depthFrame.Height * 2;
                             byte[] managedArray = new byte[size];
                             Marshal.Copy(depthFrame.Data, managedArray, 0, size);
 
-                            Image<Gray, Int16> temp2 = new Image<Gray, Int16>(depthFrame.Width, depthFrame.Height);
-                            temp2.Bytes = managedArray;
+                            Image<Gray, Int16> bufferedDepthImage = new Image<Gray, Int16>(depthFrame.Width, depthFrame.Height);
+                            bufferedDepthImage.Bytes = managedArray;
+                            bufferedDepthImage = bufferedDepthImage.ConvertScale<Int16>(SCALE_FACTOR, 0);
 
-                            temp2 = temp2.ConvertScale<Int16>(SCALE_FACTOR, 0);
-                            Image<Gray, int> depthImage = temp2.Convert<Gray, int>();
+                            mDepthImage = bufferedDepthImage.Convert<Gray, int>();
 
-                            CameraManager.Instance.SetImages(colorImage, colorImage, depthImage, depthImage);
+                            // streamline frames into the cameramanager
+                            CameraManager.Instance.SetImages(mColorImage, mColorImage, mDepthImage, mDepthImage);
                         }
-                    }, token);
-                }
-
+                    }
+                }, token);
             }
             catch (Exception ex)
             {
@@ -131,13 +124,13 @@ namespace HciLab.Kinect
         /// <param name="depthFrameDataSize">Size of the DepthFrame image data</param>
         /// <param name="minDepth">The minimum reliable depth value for the frame</param>
         /// <param name="maxDepth">The maximum reliable depth value for the frame</param>
-        private unsafe void ProcessDepthFrameData(IntPtr depthFrameData, uint depthFrameDataSize, int bytesPerPixel, ushort minDepth, ushort maxDepth)
+        private unsafe void ProcessDepthFrameData(IntPtr depthFrameData, uint depthFrameDataSize, int bitsPerPixel, ushort minDepth, ushort maxDepth)
         {
             // depth frame data is a 16 bit value
             ushort* frameData = (ushort*)depthFrameData;
 
             // convert depth to a visual representation
-            for (int i = 0; i < (int)(depthFrameDataSize / bytesPerPixel); ++i)
+            for (int i = 0; i < (int)(depthFrameDataSize / bitsPerPixel); ++i)
             {
                 // Get the depth for this pixel
                 ushort depth = frameData[i];

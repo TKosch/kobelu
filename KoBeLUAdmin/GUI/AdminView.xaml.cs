@@ -292,7 +292,7 @@ namespace KoBeLUAdmin.GUI
             //m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
             m_GUI_PBDPanel.checkIfUserIsWorking(pColorImageCropped);
 
-            QRDetectManager.Instance.SimpleScan(pColorImageCropped);
+            //QRDetectManager.Instance.SimpleScan(pColorImageCropped);
         }
 
         public void ProcessOrgFrame(

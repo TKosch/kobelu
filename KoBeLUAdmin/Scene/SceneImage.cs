@@ -84,8 +84,11 @@ namespace KoBeLUAdmin.Scene
                 return;
 
             m_Filename = pInfo.GetString("m_Filename");
+            if(m_Filename != null)
+            {
+                m_ImageSource = new BitmapImage(new Uri(m_Filename));
 
-            m_ImageSource = new BitmapImage(new Uri(m_Filename));
+            }
 
             reconstrctDrawable();
         }

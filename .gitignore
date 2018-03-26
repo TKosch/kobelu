@@ -6,8 +6,6 @@ HciLab.Utilities/bin/
 HciLab.Utilities/obj/
 KoBeLUAdmin/bin/
 KoBeLUAdmin/obj/
-UnityGamification/Library/
-UnityGamification/Temp/
 
 ubidisplays_lib/csdisplays/BlankTouch/bin
 ubidisplays_lib/csdisplays/BlankTouch/obj
@@ -21,5 +19,3 @@ KinectDepthSmoothing/obj/
 packages/
 .vs/
 Library
-/UnityGamification/UnityGamification.csproj
-/UnityGamification/UnityGamification.csproj

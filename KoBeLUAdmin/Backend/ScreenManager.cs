@@ -44,10 +44,7 @@ namespace KoBeLUAdmin.Backend
         {
             if (isSecondScreenConnected())
             {
-                // as convenience for the developer always choose non-primary Screen
-                //int screenID = (System.Windows.Forms.Screen.AllScreens[0].Primary == false) ?  0 : 1;
-                //return System.Windows.Forms.Screen.AllScreens[screenID].WorkingArea;
-
+                // get the working area of the projector
                 foreach (var screen in System.Windows.Forms.Screen.AllScreens)
                 {
                     if (!screen.Primary)

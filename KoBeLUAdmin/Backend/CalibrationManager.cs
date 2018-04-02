@@ -33,6 +33,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace KoBeLUAdmin.Backend
 {
@@ -79,7 +80,8 @@ namespace KoBeLUAdmin.Backend
 
         public Boolean IsInCalibrationMode
         {
-            get {
+            get
+            {
                 return m_IsInCalibrationMode;
             }
         }
@@ -91,7 +93,7 @@ namespace KoBeLUAdmin.Backend
         {
             if (!m_IsInCalibrationMode)
             {
-                m_IsInCalibrationMode = true;              
+                m_IsInCalibrationMode = true;
             }
             OnChangedCalibrationMode(this, m_IsInCalibrationMode, false);
         }
@@ -107,7 +109,7 @@ namespace KoBeLUAdmin.Backend
             }
             OnChangedCalibrationMode(this, m_IsInCalibrationMode, pSaveCalibration);
         }
-         
+
         public System.Drawing.Rectangle GetProjectionArea()
         {
             return m_ProjectionArea;
@@ -181,6 +183,8 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
+        DispatcherTimer mCalibrationTimer = new DispatcherTimer();
+
         /// <summary>
         /// Automatic calibration of the projectorplane. If a colorful rectangle is recognized, the Kinect adjusts it to the 
         /// right corner
@@ -194,15 +198,23 @@ namespace KoBeLUAdmin.Backend
                 this.StartCalibration();
             }
             // Reset the angle. It is assumed, that the Camera is looking straight at the surface
-            camera.LookDirection = new Vector3D(0, -0.1, -1);
-            camera.Position = new Point3D(0, 0, 500);
-            //camera.FieldOfView = 0;
+            camera.LookDirection = new Vector3D(0, 0, -0.01);
+            camera.Position = new Point3D(500, 500, 500);
 
-
+            mCalibrationTimer.Tick += (sender, e) =>
+            {
+                fov_tick(sender, e, camera);
+            };
+            mCalibrationTimer.Interval = new TimeSpan(0, 0, 1);
+            mCalibrationTimer.Start();
 
             TableWindow3D.Instance.PerspectiveCamera = camera;
 
         }
 
+        private void fov_tick(object sender, EventArgs e, PerspectiveCamera camera)
+        {
+            camera.FieldOfView += 10;
+        }
     }
 }

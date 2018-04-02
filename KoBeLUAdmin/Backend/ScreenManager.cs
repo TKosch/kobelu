@@ -28,6 +28,7 @@
 // </patent information>
 // <date> 11/2/2016 12:25:58 PM</date>
 
+using System;
 using System.Drawing;
 
 namespace KoBeLUAdmin.Backend
@@ -43,9 +44,20 @@ namespace KoBeLUAdmin.Backend
         {
             if (isSecondScreenConnected())
             {
-                //As convenience for the developer always choose non-primary Screen
-                int screenID = (System.Windows.Forms.Screen.AllScreens[0].Primary == false) ?  0 : 1;
-                return System.Windows.Forms.Screen.AllScreens[screenID].WorkingArea;
+                // as convenience for the developer always choose non-primary Screen
+                //int screenID = (System.Windows.Forms.Screen.AllScreens[0].Primary == false) ?  0 : 1;
+                //return System.Windows.Forms.Screen.AllScreens[screenID].WorkingArea;
+
+                foreach (var screen in System.Windows.Forms.Screen.AllScreens)
+                {
+                    if (!screen.Primary)
+                    {
+                        return screen.WorkingArea;
+                    }
+                }
+                // return an empty rectangle in case no primary screen is defined
+                // This shouldn't happen as long at least one screen is attached to the computer
+                return new Rectangle();
             }
             else
             {

@@ -18,6 +18,7 @@
             <Label>
                 <CheckBox x:Name="m_CbCheckerboard" Content="Show Checkerboard" Checked="m_CbCheckerboard_Checked" Unchecked="m_CbCheckerboard_Unchecked"/>
             </Label>
+            <Button x:Name="mButtonCalibrate" Content="Automatic Calibration" Width="133" Click="mButtonCalibrate_Click"/>
         </Menu>
         <Viewbox Name="m_Viewbox" Margin="0,26,0,30">
             <Image Name="m_Image" Cursor="Cross" HorizontalAlignment="Right" Margin="0,0,0,0"

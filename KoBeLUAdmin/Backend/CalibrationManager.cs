@@ -28,6 +28,9 @@
 // </patent information>
 // <date> 11/2/2016 12:25:58 PM</date>
 
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
 using KoBeLUAdmin.Frontend;
 using System;
 using System.ComponentModel;
@@ -46,6 +49,7 @@ namespace KoBeLUAdmin.Backend
     {
 
         private System.Drawing.Rectangle m_ProjectionArea;
+        private Image<Bgra, byte> mColorImage;
 
         /// <summary>
         /// Singleton instance
@@ -85,6 +89,8 @@ namespace KoBeLUAdmin.Backend
                 return m_IsInCalibrationMode;
             }
         }
+
+        public Image<Bgra, byte> ColorImage { get => mColorImage; set => mColorImage = value; }
 
         /// <summary>
         /// This method starts the calibration mode and handles everything that is necessary.
@@ -197,14 +203,15 @@ namespace KoBeLUAdmin.Backend
             {
                 this.StartCalibration();
             }
-            // Reset the angle. It is assumed, that the Camera is looking straight at the surface
+            // Reset the angle. It is assumed, that the depth sensor is looking straight at the surface
             camera.LookDirection = new Vector3D(0, 0, -0.01);
             camera.Position = new Point3D(500, 500, 500);
 
             mCalibrationTimer.Tick += (sender, e) =>
             {
-                fov_tick(sender, e, camera);
+                FOV_Tick(sender, e, camera);
             };
+
             mCalibrationTimer.Interval = new TimeSpan(0, 0, 1);
             mCalibrationTimer.Start();
 
@@ -212,9 +219,25 @@ namespace KoBeLUAdmin.Backend
 
         }
 
-        private void fov_tick(object sender, EventArgs e, PerspectiveCamera camera)
+        /// <summary>
+        /// Adjusts the checkerboard automatically to fill the plane
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="camera"></param>
+        private void FOV_Tick(object sender, EventArgs e, PerspectiveCamera camera)
         {
             camera.FieldOfView += 10;
+            if (ColorImage != null)
+            {
+                Image<Hsv, byte> imgHsv = ColorImage.Convert<Hsv, byte>();
+
+                // Max values for Hue (180), Saturation (255), Value (255) 
+                // segment red rectangle
+                Image<Gray, byte> imgThresholded = imgHsv.InRange(new Hsv(0, 128, 128), new Hsv(60, 255, 255));
+                CvInvoke.Imshow("HSV", imgHsv);
+                CvInvoke.Imshow("Thresholded", imgThresholded);
+            }
         }
     }
 }

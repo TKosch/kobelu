@@ -139,6 +139,7 @@ namespace KoBeLUAdmin.GUI
                     pColorImage.Draw(new Rectangle(m_RectDrawingArea.X, m_RectDrawingArea.Y, m_RectDrawingArea.Width, m_RectDrawingArea.Height), new Bgra(255, 0, 0, 0), 0);
 
                     UtilitiesImage.ToImage(m_Image, pColorImage);
+                    CalibrationManager.Instance.ColorImage = pColorImage;
                 })
             );
         }

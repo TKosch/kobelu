@@ -34,6 +34,7 @@ using Emgu.CV.Structure;
 using KoBeLUAdmin.Frontend;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
@@ -49,7 +50,7 @@ namespace KoBeLUAdmin.Backend
     {
 
         private System.Drawing.Rectangle m_ProjectionArea;
-        private Image<Bgra, byte> mColorImage;
+        private Rectangle mProjectorresolution;
 
         /// <summary>
         /// Singleton instance
@@ -78,7 +79,8 @@ namespace KoBeLUAdmin.Backend
         /// </summary>
         private CalibrationManager()
         {
-            m_ProjectionArea = new System.Drawing.Rectangle(0, 0, 1024, 768);
+            mProjectorresolution = ScreenManager.getProjectorResolution();
+            m_ProjectionArea = new System.Drawing.Rectangle(0, 0, mProjectorresolution.Width, mProjectorresolution.Height);
         }
 
 
@@ -89,8 +91,6 @@ namespace KoBeLUAdmin.Backend
                 return m_IsInCalibrationMode;
             }
         }
-
-        public Image<Bgra, byte> ColorImage { get => mColorImage; set => mColorImage = value; }
 
         /// <summary>
         /// This method starts the calibration mode and handles everything that is necessary.
@@ -189,8 +189,6 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
-        DispatcherTimer mCalibrationTimer = new DispatcherTimer();
-
         /// <summary>
         /// Automatic calibration of the projectorplane. If a colorful rectangle is recognized, the Kinect adjusts it to the 
         /// right corner
@@ -198,46 +196,15 @@ namespace KoBeLUAdmin.Backend
         public void AutomaticTableCalibration()
         {
             PerspectiveCamera camera = TableWindow3D.Instance.PerspectiveCamera;
-
             if (!m_IsInCalibrationMode)
             {
                 this.StartCalibration();
             }
             // Reset the angle. It is assumed, that the depth sensor is looking straight at the surface
             camera.LookDirection = new Vector3D(0, 0, -0.01);
-            camera.Position = new Point3D(500, 500, 500);
-
-            mCalibrationTimer.Tick += (sender, e) =>
-            {
-                FOV_Tick(sender, e, camera);
-            };
-
-            mCalibrationTimer.Interval = new TimeSpan(0, 0, 1);
-            mCalibrationTimer.Start();
-
+            camera.Position = new Point3D(mProjectorresolution.Width * 0.5, mProjectorresolution.Height * 0.5, 1242);
+            camera.FieldOfView = 45;
             TableWindow3D.Instance.PerspectiveCamera = camera;
-
-        }
-
-        /// <summary>
-        /// Adjusts the checkerboard automatically to fill the plane
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// <param name="camera"></param>
-        private void FOV_Tick(object sender, EventArgs e, PerspectiveCamera camera)
-        {
-            camera.FieldOfView += 10;
-            if (ColorImage != null)
-            {
-                Image<Hsv, byte> imgHsv = ColorImage.Convert<Hsv, byte>();
-
-                // Max values for Hue (180), Saturation (255), Value (255) 
-                // segment red rectangle
-                Image<Gray, byte> imgThresholded = imgHsv.InRange(new Hsv(0, 128, 128), new Hsv(60, 255, 255));
-                CvInvoke.Imshow("HSV", imgHsv);
-                CvInvoke.Imshow("Thresholded", imgThresholded);
-            }
         }
     }
 }

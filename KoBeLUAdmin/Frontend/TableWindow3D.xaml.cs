@@ -85,6 +85,7 @@ namespace KoBeLUAdmin.Frontend
         private bool m_MouseMovesCameraAngle = false;
         private bool m_MouseMovesCameraFOV = false;
         private System.Windows.Point m_LastHoveredPos = new System.Windows.Point(0, 0);
+        private Rectangle mProjectorresolution;
 
 
         public static TableWindow3D Instance
@@ -106,8 +107,8 @@ namespace KoBeLUAdmin.Frontend
             //This serves as a transparent x,y Plane for Editor interaction
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
-            Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, System.Windows.Media.Colors.Black, -0.05);
+            mProjectorresolution = ScreenManager.getProjectorResolution();
+            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, System.Windows.Media.Colors.Black, -0.05);
 
             double w = CalibrationManager.Instance.GetProjectionArea().Width;
             double h = CalibrationManager.Instance.GetProjectionArea().Height;
@@ -131,10 +132,10 @@ namespace KoBeLUAdmin.Frontend
             if (ScreenManager.isSecondScreenConnected())
             {
                 //System.Drawing.Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                Left = projectorResolution.Left;
-                Top = projectorResolution.Top;
-                Width = projectorResolution.Width;
-                Height = projectorResolution.Height;
+                Left = mProjectorresolution.Left;
+                Top = mProjectorresolution.Top;
+                Width = mProjectorresolution.Width;
+                Height = mProjectorresolution.Height;
             }
             else
             {
@@ -147,11 +148,10 @@ namespace KoBeLUAdmin.Frontend
 
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
 
-            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, projectorResolution.Width, projectorResolution.Height, 0, 0);
+            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, mProjectorresolution.Width, mProjectorresolution.Height, 0, 0);
 
             m_CheckerBoardVisual = new ModelVisual3D();
-            //m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0, 0, 690.0, 430.0, m_CbImage, -0.01);
-            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, m_CbImage, -0.01);
+            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, m_CbImage, -0.01);
 
             CalibrationManager.Instance.changedCalibrationMode += new CalibrationManager.ChangedCalibrationModeHandler(Instance_changedCalibrationMode);
             this.InvalidateVisual();

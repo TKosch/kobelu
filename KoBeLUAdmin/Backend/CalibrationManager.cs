@@ -202,7 +202,7 @@ namespace KoBeLUAdmin.Backend
             }
             // Reset the angle. It is assumed, that the depth sensor is looking straight at the surface
             camera.LookDirection = new Vector3D(0, 0, -0.01);
-            camera.Position = new Point3D(mProjectorresolution.Width * 0.5, mProjectorresolution.Height * 0.5, 1242);
+            camera.Position = new Point3D(mProjectorresolution.Width * 0.5, mProjectorresolution.Height * 0.5, 1250);
             camera.FieldOfView = 45;
             TableWindow3D.Instance.PerspectiveCamera = camera;
         }

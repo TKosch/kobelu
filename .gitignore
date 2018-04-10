@@ -19,3 +19,6 @@ KinectDepthSmoothing/obj/
 packages/
 .vs/
 Library
+
+tools/**
+!tools/packages.config

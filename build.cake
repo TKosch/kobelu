@@ -23,6 +23,13 @@ Task("Build")
     settings.SetConfiguration(configuration));
 });
 
+Task("Publish")
+    .IsDependentOn("Build")
+    .Does(() => 
+{
+    InnoSetup("./installer.iss");
+});
+
 Task("Default")
     .IsDependentOn("Build");
 

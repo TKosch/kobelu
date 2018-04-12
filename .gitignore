@@ -20,5 +20,9 @@ packages/
 .vs/
 Library
 
+# Cake
 tools/**
 !tools/packages.config
+
+# Installer
+[Oo]utput/

@@ -59,6 +59,12 @@ namespace KoBeLUAdmin.Model.Process
 
         private string m_Description; // a description giving details about the workflow
 
+        private string category;
+
+        private string creator;
+
+        private byte[] thumbnail;
+
         private HardwareSetup m_HardwareSetup; // represents the hardwaresetup that is neccessary for this workflow
 
         private AsyncObservableCollection<WorkingStep> m_WorkingsSteps = new AsyncObservableCollection<WorkingStep>(); // represents all workingsteps belonging to this workflow
@@ -72,6 +78,118 @@ namespace KoBeLUAdmin.Model.Process
 
         public event PropertyChangedEventHandler PropertyChanged; // property changed for the databinding
 
+
+        public string Name
+        {
+            get => m_Name;
+            set
+            {
+                m_Name = value;
+                NotifyPropertyChanged("Name");
+            }
+        }
+
+        public string Id
+        {
+            get => m_Id;
+            set
+            {
+                m_Id = value;
+                NotifyPropertyChanged("ID");
+            }
+        }
+
+        public string Description
+        {
+            get => m_Description;
+            set
+            {
+                m_Description = value;
+                NotifyPropertyChanged("DESCRIPTION");
+            }
+        }
+
+        public string Category
+        {
+            get => category;
+            set
+            {
+                category = value;
+                NotifyPropertyChanged("Category");
+            }
+        }
+
+        public string Creator
+        {
+            get => creator;
+            set
+            {
+                creator = value;
+                NotifyPropertyChanged("Creator");
+            }
+        }
+
+        public byte[] Thumbnail
+        {
+            get => thumbnail;
+            set
+            {
+                thumbnail = value;
+                NotifyPropertyChanged("Thumbnail");
+            }
+        }
+
+        public HardwareSetup HardwareSetup
+        {
+            get => m_HardwareSetup;
+            set
+            {
+                m_HardwareSetup = value;
+                NotifyPropertyChanged("HARDWARESETUP");
+            }
+        }
+
+
+        public AsyncObservableCollection<WorkingStep> WorkingSteps
+        {
+            get => m_WorkingsSteps;
+            set
+            {
+                m_WorkingsSteps = value;
+                NotifyPropertyChanged("WORKINGSTEPS");
+            }
+        }
+
+        public BoxLayout BoxLayout
+        {
+            get => m_BoxLayout;
+            set
+            {
+                m_BoxLayout = value;
+                NotifyPropertyChanged("BOXLAYOUT");
+            }
+        }
+
+        public ObjectDetectionZonesLayout ObjectZoneLayout
+        {
+            get => m_ObjectZoneLayout;
+            set
+            {
+                m_ObjectZoneLayout = value;
+                NotifyPropertyChanged("OBJECTDETECTIONZONELAYOUT");
+            }
+        }
+
+        public AssemblyZoneLayout AssemblyZoneLayout
+        {
+            get => m_AssemblyZoneLayout;
+            set
+            {
+                m_AssemblyZoneLayout = value;
+                NotifyPropertyChanged("ASSEMBLYZONELAYOUT");
+            }
+        }
+
         // constructor
         public Workflow()
         {
@@ -82,6 +200,9 @@ namespace KoBeLUAdmin.Model.Process
             m_Name = info.GetString("m_Name");
             m_Id = info.GetString("m_Id");
             m_Description = info.GetString("m_Description");
+            Category = info.GetString("Category");
+            Creator = info.GetString("Creator");
+            Thumbnail = info.GetValue("Thumbnail", typeof(byte[])) as byte[];
             m_HardwareSetup = (HardwareSetup) info.GetValue("m_HardwareSetup",typeof(HardwareSetup));
             m_WorkingsSteps = (AsyncObservableCollection<WorkingStep>)info.GetValue("m_WorkingsSteps", typeof(AsyncObservableCollection<WorkingStep>));
             m_BoxLayout = (BoxLayout)info.GetValue("m_BoxLayout", typeof(BoxLayout));
@@ -96,6 +217,9 @@ namespace KoBeLUAdmin.Model.Process
             info.AddValue("m_Name", m_Name);
             info.AddValue("m_Id", m_Id);
             info.AddValue("m_Description", m_Description);
+            info.AddValue("Category", category);
+            info.AddValue("Creator", creator);
+            info.AddValue("Thumbnail", thumbnail);
             info.AddValue("m_HardwareSetup", m_HardwareSetup);
             info.AddValue("m_WorkingsSteps", m_WorkingsSteps);
             info.AddValue("m_BoxLayout", m_BoxLayout);
@@ -120,114 +244,5 @@ namespace KoBeLUAdmin.Model.Process
                 this.PropertyChanged(this, new PropertyChangedEventArgs(Obj));
             }
         }
-
-
-        #region getters/setters
-
-        public string Name
-        {
-            get
-            {
-                return m_Name;
-            }
-            set
-            {
-                m_Name = value;
-                NotifyPropertyChanged("Name");
-            }
-        }
-
-        public string Id
-        {
-            get
-            {
-                return m_Id;
-            }
-            set
-            {
-                m_Id = value;
-                NotifyPropertyChanged("ID");
-            }
-        }
-
-        public string Description
-        {
-            get
-            {
-                return m_Description;
-            }
-            set
-            {
-                m_Description = value;
-                NotifyPropertyChanged("DESCRIPTION");
-            }
-        }
-
-        public HardwareSetup HardwareSetup
-        {
-            get
-            {
-                return m_HardwareSetup;
-            }
-            set
-            {
-                m_HardwareSetup = value;
-                NotifyPropertyChanged("HARDWARESETUP");
-            }
-        }
-
-
-        public AsyncObservableCollection<WorkingStep> WorkingSteps
-        {
-            get
-            {
-                return m_WorkingsSteps;
-            }
-            set
-            {
-                m_WorkingsSteps = value;
-                NotifyPropertyChanged("WORKINGSTEPS");
-            }
-        }
-
-        public BoxLayout BoxLayout
-        {
-            get
-            {
-                return m_BoxLayout;
-            }
-            set
-            {
-                m_BoxLayout = value;
-                NotifyPropertyChanged("BOXLAYOUT");
-            }
-        }
-
-        public ObjectDetectionZonesLayout ObjectZoneLayout
-        {
-            get
-            {
-                return m_ObjectZoneLayout;
-            }
-            set
-            {
-                m_ObjectZoneLayout = value;
-                NotifyPropertyChanged("OBJECTDETECTIONZONELAYOUT");
-            }
-        }
-
-        public AssemblyZoneLayout AssemblyZoneLayout
-        {
-            get
-            {
-                return m_AssemblyZoneLayout;
-            }
-            set
-            {
-                m_AssemblyZoneLayout = value;
-                NotifyPropertyChanged("ASSEMBLYZONELAYOUT");
-            }
-        }
-        #endregion
     }
 }

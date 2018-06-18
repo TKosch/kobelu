@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HciLab.Utilities", "HciLab.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoBeLUAdmin", "KoBeLUAdmin\KoBeLUAdmin.csproj", "{6FEA995D-4A0D-44CF-9F5B-A79CC9010A04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoBeLU.Schema", "KoBeLU.Schema\KoBeLU.Schema.csproj", "{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,26 @@ Global
 		{6FEA995D-4A0D-44CF-9F5B-A79CC9010A04}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6FEA995D-4A0D-44CF-9F5B-A79CC9010A04}.Release|x64.ActiveCfg = Release|Any CPU
 		{6FEA995D-4A0D-44CF-9F5B-A79CC9010A04}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|ARM.Build.0 = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|x64.Build.0 = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Debug|x86.Build.0 = Debug|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|ARM.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|ARM.Build.0 = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|x64.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|x64.Build.0 = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|x86.ActiveCfg = Release|Any CPU
+		{2E8A3D3B-EC16-40FB-9223-249A2C83D7F0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

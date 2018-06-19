@@ -20,6 +20,9 @@ packages/
 .vs/
 Library
 
+[Bb]in/
+[Oo]bj/
+
 # Cake
 tools/**
 !tools/packages.config

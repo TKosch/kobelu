@@ -113,6 +113,9 @@ namespace KoBeLUAdmin.Network
                     {
                         switch (call)
                         {
+                            case "ping":
+                                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, JsonConvert.SerializeObject(new Serialization.PingSerialization()));
+                                break;
                             case "load_workflow":
                                 string workflowpath = jsonResponse.workflowpath.ToString();
                                 WorkflowManager.Instance.loadWorkflow(workflowpath);

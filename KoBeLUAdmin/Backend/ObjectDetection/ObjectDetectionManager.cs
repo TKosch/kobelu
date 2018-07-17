@@ -81,9 +81,8 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             KinectManager.Instance.orgAllReady += refreshTrigger;
         }
 
-        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, short> pDepthImage)
+        private void refreshTrigger(object pSource, Image<Bgra, Byte> pColorImage, Image<Gray, short> pDepthImage)
         {
-            //CvInvoke.cvResetImageROI(pColorImage);
             if (this.m_CurrentLayout == null)
                 return;
 
@@ -91,34 +90,30 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             {
                 foreach (ObjectDetectionZone ob in m_CurrentLayout.ObjectDetectionZones)
                 {
-                    UMat mask = null;
-                    UMat diff = new UMat(pColorImage.Size, pColorImage.ToUMat().Depth, pColorImage.ToUMat().NumberOfChannels);
                     if (ob.ObjectColorImage != null)
                     {
-                        //CvInvoke.Imshow("test", ob.ObjectColorImage);
-                        //mask = ob.ColorImage.AbsDiff(pColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                        UMat mask = null;
+                        UMat diff = new UMat(pColorImage.Size, pColorImage.ToUMat().Depth, pColorImage.ToUMat().NumberOfChannels);
 
+                        // crop image to the same size as the saved picture
+                        Image<Bgra, Byte> croppedColorImage = pColorImage;
+                        croppedColorImage.ROI = ob.ObjectColorImage.ROI;
+
+                        //mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(pColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
                         //pColorImage.ToUMat().CopyTo(diff, mask);
                         //pColorImage = diff.ToImage<Bgra, Byte>();
 
-                        //// crop image
-                        //Rectangle boundingBox = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
-                        //pColorImage.ROI = boundingBox;
-
                         //CvInvoke.Imshow("test", pColorImage);
+
+                        //Image<Gray, byte> currentGrayImage = ob.ObjectColorImage.Convert<Gray, byte>();
+
+                        //// check if teached color is the same as the one we teached in
+                        //int[] numNonZero = currentGrayImage.CountNonzero();
+                        //int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
+
+                        //double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+
                     }
-
-
-                    
-
-                    //Image<Gray, byte> currentGrayImage = pImage.Convert<Gray, byte>();
-
-                    //// check if teached color is the same as the one we teached in
-                    //int[] numNonZero = currentGrayImage.CountNonzero();
-                    //int numPixels = m_SelectedZone.Width * m_SelectedZone.Height;
-
-                    //double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
-
 
 
                     //double percentage = getPercentageWithinMeanBoundries(calculateCurrentMeanDepth(b), b, pDepthImage);

@@ -304,9 +304,8 @@ namespace KoBeLUAdmin.GUI
 
                 ob.X = (int)x;
                 ob.Y = (int)y;
+                ob.Width = width;
                 ob.Height = height;
-
-                CvInvoke.Imshow("test", mColorImage);
 
                 Image<Bgra, Byte> croppedImage = mColorImage;
                 croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);

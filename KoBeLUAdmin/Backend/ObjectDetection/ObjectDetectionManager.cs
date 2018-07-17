@@ -111,14 +111,14 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                         int[] numNonZero = currentGrayImage.CountNonzero();
                         int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
 
-                        CvInvoke.Imshow("test", currentGrayImage);
-
                         double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+                        if (percentage_pixels > 85)
+                        {
+                            Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);
+                            ob.trigger();
+                        }
 
-                        Console.WriteLine(percentage_pixels);
                     }
-
-
                 }
             }
         }

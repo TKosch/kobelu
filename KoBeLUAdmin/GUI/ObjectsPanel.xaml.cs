@@ -174,45 +174,6 @@ namespace KoBeLUAdmin.GUI
                     SceneManager.Instance.TemporaryObjectsScene.Clear();
                 }
             }
-
-
-            //// update object zones for every received frame
-            //updateObjectZones();
-
-            //// take screenshot from zones and compare it to a reference (background) image
-            //if (m_TakeBackgroundScreenShot)
-            //{
-            //    m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
-            //    m_TakeBackgroundScreenShot = false;
-            //}
-
-            //updateObjectZones();
-            //if (m_TakeScreenShotFromZone)
-            //{
-            //    if (m_SelectedZone != null)
-            //    {
-            //        UMat mask = null;
-            //        UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
-            //        if (m_BackgroundScreenShot != null)
-            //        {
-            //            mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-
-            //            pImage.ToUMat().CopyTo(diff, mask);
-            //            pImage = diff.ToImage<Bgra, Byte>();
-
-            //            // crop image
-            //            Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
-            //            pImage.ROI = boundingBox;
-
-            //        }
-
-            //        SceneManager.Instance.DisableObjectScenes = false;
-            //        m_TakeScreenShotFromZone = false;
-            //        m_SelectedZone = null;
-            //        CvInvoke.cvResetImageROI(pImage);
-
-            //    }
-            //}
         }
 
         private void initializeDrag(System.Windows.Point p)

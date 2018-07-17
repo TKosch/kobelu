@@ -87,7 +87,7 @@
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
             <Label Height="28" Content="ObjectZones:" Margin="0,0,0,0" DockPanel.Dock="Top"/>
-            <Button Margin="5,5,5,5" Name="createFromObjectButton" Height="28" Content="Create Step from ObjectZone" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" />
+            <Button Margin="5,5,5,5" Name="createFromObjectButton" Height="28" Content="Create Step from ObjectZone" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="createFromObjectButton_Click" />
             <ListBox x:Name="m_listBoxObjectZones" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding ObjectDetectionZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  DockPanel.Dock="Top" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>

@@ -102,7 +102,23 @@ namespace KoBeLUAdmin.Backend
             }
             return autoScene;
         }
-        
+
+        public Scene.Scene getObjectAutoScene(ObjectDetection.ObjectDetectionZone ob)
+        {
+            Scene.SceneItem drawable = ob.getDrawable(true);
+            Scene.Scene autoScene;
+            if (drawable is Scene.Scene)
+            {
+                // we already have a scene
+                autoScene = (Scene.Scene)drawable;
+            }
+            else
+            {
+                autoScene = new Scene.Scene();
+                autoScene.Add(drawable);
+            }
+            return autoScene;
+        }
 
         public void AddWorkingStep(string pName, string endCondition)
         {

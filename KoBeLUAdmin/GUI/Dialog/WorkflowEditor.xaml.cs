@@ -737,6 +737,25 @@ namespace KoBeLUAdmin.GUI.Dialog
             }
         }
 
+        private void createFromObjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            Object o = m_listBoxObjectZones.SelectedItem;
+
+            if (o != null)
+            {
+                if (o is ObjectDetectionZone)
+                {
+                    ObjectDetectionZone ob = (ObjectDetectionZone)o;
+
+                    AdaptiveScene easyScene = new AdaptiveScene(EditWorkflowManager.Instance.getObjectAutoScene(ob), AdaptivityLevel.AdaptivityLevels.First());
+                    AdaptiveScene mediumScene = new AdaptiveScene(EditWorkflowManager.Instance.getObjectAutoScene(ob), AdaptivityLevel.AdaptivityLevels.ElementAt(1));
+
+                    var adaptiveScenes = new List<AdaptiveScene> { easyScene, mediumScene };
+
+                    EditWorkflowManager.Instance.createStep(HciLab.KoBeLU.InterfacesAndDataModel.AllEnums.PBD_Mode.ASSEMBLY_DONE, adaptiveScenes, "Object-" + ob.Id, ob.TriggerMessage);
+                }
+            }
+        }
     }
 
 }

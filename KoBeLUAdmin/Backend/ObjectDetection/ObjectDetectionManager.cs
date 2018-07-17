@@ -164,6 +164,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
+
             return new Scene.SceneRect(x, y, w, h, c);
         }
 
@@ -183,7 +184,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         }
 
            
-        public void createObjectDetectionZoneFromFactory(int pX, int pY, int pWidth, int pHeight)
+        public ObjectDetectionZone createObjectDetectionZoneFromFactory(int pX, int pY, int pWidth, int pHeight)
         {
             ObjectDetectionZone obj = new ObjectDetectionZone(m_IdCounter);
             obj.Name = "Objekt-Zone " + m_IdCounter + "";
@@ -193,7 +194,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             obj.Width = pWidth;
             obj.Height = pHeight;
             m_IdCounter++;
-            this.CurrentLayout.ObjectDetectionZones.Add(obj);
+            return obj;
         }
 
         public void loadObjectDetectionZoneLayoutFromFile()

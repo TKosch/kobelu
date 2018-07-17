@@ -74,6 +74,8 @@ namespace KoBeLUAdmin.GUI
         private ObjectDetectionZone m_SelectedZone = null;
 
         private long m_ScreenshotTakenTimestamp = 0;
+
+        Image<Bgra, byte> mColorImage;
         
         public ObjectsPanel()
         {
@@ -137,6 +139,7 @@ namespace KoBeLUAdmin.GUI
         //Code to be called within a certain part of the main ProccessFrame Method
         public void Object_ProccessFrame_Draw(bool hasToUpdateUI, Image<Bgra, Byte> pImage)
         {
+            mColorImage = pImage;
             // display image with visual feedback
             CvInvoke.cvResetImageROI(pImage);
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
@@ -203,9 +206,6 @@ namespace KoBeLUAdmin.GUI
                         // crop image
                         Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
                         pImage.ROI = boundingBox;
-
-                        CvInvoke.Imshow("test", pImage);
-                        
 
                     }
 
@@ -343,28 +343,41 @@ namespace KoBeLUAdmin.GUI
             int height = 0;
             double x = e.GetPosition(image).X;
             double y = e.GetPosition(image).Y;
-            Image<Bgra, Byte> img = KinectManager.Instance.GetCurrentColorImage();
-            if (img != null)
+            if (mColorImage != null)
             {
-                if (BOX_MANUALY_INSERT_WIDTH + x < image.ActualWidth)
+                if (BOX_MANUALY_INSERT_WIDTH + x < mColorImage.Width)
                 {
                     width = BOX_MANUALY_INSERT_WIDTH;
                 }
                 else
                 {
-                    width = (int)(image.ActualWidth - x);
+                    width = (int)(mColorImage.Width - x);
                 }
 
-                if (BOX_MANUALY_INSERT_HEIGHT + y < image.ActualHeight)
+                if (BOX_MANUALY_INSERT_HEIGHT + y < mColorImage.Height)
                 {
                     height = BOX_MANUALY_INSERT_HEIGHT;
                 }
                 else
                 {
-                    height = (int)(image.ActualHeight - y);
+                    height = (int)(mColorImage.Height - y);
                 }
 
-                ObjectDetectionManager.Instance.createObjectDetectionZoneFromFactory((int)x, (int)y, width, height);
+                ObjectDetectionZone ob = ObjectDetectionManager.Instance.createObjectDetectionZoneFromFactory((int)x, (int)y, width, height);
+
+                ob.X = (int)x;
+                ob.Y = (int)y;
+                ob.Height = height;
+
+                Image<Bgra, Byte> croppedImage = mColorImage;
+                croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);
+
+                
+
+                ob.MatchPercentageOffset = 85;
+
+                ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Add(ob);
+
             }
         }
 

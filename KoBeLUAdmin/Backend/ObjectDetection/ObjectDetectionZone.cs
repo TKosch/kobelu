@@ -42,7 +42,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         private long m_LastTriggeredTimestamp = 0;
 
-        private int[,] m_ColorArray;
+        private byte[,] m_ColorArray;
         private double m_MatchPercentageOffset = 0.0;
 
         public ObjectDetectionZone()
@@ -75,7 +75,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             if (pSerVersion >= 1)
             {
-                m_ColorArray = (int[,])pInfo.GetValue("m_ColorArray", typeof(int[,]));
+                m_ColorArray = (byte[,])pInfo.GetValue("m_ColorArray", typeof(byte[,]));
                 m_MatchPercentageOffset = pInfo.GetDouble("m_MatchPercentageOffset");
             }
 
@@ -86,7 +86,9 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         public new void GetObjectData(SerializationInfo pInfo, StreamingContext pContext)
         {
             base.GetObjectData(pInfo, pContext);
+
             pInfo.AddValue("m_SerVersion", m_SerVersion);
+            pInfo.AddValue("m_ColorArray", m_ColorArray);
             pInfo.AddValue("m_MatchPercentageOffset", m_MatchPercentageOffset);
         }
 
@@ -132,7 +134,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         #region Getter / Setter
 
-        public int[,] ColorArray
+        public byte[,] ColorArray
         {
             get
             {

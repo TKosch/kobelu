@@ -630,4 +630,7 @@
   <data name="displayWPFProjectionPlane" xml:space="preserve">
     <value>Zeige WPF Projektionsebene an</value>
   </data>
+  <data name="buttonBackgroundScreenshot" xml:space="preserve">
+    <value>Hintergrund Screenshot</value>
+  </data>
 </root>

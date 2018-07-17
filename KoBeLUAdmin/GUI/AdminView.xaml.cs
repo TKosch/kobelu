@@ -442,7 +442,6 @@ namespace KoBeLUAdmin.GUI
         {
             m_GUI_BoxesPanel.refreshLayoutName();
             m_GUI_AssemblyPanel.refreshLayoutName();
-            m_GUI_ObjectsPanel.refreshLayoutName();
         }
 
         private void buttonSettings_Click(object sender, RoutedEventArgs e)

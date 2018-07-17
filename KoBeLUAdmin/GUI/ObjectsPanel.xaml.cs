@@ -136,101 +136,7 @@ namespace KoBeLUAdmin.GUI
         //Code to be called within a certain part of the main ProccessFrame Method
         public void Object_ProccessFrame_Draw(bool hasToUpdateUI, Image<Bgra, Byte> pImage)
         {
-            if (m_TakeBackgroundScreenShot)
-            {
-                m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
-                m_TakeBackgroundScreenShot = false;
-            }
-
-            if (m_TakeScreenShotFromZone)
-            {
-                if (m_SelectedZone != null)
-                {
-                    long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    if (now - m_ScreenshotTakenTimestamp > 200) // take picture after 200ms - frame should be gone by then
-                    {
-                        UMat mask = null;
-                        UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
-                        if (m_BackgroundScreenShot != null)
-                        {
-                            mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-                        }
-                        pImage.ToUMat().CopyTo(diff, mask);
-                        pImage = diff.ToImage<Bgra, Byte>();
-                        
-                        
-                        // crop image
-                        Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
-                        pImage.ROI = boundingBox;
-
-                        ObjectDetectionManager.Instance.SaveAndAddObjectToDatabase(pImage);
-
-                        SceneManager.Instance.DisableObjectScenes = false;
-                        m_TakeScreenShotFromZone = false;
-                        m_SelectedZone = null;
-
-                        CvInvoke.cvResetImageROI(pImage);
-                    }
-                }
-            }
-
-            // first clear all the feedback from previous frame
-            SceneManager.Instance.TemporaryObjectsTextScene.Clear();
-
-            // should we check for objects?
-            if (SettingsManager.Instance.Settings.ObjectsRecognizeObject &&
-                ObjectDetectionManager.Instance.CurrentLayout != null &&
-                hasToUpdateUI)
-            {
-                // walk over all zones
-                foreach (ObjectDetectionZone zone in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
-                {
-                    // crop image
-                    Rectangle boundingBox = new Rectangle(zone.X, zone.Y, zone.Width, zone.Height);
-                    pImage.ROI = boundingBox;
-                    Image<Gray, byte> grayscaleImage = pImage.Copy().Convert<Gray, byte>();
-                    CvInvoke.cvResetImageROI(pImage);
-
-                    // walk over all objects
-                    foreach (TrackableObject obj in Database.DatabaseManager.Instance.Objects)
-                    {
-                        Mat homography;
-                        VectorOfKeyPoint modelKeyPoints;
-                        VectorOfKeyPoint observedKeyPoints;
-                        using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
-                        {
-                            Mat mask;
-                            if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage,
-                                out modelKeyPoints, out observedKeyPoints, matches,
-                                out mask, out homography))
-                            {
-                                Mat result = new Mat();
-                                Features2DToolbox.DrawMatches(obj.EmguImage, modelKeyPoints, grayscaleImage, observedKeyPoints,
-               matches, result, new MCvScalar(255, 255, 255), new MCvScalar(255, 255, 255), mask);
-
-                                // YAY we found an object
-                                UtilitiesImage.ToImage(featureView, result.ToImage<Bgra, byte>());
-
-                                // trigger stuff
-                                WorkflowManager.Instance.OnObjectRecognized(obj);
-
-                                // update last seen timestamp
-                                obj.LastSeenTimeStamp = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
-                                obj.LastSeenZoneId = zone.Id;
-
-                                // display visual feedback
-                                Scene.SceneText textItem =
-                                    ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone,
-                                        obj.Name);
-                                SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
-
-                            }
-                        }
-                    }
-                    
-                }
-            }
-
+            // display image with visual feedback
             CvInvoke.cvResetImageROI(pImage);
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
             {
@@ -241,7 +147,7 @@ namespace KoBeLUAdmin.GUI
                     foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // draw ID
-                        pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0,0,0,0));
+                        pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
                         // draw Frame
                         if (z.wasRecentlyTriggered())
                             pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 2);
@@ -267,6 +173,108 @@ namespace KoBeLUAdmin.GUI
                     SceneManager.Instance.TemporaryObjectsScene.Clear();
                 }
             }
+
+
+            // update object zones for every received frame
+            updateObjectZones();
+
+            // take screenshot from zones and compare it to a reference (background) image
+            if (m_TakeBackgroundScreenShot)
+            {
+                m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
+                m_TakeBackgroundScreenShot = false;
+            }
+
+            updateObjectZones();
+            if (m_TakeScreenShotFromZone)
+            {
+                if (m_SelectedZone != null)
+                {
+                    UMat mask = null;
+                    UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
+                    if (m_BackgroundScreenShot != null)
+                    {
+                        mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+
+                        pImage.ToUMat().CopyTo(diff, mask);
+                        pImage = diff.ToImage<Bgra, Byte>();
+
+                        // crop image
+                        Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
+                        pImage.ROI = boundingBox;
+
+                        CvInvoke.Imshow("test", pImage);
+
+                        //ObjectDetectionManager.Instance.SaveAndAddObjectToDatabase(pImage);
+                    }
+
+                    SceneManager.Instance.DisableObjectScenes = false;
+                    m_TakeScreenShotFromZone = false;
+                    m_SelectedZone = null;
+
+                    CvInvoke.cvResetImageROI(pImage);
+
+                }
+            }
+
+
+            // legacy code for object detection by shape
+            //// first clear all the feedback from previous frame
+            //SceneManager.Instance.TemporaryObjectsTextScene.Clear();
+
+            //// should we check for objects?
+            //if (SettingsManager.Instance.Settings.ObjectsRecognizeObject &&
+            //    ObjectDetectionManager.Instance.CurrentLayout != null &&
+            //    hasToUpdateUI)
+            //{
+            //    // walk over all zones
+            //    foreach (ObjectDetectionZone zone in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+            //    {
+            //        // crop image
+            //        Rectangle boundingBox = new Rectangle(zone.X, zone.Y, zone.Width, zone.Height);
+            //        pImage.ROI = boundingBox;
+            //        Image<Gray, byte> grayscaleImage = pImage.Copy().Convert<Gray, byte>();
+            //        CvInvoke.cvResetImageROI(pImage);
+
+            //        // walk over all objects
+            //        foreach (TrackableObject obj in Database.DatabaseManager.Instance.Objects)
+            //        {
+            //            Mat homography;
+            //            VectorOfKeyPoint modelKeyPoints;
+            //            VectorOfKeyPoint observedKeyPoints;
+            //            using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
+            //            {
+            //                Mat mask;
+            //                if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage,
+            //                    out modelKeyPoints, out observedKeyPoints, matches,
+            //                    out mask, out homography))
+            //                {
+            //                    Mat result = new Mat();
+            //                    Features2DToolbox.DrawMatches(obj.EmguImage, modelKeyPoints, grayscaleImage, observedKeyPoints,
+            //   matches, result, new MCvScalar(255, 255, 255), new MCvScalar(255, 255, 255), mask);
+
+            //                    // YAY we found an object
+            //                    UtilitiesImage.ToImage(featureView, result.ToImage<Bgra, byte>());
+
+            //                    // trigger stuff
+            //                    WorkflowManager.Instance.OnObjectRecognized(obj);
+
+            //                    // update last seen timestamp
+            //                    obj.LastSeenTimeStamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+            //                    obj.LastSeenZoneId = zone.Id;
+
+            //                    // display visual feedback
+            //                    Scene.SceneText textItem =
+            //                        ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone,
+            //                            obj.Name);
+            //                    SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
+
+            //                }
+            //            }
+            //        }
+
+            //    }
+            //}
         }
 
         private void initializeDrag(System.Windows.Point p)
@@ -295,7 +303,6 @@ namespace KoBeLUAdmin.GUI
 
         private void buttonSaveBoxObjectLayout_Click(object sender, RoutedEventArgs e)
         {
-            ObjectDetectionManager.Instance.CurrentLayout.LayoutName = textBoxName.Text;
             ObjectDetectionManager.Instance.saveObjectDetectionZoneLayoutToFile();
         }
 
@@ -307,17 +314,7 @@ namespace KoBeLUAdmin.GUI
             // also update name
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
             {
-                textBoxName.Text = ObjectDetectionManager.Instance.CurrentLayout.LayoutName;
                 this.m_ListBoxObjects.DataContext = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
-            }
-
-        }
-
-        public void refreshLayoutName()
-        {
-            if (textBoxName != null && (ObjectDetectionManager.Instance.CurrentLayout != null))
-            {
-                textBoxName.Text = ObjectDetectionManager.Instance.CurrentLayout.LayoutName;
             }
         }
 
@@ -534,6 +531,11 @@ namespace KoBeLUAdmin.GUI
         }
 
         private void buttonObjectScreenShot_Click(object sender, RoutedEventArgs e)
+        {
+            updateObjectZones();
+        }
+
+        private void updateObjectZones()
         {
             var selectedItem = m_ListBoxObjects.SelectedItem;
             if (selectedItem is ObjectDetectionZone)

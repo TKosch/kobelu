@@ -44,7 +44,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         private long m_LastTriggeredTimestamp = 0;
 
-        private Image<Bgra, Byte> m_ColorArray;
+        private Image<Bgra, Byte> m_ObjectColorImage;
         private double m_MatchPercentageOffset = 0.0;
 
         public ObjectDetectionZone()
@@ -77,7 +77,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             if (pSerVersion >= 1)
             {
-                m_ColorArray = (Image<Bgra, Byte>)pInfo.GetValue("m_ColorArray", typeof(Image<Bgra, Byte>));
+                m_ObjectColorImage = (Image<Bgra, Byte>)pInfo.GetValue("m_ObjectColorImage", typeof(Image<Bgra, Byte>));
                 m_MatchPercentageOffset = pInfo.GetDouble("m_MatchPercentageOffset");
             }
 
@@ -90,7 +90,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             base.GetObjectData(pInfo, pContext);
 
             pInfo.AddValue("m_SerVersion", m_SerVersion);
-            pInfo.AddValue("m_ColorArray", m_ColorArray);
+            pInfo.AddValue("m_ObjectColorImage", m_ObjectColorImage);
             pInfo.AddValue("m_MatchPercentageOffset", m_MatchPercentageOffset);
         }
 
@@ -136,16 +136,16 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         #region Getter / Setter
 
-        public Image<Bgra, Byte> ColorArray
+        public Image<Bgra, Byte> ObjectColorImage
         {
             get
             {
-                return m_ColorArray;
+                return m_ObjectColorImage;
             }
             set
             {
-                m_ColorArray = value;
-                NotifyPropertyChanged("ColorArray");
+                m_ObjectColorImage = value;
+                NotifyPropertyChanged("ObjectColorImage");
             }
         }
 

@@ -46,6 +46,7 @@ using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
 using KoBeLUAdmin.GUI;
 using HciLab.Kinect;
+using System.Drawing;
 
 namespace KoBeLUAdmin.Backend.ObjectDetection
 {
@@ -77,11 +78,12 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         private ObjectDetectionManager() 
         {
             m_CurrentLayout = new ObjectDetectionZonesLayout();
-            KinectManager.Instance.allFramesReady += refreshTrigger;
+            KinectManager.Instance.orgAllReady += refreshTrigger;
         }
 
-        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped, Image<Gray, int> pDepthImage, Image<Gray, int> pDepthImageCropped)
+        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, short> pDepthImage)
         {
+            //CvInvoke.cvResetImageROI(pColorImage);
             if (this.m_CurrentLayout == null)
                 return;
 
@@ -89,28 +91,25 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             {
                 foreach (ObjectDetectionZone ob in m_CurrentLayout.ObjectDetectionZones)
                 {
+                    UMat mask = null;
+                    UMat diff = new UMat(pColorImage.Size, pColorImage.ToUMat().Depth, pColorImage.ToUMat().NumberOfChannels);
+                    if (ob.ObjectColorImage != null)
+                    {
+                        //CvInvoke.Imshow("test", ob.ObjectColorImage);
+                        //mask = ob.ColorImage.AbsDiff(pColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
 
-                    Console.WriteLine(ob.Height);
+                        //pColorImage.ToUMat().CopyTo(diff, mask);
+                        //pColorImage = diff.ToImage<Bgra, Byte>();
 
-                    //UMat mask = null;
-                    //UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
-                    //if (m_BackgroundScreenShot != null)
-                    //{
-                    //    mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                        //// crop image
+                        //Rectangle boundingBox = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
+                        //pColorImage.ROI = boundingBox;
 
-                    //    pImage.ToUMat().CopyTo(diff, mask);
-                    //    pImage = diff.ToImage<Bgra, Byte>();
+                        //CvInvoke.Imshow("test", pColorImage);
+                    }
 
-                    //    // crop image
-                    //    Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
-                    //    pImage.ROI = boundingBox;
 
-                    //}
-
-                    //SceneManager.Instance.DisableObjectScenes = false;
-                    //m_TakeScreenShotFromZone = false;
-                    //m_SelectedZone = null;
-                    //CvInvoke.cvResetImageROI(pImage);
+                    
 
                     //Image<Gray, byte> currentGrayImage = pImage.Convert<Gray, byte>();
 
@@ -132,6 +131,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 }
             }
         }
+
 
         /// <summary>
         /// Singleton Constructor
@@ -166,7 +166,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
             Scene.SceneRect rect = new Scene.SceneRect(x, y, w, h, c);
             return rect;
@@ -182,7 +182,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
 
             return new Scene.SceneRect(x, y, w, h, c);
@@ -198,8 +198,8 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
-            Scene.SceneText textItem = new Scene.SceneText(x, y, text, c, 10.0, new FontFamily("Arial"));
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
+            Scene.SceneText textItem = new Scene.SceneText(x, y, text, c, 10.0, new System.Windows.Media.FontFamily("Arial"));
             return textItem;
         }
 

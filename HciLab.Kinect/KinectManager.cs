@@ -165,7 +165,6 @@ namespace HciLab.Kinect
                 return;
 
             OnOrgAllReady(this, pColorFrame, pDepthFrame);
-
             Image<Gray, Int16> depthFrameBuffer = pDepthFrame.Copy();
 
             if (m_KinectSettings.Ratio == 0)
@@ -328,80 +327,5 @@ namespace HciLab.Kinect
             get { return m_KinectConnector; }
             set { m_KinectConnector = value; }
         }
-
-        /* /// <summary>
-         /// reads the path from settings.ini (IMAGE_PATH="x:\...\...")
-         /// to save the kinect image in the corresponding path 
-         /// </summary>
-         /// <returns></returns>
-         public string ReadPath()
-         {
-             string file = System.IO.File.ReadAllText(".\\settings.ini");
-
-             StringBuilder sb = new StringBuilder();
-             using (System.IO.StreamReader sr = new System.IO.StreamReader("settings.ini"))
-             {
-                 String line;
-                 // Read and display lines from the file until the end of 
-                 // the file is reached.
-                 while ((line = sr.ReadLine()) != null)
-                 {
-                     if (line.Contains("IMAGE_PATH="))
-                     {
-                         sb.AppendLine(line);
-                     }
-                 }
-             }
-
-             string allines = sb.ToString();
-             //removes everything but the Path
-             string path = allines.Substring(allines.IndexOf('=') + 1);
-             //removes fragments of the conversion (\r\n)
-             return path = path.Remove(path.Length - 2, 2);
-         }
-
-         public void SaveBitmap(WriteableBitmap writeableBitmap, string path)
-         {
-             string timestamp = DateTime.Now.ToString();
-             timestamp = timestamp.Replace(".", "");
-             timestamp = timestamp.Replace(" ", "");
-             timestamp = timestamp.Replace(":", "");
-             string ImagePath = path + timestamp.ToString() + ".jpg";
-
-             UtilitiesImage.BitmapFromWriteableBitmap(writeableBitmap).Save(ImagePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            
-             string text = "timey whimy2";
-             System.IO.File.WriteAllText(@ImagePath, text);
-         }
-
-         public void SaveColorImageToFile()
-         {
-             KinectManager.Instance.takeColorPicture();
-         }
-
-         public void SaveDepthImageToFile()
-         {
-         
-         }
-
-        /// <summary>
-        /// returns the width of the color image from the kinect
-        /// </summary>
-        public System.Drawing.Size ColorImageSizeOrg
-        {
-            get
-            {
-                return new System.Drawing.Size(m_KinectConnector.GetColorFrameDescription().Height, m_KinectConnector.GetColorFrameDescription().Width);
-            }
-        }
-
-        public System.Drawing.Size DepthImageSizeOrg
-        {
-            get
-            {
-                return new System.Drawing.Size(m_KinectConnector.GetDepthFrameDescription().Height, m_KinectConnector.GetDepthFrameDescription().Width);
-            }
-        }
-         */
     }
 }

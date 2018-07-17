@@ -68,14 +68,11 @@ namespace KoBeLUAdmin.GUI
         private bool m_TakeScreenShotFromZone = false;
         bool m_TakeBackgroundScreenShot = false;
 
-        // TODO: put elsewhere
-        Image<Gray, Byte> m_BackgroundScreenShot = null;
-
         private ObjectDetectionZone m_SelectedZone = null;
 
         private long m_ScreenshotTakenTimestamp = 0;
 
-        Image<Bgra, byte> mColorImage;
+        Image<Bgra, Byte> mColorImage;
         
         public ObjectsPanel()
         {
@@ -139,7 +136,7 @@ namespace KoBeLUAdmin.GUI
         //Code to be called within a certain part of the main ProccessFrame Method
         public void Object_ProccessFrame_Draw(bool hasToUpdateUI, Image<Bgra, Byte> pImage)
         {
-            mColorImage = pImage;
+            mColorImage = pImage.Convert<Bgra, Byte>();
             // display image with visual feedback
             CvInvoke.cvResetImageROI(pImage);
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
@@ -309,22 +306,12 @@ namespace KoBeLUAdmin.GUI
                 ob.Y = (int)y;
                 ob.Height = height;
 
+                CvInvoke.Imshow("test", mColorImage);
+
                 Image<Bgra, Byte> croppedImage = mColorImage;
                 croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);
 
-                ob.ColorArray = croppedImage;
-
-                // TODO: get image data here
-                //for (int i = 0; i < croppedImage.Width; i++)
-                //{
-                //    for (int j = 0; j < croppedImage.Height; j++)
-                //    {
-                //        int grayVal = 
-                //    }
-                //}
-                
-
-
+                ob.ObjectColorImage = croppedImage;
                 ob.MatchPercentageOffset = 85;
 
                 ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Add(ob);

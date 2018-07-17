@@ -40,11 +40,10 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
     {
         private int m_SerVersion = 1;
 
-        private int m_Depth; // something
-
-        private double m_DepthMean;
-
         private long m_LastTriggeredTimestamp = 0;
+
+        private int[,] m_ColorArray;
+        private double m_MatchPercentageOffset = 0.0;
 
         public ObjectDetectionZone()
             : base()
@@ -60,14 +59,26 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             updateScene();
         }
 
+        public ObjectDetectionZone(int pId, double pMatchPercentageOffset)
+            : base(pId)
+        {
+            m_SceneItem = new SceneRect();
+            m_MatchPercentageOffset = pMatchPercentageOffset;
+            updateScene();
+        }
+
         protected ObjectDetectionZone(SerializationInfo pInfo, StreamingContext pContext)
             : base(pInfo, pContext)
         {
             // for version evaluation while deserializing
             int pSerVersion = pInfo.GetInt32("m_SerVersion");
-            m_Depth = pInfo.GetInt32("m_Depth");
-            m_DepthMean = pInfo.GetDouble("m_DepthMean");
-            m_SceneItem = new SceneRect();
+
+            if (pSerVersion >= 1)
+            {
+                m_ColorArray = (int[,])pInfo.GetValue("m_ColorArray", typeof(int[,]));
+                m_MatchPercentageOffset = pInfo.GetDouble("m_MatchPercentageOffset");
+            }
+
             updateScene();
         }
 
@@ -76,8 +87,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         {
             base.GetObjectData(pInfo, pContext);
             pInfo.AddValue("m_SerVersion", m_SerVersion);
-            pInfo.AddValue("m_Depth", m_Depth);
-            pInfo.AddValue("m_DepthMean", m_DepthMean);
+            pInfo.AddValue("m_MatchPercentageOffset", m_MatchPercentageOffset);
         }
 
         public void Trigger()
@@ -121,29 +131,29 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         }
 
         #region Getter / Setter
-        public int Depth
+
+        public int[,] ColorArray
         {
             get
             {
-                return m_Depth;
+                return m_ColorArray;
             }
             set
             {
-                m_Depth = value;
-                NotifyPropertyChanged("Depth");
+                m_ColorArray = value;
+                NotifyPropertyChanged("ColorArray");
             }
         }
 
-        public double DepthMean
+        public double MatchPercentageOffset
         {
-            get
-            {
-                return m_DepthMean;
-            }
+            get { return m_MatchPercentageOffset; }
             set
             {
-                m_DepthMean = value;
-                NotifyPropertyChanged("DepthMean");
+                m_MatchPercentageOffset = value;
+                NotifyPropertyChanged("MatchPercentageOffset");
+                NotifyPropertyChanged("MatchPercentage");
+                NotifyPropertyChanged("NameWithPercentage");
             }
         }
         #endregion

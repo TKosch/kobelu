@@ -313,6 +313,16 @@ namespace HciLab.Kinect
             return m_DepthImg;
         }
 
+        public Image<Bgra, Byte> GetCurrentColorImage()
+        {
+            return colorImg;
+        }
+
+        public Image<Bgra, Byte> GetCurrentColorImageCropped()
+        {
+            return colorImgCropped;
+        }
+
         public KinectConnector KinectConnector
         {
             get { return m_KinectConnector; }

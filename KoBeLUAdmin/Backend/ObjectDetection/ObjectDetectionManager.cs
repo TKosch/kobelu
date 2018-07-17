@@ -45,6 +45,7 @@ using Emgu.CV.XFeatures2D;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
 using KoBeLUAdmin.GUI;
+using HciLab.Kinect;
 
 namespace KoBeLUAdmin.Backend.ObjectDetection
 {
@@ -76,6 +77,40 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         private ObjectDetectionManager() 
         {
             m_CurrentLayout = new ObjectDetectionZonesLayout();
+            KinectManager.Instance.allFramesReady += refreshTrigger;
+        }
+
+        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped, Image<Gray, int> pDepthImage, Image<Gray, int> pDepthImageCropped)
+        {
+            if (this.m_CurrentLayout == null)
+                return;
+
+            lock (this)
+            {
+                foreach (ObjectDetectionZone ob in m_CurrentLayout.ObjectDetectionZones)
+                {
+
+                    Console.WriteLine(ob.Height);
+
+                    //Image<Gray, byte> currentGrayImage = pImage.Convert<Gray, byte>();
+
+                    //// check if teached color is the same as the one we teached in
+                    //int[] numNonZero = currentGrayImage.CountNonzero();
+                    //int numPixels = m_SelectedZone.Width * m_SelectedZone.Height;
+
+                    //double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+
+
+
+                    //double percentage = getPercentageWithinMeanBoundries(calculateCurrentMeanDepth(b), b, pDepthImage);
+
+                    //if (percentage > ((double)(SettingsManager.Instance.Settings.BoxesInputTriggerPercentage) + b.MatchPercentageOffset) / 100.0)
+                    //{
+                    //    // box was hit by the user --> go and trigger the action
+                    //    b.Trigger();
+                    //}
+                }
+            }
         }
 
         /// <summary>
@@ -112,14 +147,6 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
             Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
-            
-            // TODO: maybe later
-            /*
-            if (b.wasRecentlyTriggered() && !isUsedForRecord)
-            {
-                c = System.Windows.Media.Color.FromRgb(255, 0, 0); // red
-            }
-             */
 
             Scene.SceneRect rect = new Scene.SceneRect(x, y, w, h, c);
             return rect;
@@ -137,13 +164,6 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
-            // TODO: maybe later
-            /*
-            if (b.wasRecentlyTriggered() && !isUsedForRecord)
-            {
-                c = System.Windows.Media.Color.FromRgb(255, 0, 0); // red
-            }
-             */
             return new Scene.SceneRect(x, y, w, h, c);
         }
 
@@ -247,100 +267,100 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             BackendControl.Instance.refreshGUI();
         }
 
-        /// <summary>
-        /// Find an object in a object list
-        /// </summary>
-        /// <param name="currentBlob"></param>
-        /// <param name="viBlobs"></param>
-        /// <returns>BlobID</returns>
-        public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare)
-        {
-            bool isDetect = false;
+        ///// <summary>
+        ///// Find an object in a object list
+        ///// </summary>
+        ///// <param name="currentBlob"></param>
+        ///// <param name="viBlobs"></param>
+        ///// <returns>BlobID</returns>
+        //public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare)
+        //{
+        //    bool isDetect = false;
 
-            // MFunk: Run this a couple of times to get more robust
-            int numRuns = 3;
+        //    // MFunk: Run this a couple of times to get more robust
+        //    int numRuns = 3;
 
-            for (int i = 0; i < numRuns; i++)
-            {
-                using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
-                {
-                    Mat mask;
-                    VectorOfKeyPoint modelKeyPoints;
-                    VectorOfKeyPoint observedKeyPoints;
-                    Mat homography;
-                    isDetect = RecognizeObject(sourceImage, toCompare, out modelKeyPoints, out observedKeyPoints,
-                        matches, out mask, out homography);
+        //    for (int i = 0; i < numRuns; i++)
+        //    {
+        //        using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
+        //        {
+        //            Mat mask;
+        //            VectorOfKeyPoint modelKeyPoints;
+        //            VectorOfKeyPoint observedKeyPoints;
+        //            Mat homography;
+        //            isDetect = RecognizeObject(sourceImage, toCompare, out modelKeyPoints, out observedKeyPoints,
+        //                matches, out mask, out homography);
 
-                }
-                if (isDetect)
-                {
-                    break;
-                }
-            }
-            return isDetect;
-        }
+        //        }
+        //        if (isDetect)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    return isDetect;
+        //}
 
-        public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
-        {
-            bool isDetect = false;
+        //public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        //{
+        //    bool isDetect = false;
 
-            FindMatch(sourceImage.Mat, toCompare.Mat, out modelKeyPoints, out observedKeyPoints, matches, out mask, out homography);
+        //    FindMatch(sourceImage.Mat, toCompare.Mat, out modelKeyPoints, out observedKeyPoints, matches, out mask, out homography);
 
-            if (homography != null)
-            {
-                isDetect = true;
-            }
+        //    if (homography != null)
+        //    {
+        //        isDetect = true;
+        //    }
 
-            return isDetect;
-        }
+        //    return isDetect;
+        //}
 
-        public static void FindMatch(Mat modelImage, Mat observedImage, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
-        {
-            //int k = 2;
-            int k = SettingsManager.Instance.Settings.ObjectDetectParam2;
-            double uniquenessThreshold = 0.8;
-            //double hessianThresh = 300;
-            double hessianThresh = SettingsManager.Instance.Settings.ObjectDetectParam1;
-            int nOctaves = SettingsManager.Instance.Settings.ObjectDetectParam3;
-            int nOctaveLayers = SettingsManager.Instance.Settings.ObjectDetectParam4;
+        //public static void FindMatch(Mat modelImage, Mat observedImage, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        //{
+        //    //int k = 2;
+        //    int k = SettingsManager.Instance.Settings.ObjectDetectParam2;
+        //    double uniquenessThreshold = 0.8;
+        //    //double hessianThresh = 300;
+        //    double hessianThresh = SettingsManager.Instance.Settings.ObjectDetectParam1;
+        //    int nOctaves = SettingsManager.Instance.Settings.ObjectDetectParam3;
+        //    int nOctaveLayers = SettingsManager.Instance.Settings.ObjectDetectParam4;
 
-            homography = null;
+        //    homography = null;
 
-            modelKeyPoints = new VectorOfKeyPoint();
-            observedKeyPoints = new VectorOfKeyPoint();
+        //    modelKeyPoints = new VectorOfKeyPoint();
+        //    observedKeyPoints = new VectorOfKeyPoint();
 
-            using (UMat uModelImage = modelImage.ToUMat(AccessType.Read))
-            using (UMat uObservedImage = observedImage.ToUMat(AccessType.Read))
-            {
-                SURF surfCPU = new SURF(hessianThresh, nOctaves, nOctaveLayers);
-                //extract features from the object image
-                UMat modelDescriptors = new UMat();
-                surfCPU.DetectAndCompute(uModelImage, null, modelKeyPoints, modelDescriptors, false);
+        //    using (UMat uModelImage = modelImage.ToUMat(AccessType.Read))
+        //    using (UMat uObservedImage = observedImage.ToUMat(AccessType.Read))
+        //    {
+        //        SURF surfCPU = new SURF(hessianThresh, nOctaves, nOctaveLayers);
+        //        //extract features from the object image
+        //        UMat modelDescriptors = new UMat();
+        //        surfCPU.DetectAndCompute(uModelImage, null, modelKeyPoints, modelDescriptors, false);
 
-                // extract features from the observed image
-                UMat observedDescriptors = new UMat();
-                surfCPU.DetectAndCompute(uObservedImage, null, observedKeyPoints, observedDescriptors, false);
-                BFMatcher matcher = new BFMatcher(DistanceType.L2);
-                matcher.Add(modelDescriptors);
+        //        // extract features from the observed image
+        //        UMat observedDescriptors = new UMat();
+        //        surfCPU.DetectAndCompute(uObservedImage, null, observedKeyPoints, observedDescriptors, false);
+        //        BFMatcher matcher = new BFMatcher(DistanceType.L2);
+        //        matcher.Add(modelDescriptors);
 
-                matcher.KnnMatch(observedDescriptors, matches, k, null);
-                mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
-                mask.SetTo(new MCvScalar(255));
+        //        matcher.KnnMatch(observedDescriptors, matches, k, null);
+        //        mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
+        //        mask.SetTo(new MCvScalar(255));
 
-                // filter ambiguous matches
-                Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
+        //        // filter ambiguous matches
+        //        Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
 
-                int nonZeroCount = CvInvoke.CountNonZero(mask);
-                if (nonZeroCount >= 4)
-                {
-                    nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints,
-                        matches, mask, 1.5, 20);
-                    if (nonZeroCount >= 4)
-                        homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
-                            observedKeyPoints, matches, mask, 2);
-                }
-            }
-        }
+        //        int nonZeroCount = CvInvoke.CountNonZero(mask);
+        //        if (nonZeroCount >= 4)
+        //        {
+        //            nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints,
+        //                matches, mask, 1.5, 20);
+        //            if (nonZeroCount >= 4)
+        //                homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
+        //                    observedKeyPoints, matches, mask, 2);
+        //        }
+        //    }
+        //}
 
 
         public void InitPBDLogic()

@@ -44,6 +44,7 @@ using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.Backend.ObjectDetection;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
+using HciLab.Kinect;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -204,16 +205,8 @@ namespace KoBeLUAdmin.GUI
                         pImage.ROI = boundingBox;
 
                         CvInvoke.Imshow("test", pImage);
+                        
 
-                        Image<Gray, byte> currentGrayImage = pImage.Convert<Gray, byte>();
-
-                        // check if teached color is the same as the one we teached in
-                        int[] numNonZero = currentGrayImage.CountNonzero();
-                        int numPixels = m_SelectedZone.Width * m_SelectedZone.Height;
-
-                        double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
-
-                        //ObjectDetectionManager.Instance.SaveAndAddObjectToDatabase(pImage);
                     }
 
                     SceneManager.Instance.DisableObjectScenes = false;
@@ -336,12 +329,23 @@ namespace KoBeLUAdmin.GUI
             System.Windows.Point p = e.GetPosition(image);
             if (isMouseOnAnyObj(p) == AllEnums.Direction.NONE)
             {
+                createANewObj(sender, e);
+            }
+            else
+            {
+                initializeDrag(p);
+            }
+        }
 
-                int width = 0;
-                int height = 0;
-                double x = e.GetPosition(image).X;
-                double y = e.GetPosition(image).Y;
-
+        private void createANewObj(object sender, MouseButtonEventArgs e)
+        {
+            int width = 0;
+            int height = 0;
+            double x = e.GetPosition(image).X;
+            double y = e.GetPosition(image).Y;
+            Image<Bgra, Byte> img = KinectManager.Instance.GetCurrentColorImage();
+            if (img != null)
+            {
                 if (BOX_MANUALY_INSERT_WIDTH + x < image.ActualWidth)
                 {
                     width = BOX_MANUALY_INSERT_WIDTH;
@@ -362,13 +366,9 @@ namespace KoBeLUAdmin.GUI
 
                 ObjectDetectionManager.Instance.createObjectDetectionZoneFromFactory((int)x, (int)y, width, height);
             }
-            else
-            {
-                initializeDrag(p);
-            }
         }
 
-         private void image_MouseUp(object sender, MouseButtonEventArgs e)
+        private void image_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (m_DragEnabled)
             {
@@ -556,6 +556,18 @@ namespace KoBeLUAdmin.GUI
                 SceneManager.Instance.DisableObjectScenes = true;
 
             }
+        }
+
+
+        private ObjectDetectionZone GetSelectedObjectZone()
+        {
+            var selectedItem = m_ListBoxObjects.SelectedItem;
+            if (selectedItem is ObjectDetectionZone)
+            {
+                ObjectDetectionZone z = (ObjectDetectionZone)selectedItem;
+                return z;
+            }
+            return null;
         }
 
         private void buttonBackgroundScreenShot_Click(object sender, RoutedEventArgs e)

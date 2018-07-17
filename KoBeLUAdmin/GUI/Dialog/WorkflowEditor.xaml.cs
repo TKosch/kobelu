@@ -702,7 +702,6 @@ namespace KoBeLUAdmin.GUI.Dialog
                     }
                 }
             }
-
         }
 
         private void MenuItemCopyErrorScene_Click(object sender, RoutedEventArgs e)

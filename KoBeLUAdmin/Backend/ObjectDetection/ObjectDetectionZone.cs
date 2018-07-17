@@ -31,6 +31,8 @@
 using System;
 using System.Runtime.Serialization;
 using System.Windows.Media;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using KoBeLUAdmin.Scene;
 
 namespace KoBeLUAdmin.Backend.ObjectDetection
@@ -42,7 +44,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         private long m_LastTriggeredTimestamp = 0;
 
-        private byte[,] m_ColorArray;
+        private Image<Bgra, Byte> m_ColorArray;
         private double m_MatchPercentageOffset = 0.0;
 
         public ObjectDetectionZone()
@@ -75,7 +77,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
             if (pSerVersion >= 1)
             {
-                m_ColorArray = (byte[,])pInfo.GetValue("m_ColorArray", typeof(byte[,]));
+                m_ColorArray = (Image<Bgra, Byte>)pInfo.GetValue("m_ColorArray", typeof(Image<Bgra, Byte>));
                 m_MatchPercentageOffset = pInfo.GetDouble("m_MatchPercentageOffset");
             }
 
@@ -134,7 +136,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         #region Getter / Setter
 
-        public byte[,] ColorArray
+        public Image<Bgra, Byte> ColorArray
         {
             get
             {

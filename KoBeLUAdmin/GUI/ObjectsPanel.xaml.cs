@@ -179,100 +179,40 @@ namespace KoBeLUAdmin.GUI
             }
 
 
-            // update object zones for every received frame
-            updateObjectZones();
+            //// update object zones for every received frame
+            //updateObjectZones();
 
-            // take screenshot from zones and compare it to a reference (background) image
-            if (m_TakeBackgroundScreenShot)
-            {
-                m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
-                m_TakeBackgroundScreenShot = false;
-            }
-
-            updateObjectZones();
-            if (m_TakeScreenShotFromZone)
-            {
-                if (m_SelectedZone != null)
-                {
-                    UMat mask = null;
-                    UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
-                    if (m_BackgroundScreenShot != null)
-                    {
-                        mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-
-                        pImage.ToUMat().CopyTo(diff, mask);
-                        pImage = diff.ToImage<Bgra, Byte>();
-
-                        // crop image
-                        Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
-                        pImage.ROI = boundingBox;
-
-                    }
-
-                    SceneManager.Instance.DisableObjectScenes = false;
-                    m_TakeScreenShotFromZone = false;
-                    m_SelectedZone = null;
-
-                    CvInvoke.cvResetImageROI(pImage);
-
-                }
-            }
-
-
-            // legacy code for object detection by shape
-            //// first clear all the feedback from previous frame
-            //SceneManager.Instance.TemporaryObjectsTextScene.Clear();
-
-            //// should we check for objects?
-            //if (SettingsManager.Instance.Settings.ObjectsRecognizeObject &&
-            //    ObjectDetectionManager.Instance.CurrentLayout != null &&
-            //    hasToUpdateUI)
+            //// take screenshot from zones and compare it to a reference (background) image
+            //if (m_TakeBackgroundScreenShot)
             //{
-            //    // walk over all zones
-            //    foreach (ObjectDetectionZone zone in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+            //    m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
+            //    m_TakeBackgroundScreenShot = false;
+            //}
+
+            //updateObjectZones();
+            //if (m_TakeScreenShotFromZone)
+            //{
+            //    if (m_SelectedZone != null)
             //    {
-            //        // crop image
-            //        Rectangle boundingBox = new Rectangle(zone.X, zone.Y, zone.Width, zone.Height);
-            //        pImage.ROI = boundingBox;
-            //        Image<Gray, byte> grayscaleImage = pImage.Copy().Convert<Gray, byte>();
-            //        CvInvoke.cvResetImageROI(pImage);
-
-            //        // walk over all objects
-            //        foreach (TrackableObject obj in Database.DatabaseManager.Instance.Objects)
+            //        UMat mask = null;
+            //        UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
+            //        if (m_BackgroundScreenShot != null)
             //        {
-            //            Mat homography;
-            //            VectorOfKeyPoint modelKeyPoints;
-            //            VectorOfKeyPoint observedKeyPoints;
-            //            using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
-            //            {
-            //                Mat mask;
-            //                if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage,
-            //                    out modelKeyPoints, out observedKeyPoints, matches,
-            //                    out mask, out homography))
-            //                {
-            //                    Mat result = new Mat();
-            //                    Features2DToolbox.DrawMatches(obj.EmguImage, modelKeyPoints, grayscaleImage, observedKeyPoints,
-            //   matches, result, new MCvScalar(255, 255, 255), new MCvScalar(255, 255, 255), mask);
+            //            mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
 
-            //                    // YAY we found an object
-            //                    UtilitiesImage.ToImage(featureView, result.ToImage<Bgra, byte>());
+            //            pImage.ToUMat().CopyTo(diff, mask);
+            //            pImage = diff.ToImage<Bgra, Byte>();
 
-            //                    // trigger stuff
-            //                    WorkflowManager.Instance.OnObjectRecognized(obj);
+            //            // crop image
+            //            Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
+            //            pImage.ROI = boundingBox;
 
-            //                    // update last seen timestamp
-            //                    obj.LastSeenTimeStamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-            //                    obj.LastSeenZoneId = zone.Id;
-
-            //                    // display visual feedback
-            //                    Scene.SceneText textItem =
-            //                        ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone,
-            //                            obj.Name);
-            //                    SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
-
-            //                }
-            //            }
             //        }
+
+            //        SceneManager.Instance.DisableObjectScenes = false;
+            //        m_TakeScreenShotFromZone = false;
+            //        m_SelectedZone = null;
+            //        CvInvoke.cvResetImageROI(pImage);
 
             //    }
             //}
@@ -372,7 +312,18 @@ namespace KoBeLUAdmin.GUI
                 Image<Bgra, Byte> croppedImage = mColorImage;
                 croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);
 
+                ob.ColorArray = croppedImage;
+
+                // TODO: get image data here
+                //for (int i = 0; i < croppedImage.Width; i++)
+                //{
+                //    for (int j = 0; j < croppedImage.Height; j++)
+                //    {
+                //        int grayVal = 
+                //    }
+                //}
                 
+
 
                 ob.MatchPercentageOffset = 85;
 

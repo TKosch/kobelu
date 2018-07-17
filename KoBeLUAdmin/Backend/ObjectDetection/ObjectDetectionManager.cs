@@ -75,14 +75,15 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         /// <summary>
         /// constructor
         /// </summary>
-        private ObjectDetectionManager() 
+        private ObjectDetectionManager()
         {
             m_CurrentLayout = new ObjectDetectionZonesLayout();
-            KinectManager.Instance.orgAllReady += refreshTrigger;
+            KinectManager.Instance.allFramesReady += refreshTrigger;
         }
 
-        private void refreshTrigger(object pSource, Image<Bgra, Byte> pColorImage, Image<Gray, short> pDepthImage)
+        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped, Image<Gray, int> pDepthImage, Image<Gray, int> pDepthImageCropped)
         {
+
             if (this.m_CurrentLayout == null)
                 return;
 
@@ -92,40 +93,37 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 {
                     if (ob.ObjectColorImage != null)
                     {
-                        UMat mask = null;
-                        UMat diff = new UMat(pColorImage.Size, pColorImage.ToUMat().Depth, pColorImage.ToUMat().NumberOfChannels);
-
                         // crop image to the same size as the saved picture
-                        Image<Bgra, Byte> croppedColorImage = pColorImage;
-                        croppedColorImage.ROI = ob.ObjectColorImage.ROI;
+                        Image<Bgra, Byte> croppedColorImage;
+                        croppedColorImage = pColorImage.Copy();
+                        croppedColorImage.ROI = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
 
-                        //mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(pColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-                        //pColorImage.ToUMat().CopyTo(diff, mask);
-                        //pColorImage = diff.ToImage<Bgra, Byte>();
+                        UMat mask = null;
+                        UMat diff = new UMat(croppedColorImage.Size, croppedColorImage.ToUMat().Depth, croppedColorImage.ToUMat().NumberOfChannels);
 
-                        //CvInvoke.Imshow("test", pColorImage);
+                        mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(croppedColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                        croppedColorImage.ToUMat().CopyTo(diff, mask);
+                        croppedColorImage = diff.ToImage<Bgra, Byte>();
 
-                        //Image<Gray, byte> currentGrayImage = ob.ObjectColorImage.Convert<Gray, byte>();
+                        Image<Gray, byte> currentGrayImage = croppedColorImage.Convert<Gray, byte>();
 
-                        //// check if teached color is the same as the one we teached in
-                        //int[] numNonZero = currentGrayImage.CountNonzero();
-                        //int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
+                        // check if teached color is the same as the one that was teached in
+                        int[] numNonZero = currentGrayImage.CountNonzero();
+                        int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
 
-                        //double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+                        CvInvoke.Imshow("test", currentGrayImage);
 
+                        double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+
+                        Console.WriteLine(percentage_pixels);
                     }
 
 
-                    //double percentage = getPercentageWithinMeanBoundries(calculateCurrentMeanDepth(b), b, pDepthImage);
-
-                    //if (percentage > ((double)(SettingsManager.Instance.Settings.BoxesInputTriggerPercentage) + b.MatchPercentageOffset) / 100.0)
-                    //{
-                    //    // box was hit by the user --> go and trigger the action
-                    //    b.Trigger();
-                    //}
                 }
             }
         }
+
+
 
 
         /// <summary>
@@ -133,7 +131,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         /// </summary>
         public static ObjectDetectionManager Instance
         {
-            get 
+            get
             {
                 if (m_Instance == null)
                 {
@@ -150,7 +148,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 this.PropertyChanged(this, new PropertyChangedEventArgs(Obj));
             }
         }
-        
+
         public Scene.SceneRect createSceneRectForObjectDetectionZone(ObjectDetectionZone z, bool isUsedForRecord)
         {
             int x_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X;
@@ -198,7 +196,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             return textItem;
         }
 
-           
+
         public ObjectDetectionZone createObjectDetectionZoneFromFactory(int pX, int pY, int pWidth, int pHeight)
         {
             ObjectDetectionZone obj = new ObjectDetectionZone(m_IdCounter);
@@ -216,7 +214,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         {
             SetNewLayout(ObjectDetectionZonesLayout.loadObjectDetectionZoneLayout());
         }
-        
+
         public void SetNewLayout(ObjectDetectionZonesLayout pLayout)
         {
             if (pLayout != null)
@@ -229,7 +227,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 {
                     m_CurrentLayout.ObjectDetectionZones.Add(z);
 
-                    if(z.Id > highestID)
+                    if (z.Id > highestID)
                     {
                         highestID = z.Id;
                     }
@@ -429,14 +427,14 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         public ObjectDetectionZonesLayout CurrentLayout
         {
             get { return m_CurrentLayout; }
-           /* set {
-                m_CurrentLayout = value;
-                NotifyPropertyChanged("CurrentLayout");
-            }*/
+            /* set {
+                 m_CurrentLayout = value;
+                 NotifyPropertyChanged("CurrentLayout");
+             }*/
         }
-        
+
         #endregion
-        
+
         #region vermutlich von paul
 
         /// <summary>
@@ -463,7 +461,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         public List<BlobObject> MasterBlob
         {
-            get { return m_MasterBlob;}
+            get { return m_MasterBlob; }
             set { m_MasterBlob = value; }
         }
 
@@ -474,7 +472,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             {
                 foreach (BlobObject b in m_MasterBlob)
                 {
-                    if (b.Rect.Contains(x, 1-y))
+                    if (b.Rect.Contains(x, 1 - y))
                     {
                         ret = true;
                         break;
@@ -487,5 +485,5 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
 
     }
-        #endregion
+    #endregion
 }

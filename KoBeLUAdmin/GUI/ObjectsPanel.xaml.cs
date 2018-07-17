@@ -205,6 +205,14 @@ namespace KoBeLUAdmin.GUI
 
                         CvInvoke.Imshow("test", pImage);
 
+                        Image<Gray, byte> currentGrayImage = pImage.Convert<Gray, byte>();
+
+                        // check if teached color is the same as the one we teached in
+                        int[] numNonZero = currentGrayImage.CountNonzero();
+                        int numPixels = m_SelectedZone.Width * m_SelectedZone.Height;
+
+                        double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+
                         //ObjectDetectionManager.Instance.SaveAndAddObjectToDatabase(pImage);
                     }
 

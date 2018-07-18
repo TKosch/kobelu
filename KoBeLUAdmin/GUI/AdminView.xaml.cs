@@ -289,7 +289,7 @@ namespace KoBeLUAdmin.GUI
                 m_GUI_BoxesPanel.DrawColorFrame(pColorImage);
             }
 
-            m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
+            //m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
             m_GUI_PBDPanel.checkIfUserIsWorking(pColorImageCropped);
 
             //QRDetectManager.Instance.SimpleScan(pColorImageCropped);
@@ -299,7 +299,7 @@ namespace KoBeLUAdmin.GUI
             Image<Bgra, byte> pColorImage,
             Image<Gray, Int32> pDepthImage)
         {
-            //m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
+            m_GUI_ObjectsPanel.Object_ProccessFrame_Draw(tabControl1.SelectedItem.Equals(tabItemObjects), pColorImage);
         }
 
         private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject

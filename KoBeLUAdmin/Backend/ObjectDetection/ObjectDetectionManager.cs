@@ -78,12 +78,11 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         private ObjectDetectionManager()
         {
             m_CurrentLayout = new ObjectDetectionZonesLayout();
-            KinectManager.Instance.allFramesReady += refreshTrigger;
+            KinectManager.Instance.orgAllReady += refreshTrigger;
         }
 
-        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Bgra, byte> pColorImageCropped, Image<Gray, int> pDepthImage, Image<Gray, int> pDepthImageCropped)
+        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, short> pDepthImage)
         {
-
             if (this.m_CurrentLayout == null)
                 return;
 
@@ -122,8 +121,6 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 }
             }
         }
-
-
 
 
         /// <summary>

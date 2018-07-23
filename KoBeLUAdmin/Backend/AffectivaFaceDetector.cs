@@ -53,6 +53,8 @@ namespace KoBeLUAdmin.Backend
                     mCameraDetector.stop();
                     mCameraDetector.Dispose();
                     mCameraDetector = null;
+                    string message = JsonConvert.SerializeObject(mCameraActiveSerialization);
+                    NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
                 }
                 if (mCameraDetector == null)
                     break;
@@ -67,8 +69,6 @@ namespace KoBeLUAdmin.Backend
                 {
                     mCameraActiveSerialization.IsActive = false;
                     mCancelCamera = true;
-                    string message = JsonConvert.SerializeObject(mCameraActiveSerialization);
-                    NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
                 }
             }
         }

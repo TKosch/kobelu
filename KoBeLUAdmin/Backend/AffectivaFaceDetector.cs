@@ -21,19 +21,18 @@ namespace KoBeLUAdmin.Backend
         private const int CAMID = 0;
         private const int CAMFPS = 60;
 
-        private string mClassifierPath;
         private CameraDetector mCameraDetector = new CameraDetector();
         private CameraActiveSerialization mCameraActiveSerialization = new CameraActiveSerialization();
         private bool mCancelCamera = false;
 
-        public AffectivaFaceDetector(string pClassifierPath)
+        public AffectivaFaceDetector()
         {
-            this.mClassifierPath = pClassifierPath;
-
+            // path to data files
+            string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
             mCameraActiveSerialization.Call = "camera_active";
             mCameraActiveSerialization.IsActive = true;
 
-            mCameraDetector.setClassifierPath(pClassifierPath);
+            mCameraDetector.setClassifierPath(affdexDataPath);
             mCameraDetector.setCameraId(CAMID);
             mCameraDetector.setCameraFPS(CAMFPS);
             mCameraDetector.setImageListener(this);

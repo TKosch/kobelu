@@ -140,6 +140,10 @@ namespace KoBeLUAdmin.Network
                                 string task_difficulty = jsonResponse.difficulty.ToString();
                                 WorkflowManager.Instance.AdaptivityLevelId = int.Parse(task_difficulty);
                                 break;
+                            case "camera_active":
+                                bool isactive = jsonResponse.isActive;
+                                AffectivaFaceDetector affectivaFaceDetector = new AffectivaFaceDetector();
+                                break;
                             default:
                                 break;
                         }

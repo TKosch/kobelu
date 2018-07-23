@@ -124,10 +124,8 @@ namespace KoBeLUAdmin.GUI
 
             if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
             {
-                // path to data files
-                string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
                 // initialize affectiva manager
-                mAffectivaManager = new AffectivaFaceDetector(affdexDataPath);
+                mAffectivaManager = new AffectivaFaceDetector();
             }
         }
 

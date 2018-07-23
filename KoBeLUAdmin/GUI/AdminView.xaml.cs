@@ -67,6 +67,7 @@ namespace KoBeLUAdmin.GUI
 
         private Image<Gray, Int32> mReferenceDepthImage;
         private bool mReferenceImageCaptured = false;
+        AffectivaFaceDetector mAffectivaManager;
 
         /// <summary>
         /// Singleton Constructor
@@ -121,9 +122,10 @@ namespace KoBeLUAdmin.GUI
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
 
             // path to data files
-            string affdexDataPath = Directory.GetCurrentDirectory() + "\\data";
+            string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
             // initialize affectiva manager
-            AffectivaManager affectivaManager = new AffectivaManager(affdexDataPath);
+            mAffectivaManager = new AffectivaFaceDetector(affdexDataPath);
+            mAffectivaManager.CameraDetector.start();
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -471,7 +473,7 @@ namespace KoBeLUAdmin.GUI
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+            mAffectivaManager.CameraDetector.stop();
         }
 
         public bool IsEnsensoActive

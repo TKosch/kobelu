@@ -177,7 +177,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Backend\AffectivaManager.cs" />
+    <Compile Include="Backend\AffectivaFaceDetector.cs" />
     <Compile Include="Backend\TouchManager.cs" />
     <Compile Include="Backend\TuioServer.cs" />
     <Compile Include="Backend\USBCameraDetector.cs" />

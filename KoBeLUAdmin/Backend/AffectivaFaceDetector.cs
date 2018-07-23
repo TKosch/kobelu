@@ -24,7 +24,7 @@ namespace KoBeLUAdmin.Backend
         private string mClassifierPath;
         private CameraDetector mCameraDetector = new CameraDetector();
         private CameraActiveSerialization mCameraActiveSerialization = new CameraActiveSerialization();
-        private static int usingResource = 0;
+        private bool mCancelCamera = false;
 
         public AffectivaFaceDetector(string pClassifierPath)
         {
@@ -38,8 +38,26 @@ namespace KoBeLUAdmin.Backend
             mCameraDetector.setCameraFPS(CAMFPS);
             mCameraDetector.setImageListener(this);
             mCameraDetector.setFaceListener(this);
+            mCameraDetector.start();
+
+            Thread cameraThread = new Thread(CameraChecker);
+            cameraThread.Start();
         }
 
+        private void CameraChecker()
+        {
+            while (mCameraDetector.isRunning())
+            {
+                if (mCancelCamera)
+                {
+                    mCameraDetector.stop();
+                    mCameraDetector.Dispose();
+                    mCameraDetector = null;
+                }
+                if (mCameraDetector == null)
+                    break;
+            }
+        }
 
         public void onImageResults(Dictionary<int, Face> faces, Frame frame)
         {
@@ -47,25 +65,12 @@ namespace KoBeLUAdmin.Backend
             {
                 if (mCameraActiveSerialization.IsActive)
                 {
-                    
-                        mCameraActiveSerialization.IsActive = false;
-                        string message = JsonConvert.SerializeObject(mCameraActiveSerialization);
-                        NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
-                        ReleaseCameraResources();
+                    mCameraActiveSerialization.IsActive = false;
+                    string message = JsonConvert.SerializeObject(mCameraActiveSerialization);
+                    NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
+                    mCancelCamera = true;
                 }
             }
-        }
-
-
-        private bool ReleaseCameraResources()
-        {
-            if (0 == Interlocked.Exchange(ref usingResource, 1))
-            {
-                mCameraDetector.reset();
-                Interlocked.Exchange(ref usingResource, 0);
-                return true;
-            }
-            return false;
         }
 
 

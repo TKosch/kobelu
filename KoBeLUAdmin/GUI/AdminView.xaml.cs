@@ -125,7 +125,6 @@ namespace KoBeLUAdmin.GUI
             string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
             // initialize affectiva manager
             mAffectivaManager = new AffectivaFaceDetector(affdexDataPath);
-            mAffectivaManager.CameraDetector.start();
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -473,7 +472,8 @@ namespace KoBeLUAdmin.GUI
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            mAffectivaManager.CameraDetector.stop();
+            if (mAffectivaManager.CameraDetector != null)
+                mAffectivaManager.CameraDetector.stop();
         }
 
         public bool IsEnsensoActive

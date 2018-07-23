@@ -639,7 +639,7 @@
   <data name="checkboxEnableEnsensoSmoothing" xml:space="preserve">
     <value>Enable Ensenso Smoothing</value>
   </data>
-  <data name="buttonAudio" xml:space="preserve">
+  <data name="b" xml:space="preserve">
     <value>Audio</value>
   </data>
   <data name="buttonExternalVisualization" xml:space="preserve">
@@ -659,5 +659,8 @@
   </data>
   <data name="buttonBackgroundScreenshot" xml:space="preserve">
     <value>Background Screenshot</value>
+  </data>
+  <data name="enableFaceDetection" xml:space="preserve">
+    <value>Enable Face Detection</value>
   </data>
 </root>

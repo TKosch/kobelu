@@ -633,4 +633,7 @@
   <data name="buttonBackgroundScreenshot" xml:space="preserve">
     <value>Hintergrund Screenshot</value>
   </data>
+  <data name="enableFaceDetection" xml:space="preserve">
+    <value>Gesichtserkennung aktivieren</value>
+  </data>
 </root>

@@ -87,6 +87,7 @@
             <Button Content="#Record new background image" Click="Button_Click"/>
 
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding DisplayWPFProjection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.displayWPFProjectionPlane], FallbackValue='#Display WPF projection plane', Source={StaticResource localization}}"/>
+            <CheckBox Margin="5,0,-5,0" IsChecked="{Binding EnableFaceDetection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding .[Strings.enableFaceDetection], FallbackValue='#Enable Face Detection', Source={StaticResource localization}}"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -947,8 +947,8 @@ namespace KoBeLUAdmin.Backend
 
             WorkflowLoadedSerialization workflowLoadedSerialization = new WorkflowLoadedSerialization();
             workflowLoadedSerialization.Call = "workflow_loaded";
-            string message_workflow_loaded = JsonConvert.SerializeObject(workflowLoadedSerialization);
-            NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message_workflow_loaded);
+            string message = JsonConvert.SerializeObject(workflowLoadedSerialization);
+            NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
         }
 
         protected void OnWorkingStepCompleted(AllEnums.WorkingStepEndConditionTrigger trigger)

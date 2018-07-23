@@ -252,6 +252,7 @@ namespace KoBeLUAdmin.Backend
 
             OnWorkflowLoaded();
 
+
             return true;
         }
 
@@ -305,6 +306,7 @@ namespace KoBeLUAdmin.Backend
             StartWorkflowSerialization startWorkflowSerialization = new StartWorkflowSerialization();
             startWorkflowSerialization.Call = "start_workflow";
             startWorkflowSerialization.WorkflowId = m_LoadedWorkflow.Id;
+            Console.WriteLine(m_LoadedWorkflow.Id);
             string message = JsonConvert.SerializeObject(startWorkflowSerialization);
             NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
         }
@@ -942,6 +944,11 @@ namespace KoBeLUAdmin.Backend
             {
                 handler(this, e);
             }
+
+            WorkflowLoadedSerialization workflowLoadedSerialization = new WorkflowLoadedSerialization();
+            workflowLoadedSerialization.Call = "workflow_loaded";
+            string message_workflow_loaded = JsonConvert.SerializeObject(workflowLoadedSerialization);
+            NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message_workflow_loaded);
         }
 
         protected void OnWorkingStepCompleted(AllEnums.WorkingStepEndConditionTrigger trigger)

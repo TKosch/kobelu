@@ -259,6 +259,7 @@
     <Compile Include="Serialization\CurrentWorkingStepSerialization.cs" />
     <Compile Include="Serialization\StartWorkflowSerialization.cs" />
     <Compile Include="Serialization\WorkflowFinishedSerialization.cs" />
+    <Compile Include="Serialization\WorkflowLoadedSerialization.cs" />
     <Compile Include="Statistics\StatsManager.cs" />
     <Compile Include="Statistics\WorkflowStats.cs" />
     <Compile Include="Statistics\WorkingStepStats.cs" />

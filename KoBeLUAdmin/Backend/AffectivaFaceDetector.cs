@@ -66,9 +66,9 @@ namespace KoBeLUAdmin.Backend
                 if (mCameraActiveSerialization.IsActive)
                 {
                     mCameraActiveSerialization.IsActive = false;
+                    mCancelCamera = true;
                     string message = JsonConvert.SerializeObject(mCameraActiveSerialization);
                     NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
-                    mCancelCamera = true;
                 }
             }
         }

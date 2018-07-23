@@ -50,6 +50,7 @@ using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
 using Emgu.CV.Util;
 using System.Drawing;
+using System.IO;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -118,6 +119,11 @@ namespace KoBeLUAdmin.GUI
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
+
+            // path to data files
+            string affdexDataPath = Directory.GetCurrentDirectory() + "\\data";
+            // initialize affectiva manager
+            AffectivaManager affectivaManager = new AffectivaManager(affdexDataPath);
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)

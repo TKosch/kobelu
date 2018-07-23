@@ -121,10 +121,14 @@ namespace KoBeLUAdmin.GUI
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
 
-            // path to data files
-            string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
-            // initialize affectiva manager
-            mAffectivaManager = new AffectivaFaceDetector(affdexDataPath);
+
+            if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
+            {
+                // path to data files
+                string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
+                // initialize affectiva manager
+                mAffectivaManager = new AffectivaFaceDetector(affdexDataPath);
+            }
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -472,8 +476,11 @@ namespace KoBeLUAdmin.GUI
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (mAffectivaManager.CameraDetector != null)
-                mAffectivaManager.CameraDetector.stop();
+            if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
+            {
+                if (mAffectivaManager != null && mAffectivaManager.CameraDetector != null)
+                    mAffectivaManager.CameraDetector.stop();
+            }
         }
 
         public bool IsEnsensoActive

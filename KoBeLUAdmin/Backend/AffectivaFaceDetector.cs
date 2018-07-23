@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoBeLUAdmin.Backend
 {
-    public class AffectivaFaceDetector : Affdex.FaceListener, Affdex.ImageListener
+    public class AffectivaFaceDetector : Affdex.ImageListener, Affdex.FaceListener
     {
 
         // constants
@@ -32,24 +32,20 @@ namespace KoBeLUAdmin.Backend
 
         }
 
-        public void onFaceFound(float timestamp, int faceId)
-        {
-            Console.WriteLine("Found face");
-        }
-
-        public void onFaceLost(float timestamp, int faceId)
-        {
-            Console.WriteLine("lost face");
-        }
-
         public void onImageResults(Dictionary<int, Face> faces, Frame frame)
         {
-            Console.WriteLine("image results");
         }
 
         public void onImageCapture(Frame frame)
         {
-            Console.WriteLine("image captured");
+        }
+
+        public void onFaceFound(float timestamp, int faceId)
+        {
+        }
+
+        public void onFaceLost(float timestamp, int faceId)
+        {
         }
 
         public CameraDetector CameraDetector { get => mCameraDetector; set => mCameraDetector = value; }

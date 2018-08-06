@@ -382,7 +382,8 @@ namespace KoBeLUAdmin.Backend
                     m_BoxErrorCounter = 0;
 
 
-                    SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
+                    // FIXME: The line below causes a bug
+                    //SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
                     NextWorkingStepSerialization nextWorkingStepSerialization = new NextWorkingStepSerialization();
                     nextWorkingStepSerialization.Call = "next_working_step";

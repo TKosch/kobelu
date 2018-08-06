@@ -186,14 +186,14 @@ namespace KoBeLUAdmin.GUI
                 {
                     m_DraggedObj = o;
                     m_DragEnabled = true;
-                    if (m_DragMode == AllEnums.Direction.NORTH || m_DragMode == AllEnums.Direction.SOUTH)
-                    {
-                        Cursor = Cursors.SizeNS;
-                    }
-                    else if (m_DragMode == AllEnums.Direction.EAST || m_DragMode == AllEnums.Direction.WEST)
-                    {
-                        Cursor = Cursors.SizeWE;
-                    }
+                    //if (m_DragMode == AllEnums.Direction.NORTH || m_DragMode == AllEnums.Direction.SOUTH)
+                    //{
+                    //    Cursor = Cursors.SizeNS;
+                    //}
+                    //else if (m_DragMode == AllEnums.Direction.EAST || m_DragMode == AllEnums.Direction.WEST)
+                    //{
+                    //    Cursor = Cursors.SizeWE;
+                    //}
                     return;
                 }
             }
@@ -237,7 +237,7 @@ namespace KoBeLUAdmin.GUI
 
         private void createANewObj(object sender, MouseButtonEventArgs e)
         {
-            CvInvoke.cvResetImageROI(mColorImage);
+            //CvInvoke.cvResetImageROI(mColorImage);
             int width = 0;
             int height = 0;
             double x = e.GetPosition(image).X;
@@ -379,10 +379,13 @@ namespace KoBeLUAdmin.GUI
         {
             foreach (ObjectDetectionZone b in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
             {
-                AllEnums.Direction d = isMouseOnObj(p, b);
-                if (d != AllEnums.Direction.NONE)
-                    return d;
+                if (b.IsSelected)
+                {
 
+                    AllEnums.Direction d = isMouseOnObj(p, b);
+                    if (d != AllEnums.Direction.NONE)
+                        return d;
+                }
             }
             return AllEnums.Direction.NONE;
         }

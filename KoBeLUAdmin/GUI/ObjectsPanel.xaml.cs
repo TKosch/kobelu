@@ -273,7 +273,7 @@ namespace KoBeLUAdmin.GUI
                 croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);
 
                 ob.ObjectColorImage = croppedImage;
-                ob.MatchPercentageOffset = 90;
+                ob.MatchPercentageOffset = 80;
 
                 ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Add(ob);
 

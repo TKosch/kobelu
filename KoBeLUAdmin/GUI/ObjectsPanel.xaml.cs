@@ -53,9 +53,9 @@ namespace KoBeLUAdmin.GUI
     /// </summary>
     public partial class ObjectsPanel : UserControl
     {
-        public static readonly int BOX_BORDERWIDTH = 5;
-        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 50;
-        public static readonly int BOX_MANUALY_INSERT_WIDTH = 50;
+        public static readonly int BOX_BORDERWIDTH = 20;
+        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 100;
+        public static readonly int BOX_MANUALY_INSERT_WIDTH = 100;
 
         private ObjectDetectionZone m_DraggedObj = null;
 
@@ -63,7 +63,7 @@ namespace KoBeLUAdmin.GUI
 
         private AllEnums.Direction m_DragMode = AllEnums.Direction.NONE;
 
-        private const int m_BORDERWIDTHObject = 5;
+        private const int m_BORDERWIDTHObject = 20;
 
         private bool m_TakeScreenShotFromZone = false;
         bool m_TakeBackgroundScreenShot = false;

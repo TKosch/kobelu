@@ -119,7 +119,6 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                                 double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
                                 if (percentage_pixels > ob.MatchPercentageOffset)
                                 {
-                                    Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);
                                     ob.Trigger();
                                 }
                             }

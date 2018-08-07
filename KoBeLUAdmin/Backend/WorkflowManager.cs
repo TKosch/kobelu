@@ -83,6 +83,7 @@ namespace KoBeLUAdmin.Backend
         public static event Action<TrackableObject> ObjectRecognized;
         public static event Action<Box> BoxTriggered;
         public static event Action<AssemblyZone> AssemblyZoneTriggered;
+        public static event Action<ObjectDetectionZone> ObjectDetectionZoneTriggered;
         /// <summary>
         /// Workstep changed by Condition
         /// </summary>
@@ -154,6 +155,8 @@ namespace KoBeLUAdmin.Backend
             BoxTriggered += checkExtraActions;
             BoxTriggered += PBDManager.Instance.OnBoxTriggeredPBD;
 
+            ObjectDetectionZoneTriggered += checkEndConditionspublic;
+
             ObjectRecognized += this.checkObjectCondition;
 
             //Set adaptivitylevelId from Settings
@@ -201,6 +204,11 @@ namespace KoBeLUAdmin.Backend
             {
                 Console.WriteLine("Triggered Box " + w.Id + " Trigger-Message is: " + w.TriggerMessage);
                 BoxTriggered(w as Box);
+            }
+            else if (w is ObjectDetectionZone)
+            {
+                Console.WriteLine("Detected colormapped Object with ID: " + w.TriggerMessage);
+                ObjectDetectionZoneTriggered(w as ObjectDetectionZone);
             }
         }
 
@@ -624,6 +632,37 @@ namespace KoBeLUAdmin.Backend
                                 box.IsBoxErroneous = true;
                             }
                         }
+                    }
+                }
+            }
+        }
+
+
+        public void checkEndConditionspublic(ObjectDetectionZone ob)
+        {
+            if (m_LoadedWorkflow != null)
+            {
+                if (m_CurrentWorkingStepNumber < m_LoadedWorkflow.WorkingSteps.Count)
+                {
+                    WorkingStep step = m_LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber);
+                    if (step.EndConditionObjectName == ("" + ob.TriggerMessage))
+                    {
+                        // trigger next step
+                        NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger.OBJECT);
+                    }
+                    else
+                    {
+                        // TODO: Error handling here
+                        //if (!ob.wasRecentlyFalselyTriggered())
+                        //{
+                        //    OnFailStateOccured(WorkflowFailState.BOX_FAILSTATE);
+                        //    m_BoxErrorCounter++;
+
+                        //    if (SettingsManager.Instance.Settings.SettingsTable.EnableFaultBoxMode)
+                        //    {
+                        //        ob.IsBoxErroneous = true;
+                        //    }
+                        //}
                     }
                 }
             }

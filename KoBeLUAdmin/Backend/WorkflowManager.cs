@@ -650,20 +650,6 @@ namespace KoBeLUAdmin.Backend
                         // trigger next step
                         NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger.OBJECT);
                     }
-                    else
-                    {
-                        // TODO: Error handling here
-                        //if (!ob.wasRecentlyFalselyTriggered())
-                        //{
-                        //    OnFailStateOccured(WorkflowFailState.BOX_FAILSTATE);
-                        //    m_BoxErrorCounter++;
-
-                        //    if (SettingsManager.Instance.Settings.SettingsTable.EnableFaultBoxMode)
-                        //    {
-                        //        ob.IsBoxErroneous = true;
-                        //    }
-                        //}
-                    }
                 }
             }
         }

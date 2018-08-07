@@ -81,6 +81,12 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             KinectManager.Instance.orgAllReady += refreshTrigger;
         }
 
+        /// <summary>
+        /// Process object recognition on basis of colors
+        /// </summary>
+        /// <param name="pSource"></param>
+        /// <param name="pColorImage"></param>
+        /// <param name="pDepthImage"></param>
         private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, short> pDepthImage)
         {
             if (this.m_CurrentLayout == null)
@@ -104,16 +110,14 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                             if (croppedColorImage.Size == ob.ObjectColorImage.Size)
                             {
                                 mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(croppedColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-                                croppedColorImage.ToUMat().CopyTo(diff, mask);
-                                croppedColorImage = diff.ToImage<Bgra, Byte>();
-
-                                Image<Gray, byte> currentGrayImage = croppedColorImage.Convert<Gray, byte>();
+                                Image<Gray, byte> currentGrayImage = mask.ToImage<Gray, Byte>();
 
                                 // check if teached color is the same as the one that was teached in
                                 int[] numNonZero = currentGrayImage.CountNonzero();
                                 int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
 
                                 double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+                                Console.WriteLine(percentage_pixels);
                                 if (percentage_pixels > ob.MatchPercentageOffset)
                                 {
                                     Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);

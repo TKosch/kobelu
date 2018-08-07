@@ -117,7 +117,6 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                                 int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
 
                                 double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
-                                Console.WriteLine(percentage_pixels);
                                 if (percentage_pixels > ob.MatchPercentageOffset)
                                 {
                                     Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);

@@ -92,29 +92,38 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 {
                     if (ob.ObjectColorImage != null)
                     {
-                        // crop image to the same size as the saved picture
-                        Image<Bgra, Byte> croppedColorImage;
-                        croppedColorImage = pColorImage.Copy();
-                        croppedColorImage.ROI = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
-
-                        UMat mask = null;
-                        UMat diff = new UMat(croppedColorImage.Size, croppedColorImage.ToUMat().Depth, croppedColorImage.ToUMat().NumberOfChannels);
-
-                        mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(croppedColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-                        croppedColorImage.ToUMat().CopyTo(diff, mask);
-                        croppedColorImage = diff.ToImage<Bgra, Byte>();
-
-                        Image<Gray, byte> currentGrayImage = croppedColorImage.Convert<Gray, byte>();
-
-                        // check if teached color is the same as the one that was teached in
-                        int[] numNonZero = currentGrayImage.CountNonzero();
-                        int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
-
-                        double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
-                        if (percentage_pixels > ob.MatchPercentageOffset)
+                        try
                         {
-                            Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);
-                            ob.Trigger();
+                            // crop image to the same size as the saved picture
+                            Image<Bgra, Byte> croppedColorImage;
+                            croppedColorImage = pColorImage.Copy();
+                            croppedColorImage.ROI = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
+                            UMat mask = null;
+                            UMat diff = new UMat(croppedColorImage.Size, croppedColorImage.ToUMat().Depth, croppedColorImage.ToUMat().NumberOfChannels);
+
+                            if (croppedColorImage.Size == ob.ObjectColorImage.Size)
+                            {
+                                mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(croppedColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                                croppedColorImage.ToUMat().CopyTo(diff, mask);
+                                croppedColorImage = diff.ToImage<Bgra, Byte>();
+
+                                Image<Gray, byte> currentGrayImage = croppedColorImage.Convert<Gray, byte>();
+
+                                // check if teached color is the same as the one that was teached in
+                                int[] numNonZero = currentGrayImage.CountNonzero();
+                                int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
+
+                                double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+                                if (percentage_pixels > ob.MatchPercentageOffset)
+                                {
+                                    Console.WriteLine("Detected colormapped Object with ID: " + ob.Id);
+                                    ob.Trigger();
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
                         }
 
                     }

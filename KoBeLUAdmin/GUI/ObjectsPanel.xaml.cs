@@ -53,9 +53,9 @@ namespace KoBeLUAdmin.GUI
     /// </summary>
     public partial class ObjectsPanel : UserControl
     {
-        public static readonly int BOX_BORDERWIDTH = 20;
-        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 100;
-        public static readonly int BOX_MANUALY_INSERT_WIDTH = 100;
+        public static readonly int BOX_BORDERWIDTH = 5;
+        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 50;
+        public static readonly int BOX_MANUALY_INSERT_WIDTH = 50;
 
         private ObjectDetectionZone m_DraggedObj = null;
 
@@ -63,7 +63,7 @@ namespace KoBeLUAdmin.GUI
 
         private AllEnums.Direction m_DragMode = AllEnums.Direction.NONE;
 
-        private const int m_BORDERWIDTHObject = 20;
+        private const int m_BORDERWIDTHObject = 5;
 
         private bool m_TakeScreenShotFromZone = false;
         bool m_TakeBackgroundScreenShot = false;
@@ -181,20 +181,15 @@ namespace KoBeLUAdmin.GUI
 
             foreach (ObjectDetectionZone o in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
             {
-                m_DragMode = isMouseOnObj(p, o);
-                if (m_DragMode != AllEnums.Direction.NONE)
+                if (o.IsSelected)
                 {
-                    m_DraggedObj = o;
-                    m_DragEnabled = true;
-                    //if (m_DragMode == AllEnums.Direction.NORTH || m_DragMode == AllEnums.Direction.SOUTH)
-                    //{
-                    //    Cursor = Cursors.SizeNS;
-                    //}
-                    //else if (m_DragMode == AllEnums.Direction.EAST || m_DragMode == AllEnums.Direction.WEST)
-                    //{
-                    //    Cursor = Cursors.SizeWE;
-                    //}
-                    return;
+                    m_DragMode = isMouseOnObj(p, o);
+                    if (m_DragMode != AllEnums.Direction.NONE)
+                    {
+                        m_DraggedObj = o;
+                        m_DragEnabled = true;
+                        return;
+                    }
                 }
             }
             m_DragEnabled = false;
@@ -372,6 +367,10 @@ namespace KoBeLUAdmin.GUI
                         m_DraggedObj.X = ((int)p.X);
                     }
                 }
+                // update picture after resizing the object
+                Image<Bgra, Byte> croppedImage = mColorImage;
+                croppedImage.ROI = new Rectangle(m_DraggedObj.X, m_DraggedObj.Y, m_DraggedObj.Width, m_DraggedObj.Height);
+                m_DraggedObj.ObjectColorImage = croppedImage;
             }
         }
         

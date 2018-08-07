@@ -279,7 +279,6 @@ namespace KoBeLUAdmin.GUI
             m_GUI_ObjectsPanel.Boxes_ProccessFrameObject();
             m_GUI_AssemblyPanel.AssemblyZones_ProccessFrame();
 
-
             if (tabControl1.SelectedItem.Equals(tabItemAssemblyZones))
             {
                 if (SettingsManager.Instance.Settings.AssemblyZoneVisualFeedbackDisplay) //m_GUI_AssemblyPanel.zones_checkBoxVisualFeedback.IsChecked.Value)

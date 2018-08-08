@@ -123,7 +123,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                                 }
                                 else if (percentage_pixels > 0 && percentage_pixels < ob.MatchPercentageOffset)
                                 {
-                                    Console.WriteLine("Error detected");
+                                    //Console.WriteLine("Error detected");
                                 }
                             }
                         }

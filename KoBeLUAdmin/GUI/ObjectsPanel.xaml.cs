@@ -425,9 +425,9 @@ namespace KoBeLUAdmin.GUI
             var selectedItem = m_ListBoxObjects.SelectedItem;
             if (selectedItem is ObjectDetectionZone)
             {
-                ObjectDetectionZone z = (ObjectDetectionZone)selectedItem;
+                ObjectDetectionZone ob = (ObjectDetectionZone)selectedItem;
 
-                EditObjectDetectionZoneDialog dlg = new EditObjectDetectionZoneDialog(z);
+                EditObjectDetectionZoneDialog dlg = new EditObjectDetectionZoneDialog(ob);
                 dlg.ShowDialog(); // blocking
                 if (dlg.wasOkay())
                 {

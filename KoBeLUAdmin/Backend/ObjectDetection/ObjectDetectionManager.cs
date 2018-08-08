@@ -177,15 +177,15 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             return rect;
         }
 
-        public Scene.SceneRect createSceneBoxForObjectDetectionZone(ObjectDetectionZone z, bool isUsedForRecord)
+        public Scene.SceneRect createSceneBoxForObjectDetectionZone(ObjectDetectionZone ob, bool isUsedForRecord)
         {
             int x_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X;
             int y_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y;
 
-            float h = ((float)z.Height / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
-            float w = ((float)z.Width / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
-            float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
-            float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
+            float h = ((float)ob.Height / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
+            float w = ((float)ob.Width / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
+            float x = ((float)(ob.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
+            float y = 1.0f - h - ((float)(ob.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
             System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 

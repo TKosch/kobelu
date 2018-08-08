@@ -54,8 +54,8 @@ namespace KoBeLUAdmin.GUI
     public partial class ObjectsPanel : UserControl
     {
         public static readonly int BOX_BORDERWIDTH = 5;
-        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 50;
-        public static readonly int BOX_MANUALY_INSERT_WIDTH = 50;
+        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 100;
+        public static readonly int BOX_MANUALY_INSERT_WIDTH = 100;
 
         private ObjectDetectionZone m_DraggedObj = null;
 
@@ -145,15 +145,15 @@ namespace KoBeLUAdmin.GUI
                 {
                     //write boxes
                     //MCvFont font = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
-                    foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+                    foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // draw ID
-                        pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
+                        pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
                         // draw Frame
-                        if (z.wasRecentlyTriggered())
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 2);
+                        if (ob.wasRecentlyTriggered())
+                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(0, 255, 255, 0), 5);
                         else
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(255, 255, 255, 0), 2);
+                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(255, 255, 255, 0), 5);
                     }
                 }
 
@@ -163,10 +163,10 @@ namespace KoBeLUAdmin.GUI
                 {
                     SceneManager.Instance.TemporaryObjectsScene.Clear();
                     // add a temporary scene for each box
-                    foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+                    foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // false = call from the display loop
-                        SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(z, false));
+                        SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(ob, false));
                     }
                 }
                 else

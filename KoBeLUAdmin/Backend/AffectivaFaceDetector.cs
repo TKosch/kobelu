@@ -95,7 +95,7 @@ namespace KoBeLUAdmin.Backend
                 if (mCameraActiveSerialization.IsActive)
                 {
                     mCameraActiveSerialization.IsActive = false;
-                    CancelCamera = true;
+                    StopAffectivaFaceDetector();
                 }
             }
         }

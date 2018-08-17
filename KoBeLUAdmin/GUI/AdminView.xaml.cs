@@ -125,7 +125,8 @@ namespace KoBeLUAdmin.GUI
             if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
             {
                 // initialize affectiva manager
-                mAffectivaManager = new AffectivaFaceDetector();
+                AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
+
             }
         }
 

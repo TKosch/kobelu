@@ -17,6 +17,23 @@ namespace KoBeLUAdmin.Backend
     public class AffectivaFaceDetector : Affdex.ImageListener, Affdex.FaceListener
     {
 
+        private static AffectivaFaceDetector mInstance;
+
+        /// <summary>
+        /// Singleton Constructor
+        /// </summary>
+        public static AffectivaFaceDetector Instance
+        {
+            get
+            {
+                if (mInstance == null)
+                {
+                    mInstance = new AffectivaFaceDetector();
+                }
+                return mInstance;
+            }
+        }
+
         // constants
         private const int CAMID = 0;
         private const int CAMFPS = 60;
@@ -25,7 +42,12 @@ namespace KoBeLUAdmin.Backend
         private CameraActiveSerialization mCameraActiveSerialization = new CameraActiveSerialization();
         private bool mCancelCamera = false;
 
+
         public AffectivaFaceDetector()
+        {
+        }
+
+        public void StartAffectivaFaceDetector()
         {
             // path to data files
             string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
@@ -43,11 +65,17 @@ namespace KoBeLUAdmin.Backend
             cameraThread.Start();
         }
 
+
+        public void StopAffectivaFaceDetector()
+        {
+            CancelCamera = true;
+        }
+
         private void CameraChecker()
         {
             while (mCameraDetector.isRunning())
             {
-                if (mCancelCamera)
+                if (CancelCamera)
                 {
                     mCameraDetector.stop();
                     mCameraDetector.Dispose();
@@ -67,7 +95,7 @@ namespace KoBeLUAdmin.Backend
                 if (mCameraActiveSerialization.IsActive)
                 {
                     mCameraActiveSerialization.IsActive = false;
-                    mCancelCamera = true;
+                    CancelCamera = true;
                 }
             }
         }
@@ -86,5 +114,6 @@ namespace KoBeLUAdmin.Backend
         }
 
         public CameraDetector CameraDetector { get => mCameraDetector; set => mCameraDetector = value; }
+        public bool CancelCamera { get => mCancelCamera; set => mCancelCamera = value; }
     }
 }

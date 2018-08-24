@@ -453,3 +453,68 @@ CRITICAL: 1:29:27 PM Friday, August 24, 2018
 String reference not set to an instance of a String.
 Parameter name: name
 -------------------------------
+
+INFORMATION: 1:32:34 PM Friday, August 24, 2018
+App started
+-------------------------------
+
+ERROR: 1:32:35 PM Friday, August 24, 2018
+Object reference not set to an instance of an object.
+-------------------------------
+
+CRITICAL: 1:32:35 PM Friday, August 24, 2018
+String reference not set to an instance of a String.
+Parameter name: name
+-------------------------------
+
+INFORMATION: 1:38:46 PM Friday, August 24, 2018
+App started
+-------------------------------
+
+ERROR: 1:38:47 PM Friday, August 24, 2018
+Object reference not set to an instance of an object.
+-------------------------------
+
+CRITICAL: 1:38:47 PM Friday, August 24, 2018
+String reference not set to an instance of a String.
+Parameter name: name
+-------------------------------
+
+INFORMATION: 1:39:32 PM Friday, August 24, 2018
+App started
+-------------------------------
+
+ERROR: 1:39:33 PM Friday, August 24, 2018
+Object reference not set to an instance of an object.
+-------------------------------
+
+CRITICAL: 1:39:33 PM Friday, August 24, 2018
+String reference not set to an instance of a String.
+Parameter name: name
+-------------------------------
+
+INFORMATION: 1:39:50 PM Friday, August 24, 2018
+App started
+-------------------------------
+
+ERROR: 1:39:51 PM Friday, August 24, 2018
+Object reference not set to an instance of an object.
+-------------------------------
+
+CRITICAL: 1:39:51 PM Friday, August 24, 2018
+String reference not set to an instance of a String.
+Parameter name: name
+-------------------------------
+
+INFORMATION: 1:40:05 PM Friday, August 24, 2018
+App started
+-------------------------------
+
+ERROR: 1:40:06 PM Friday, August 24, 2018
+Object reference not set to an instance of an object.
+-------------------------------
+
+CRITICAL: 1:40:06 PM Friday, August 24, 2018
+String reference not set to an instance of a String.
+Parameter name: name
+-------------------------------

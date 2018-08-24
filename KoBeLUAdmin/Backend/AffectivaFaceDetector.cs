@@ -48,11 +48,13 @@ namespace KoBeLUAdmin.Backend
 
         public void StartAffectivaFaceDetector()
         {
-
+            //if camera detector is running don't start a new one
+            if (mCameraDetector != null)
+                return;
             mCameraDetector = new CameraDetector();
             // path to data files
             string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
-            mCameraActiveSerialization.Call = "camera_active";
+            mCameraActiveSerialization.Call = "set_camera_active";
             mCameraActiveSerialization.IsActive = true;
 
             mCameraDetector.setClassifierPath(affdexDataPath);

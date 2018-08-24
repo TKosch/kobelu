@@ -142,10 +142,10 @@ namespace KoBeLUAdmin.Network
                                 break;
                             case "set_camera_active":
                                 bool isactive = jsonResponse.isactive;
-                                AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
-                                break;
-                            case "set_camera_free":
-                                AffectivaFaceDetector.Instance.StopAffectivaFaceDetector();
+                                if(isactive)
+                                    AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
+                                else
+                                    AffectivaFaceDetector.Instance.StopAffectivaFaceDetector();
                                 break;
                             default:
                                 break;

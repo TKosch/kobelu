@@ -79,7 +79,7 @@ namespace KoBeLUAdmin.GUI
             InitializeComponent();
             m_TopBar.DataContext = SettingsManager.Instance.Settings;
             m_ButtomBar.DataContext = SettingsManager.Instance.Settings;
-            m_ObjectsListView.DataContext = DatabaseManager.Instance;
+            //m_ObjectsListView.DataContext = DatabaseManager.Instance;
             m_ListBoxObjects.DataContext = ObjectDetectionManager.Instance.CurrentLayout;
         }
 
@@ -92,26 +92,26 @@ namespace KoBeLUAdmin.GUI
         /// 
         private void Menuitem_Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (m_ObjectsListView.SelectedIndex != -1)
-            {
-                TrackableObject obj = (TrackableObject)m_ObjectsListView.SelectedItem;
-                DatabaseManager.Instance.deleteTrackableObject(obj);
-                DatabaseManager.Instance.listTrackableObject(); // refresh
-                m_ObjectsListView.Items.Refresh();
-            }
+            //if (m_ObjectsListView.SelectedIndex != -1)
+            //{
+            //    TrackableObject obj = (TrackableObject)m_ObjectsListView.SelectedItem;
+            //    DatabaseManager.Instance.deleteTrackableObject(obj);
+            //    DatabaseManager.Instance.listTrackableObject(); // refresh
+            //    m_ObjectsListView.Items.Refresh();
+            //}
         }
 
         private void ObjectsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // check if an object is selected
-            if (m_ObjectsListView.SelectedItems.Count == 1)
-            {
-                foreach (var item in m_ObjectsListView.SelectedItems)
-                {
-                    TrackableObject obj = item as TrackableObject;
-                    ObjectDetectionManager.Instance.DisplayObjectEditDialog(obj);
-                }
-            }
+            //if (m_ObjectsListView.SelectedItems.Count == 1)
+            //{
+            //    foreach (var item in m_ObjectsListView.SelectedItems)
+            //    {
+            //        TrackableObject obj = item as TrackableObject;
+            //        ObjectDetectionManager.Instance.DisplayObjectEditDialog(obj);
+            //    }
+            //}
         }
 
         //Code to be called within the main OnLoaded Method
@@ -148,7 +148,7 @@ namespace KoBeLUAdmin.GUI
                     foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // draw ID
-                        pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
+                        pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 2, new Bgra(0, 0, 0, 0));
                         // draw Frame
                         if (ob.wasRecentlyTriggered())
                             pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(0, 255, 255, 0), 5);
@@ -490,7 +490,7 @@ namespace KoBeLUAdmin.GUI
 
         internal void Refresh()
         {
-            m_ObjectsListView.Items.Refresh();
+            //m_ObjectsListView.Items.Refresh();
         }
     }
 }

@@ -49,6 +49,7 @@ using KoBeLUAdmin.Network;
 using KoBeLUAdmin.Statistics;
 using Newtonsoft.Json;
 using KoBeLUAdmin.Serialization;
+using KoBeLUAdmin.Frontend;
 
 namespace KoBeLUAdmin.Backend
 {
@@ -285,6 +286,7 @@ namespace KoBeLUAdmin.Backend
 
         private void DoStartWorkflow()
         {
+            TableWindow3D.Instance.WindowState = System.Windows.WindowState.Maximized;
             //TODO: Change length of array to number of QS Worksteps...
             m_QSFullfilled = new bool[m_LoadedWorkflow.WorkingSteps.Count - 1];
             Array.Clear(m_QSFullfilled, 0, m_QSFullfilled.Length);

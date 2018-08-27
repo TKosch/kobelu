@@ -68,20 +68,26 @@
                 <xctk:IntegerUpDown Grid.Row="1" Grid.Column="3" Margin="5,5,5,5" Value="{Binding ObjectDetectParam4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </Grid>
+            <Button x:Name="Button_SelectAll" Content="Select All" Click="Button_SelectAll_Click"/>
+            <Button x:Name="Button_DeselectAll" Content="Deselect All" Click="Button_DeselectAll_Click"/>
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="1">
-            <ListBox x:Name="m_ListBoxObjects" x:FieldModifier="protected" Margin="5,5,5,5" ItemsSource="{Binding ObjectDetectionZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListBox x:Name="m_ListBoxObjects" x:FieldModifier="protected" Margin="5,5,5,5" ItemsSource="{DynamicResource checkBoxCollection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Width="100">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Click="MenuItem_EditSelectedBoxObject" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemEdit], FallbackValue='#Edit'}" />
-                                    <MenuItem Click="MenuItem_DeleteSelectedObjectDetectionZone" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemDelete], FallbackValue='#Delete'}" />
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}">
+                            <TextBlock Text="{Binding Name}" Width="100">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Click="MenuItem_EditSelectedBoxObject" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemEdit], FallbackValue='#Edit'}" />
+                                        <MenuItem Click="MenuItem_DeleteSelectedObjectDetectionZone" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemDelete], FallbackValue='#Delete'}" />
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+
+
+                            </TextBlock>
+                        </CheckBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

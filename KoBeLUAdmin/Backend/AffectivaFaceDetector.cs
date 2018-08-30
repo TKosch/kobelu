@@ -52,8 +52,10 @@ namespace KoBeLUAdmin.Backend
             if (mCameraDetector != null)
                 return;
             mCameraDetector = new CameraDetector();
+            string solution_path = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
+            string model_path =  Path.Combine(solution_path, "AI\\Datamodel\\AffdexSDK\\data");
             // path to data files
-            string affdexDataPath = "C:\\Program Files\\Affectiva\\AffdexSDK\\data";
+            string affdexDataPath = model_path;
             mCameraActiveSerialization.Call = "set_camera_active";
             mCameraActiveSerialization.IsActive = true;
 

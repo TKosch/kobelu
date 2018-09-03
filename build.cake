@@ -1,11 +1,11 @@
 var target = Argument("target", "Default");
-var configuration = Argument("configuration", "Release");
+
+var output = Directory("./Setups/");
 
 Task("Clean")
     .Does(() =>
 {
-    CleanDirectories(string.Format("./**/obj/{0}", configuration));
-    CleanDirectories(string.Format("./**/bin/{0}", configuration));
+    CleanDirectory("./KoBeLUAdmin/bin/");
 });
 
 Task("Restore-NuGet-Packages")
@@ -19,8 +19,9 @@ Task("Build")
     .IsDependentOn("Restore-NuGet-Packages")
     .Does(() =>
 {
-    MSBuild("./KoBeLUAdmin.sln", settings =>
-    settings.SetConfiguration(configuration));
+    MSBuild("./KoBeLUAdmin.sln", new MSBuildSettings {
+        Configuration = "Debug"
+    });
 });
 
 Task("Publish")
@@ -31,6 +32,6 @@ Task("Publish")
 });
 
 Task("Default")
-    .IsDependentOn("Build");
+    .IsDependentOn("Publish");
 
 RunTarget(target);

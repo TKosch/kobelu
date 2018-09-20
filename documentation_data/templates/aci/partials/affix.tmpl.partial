@@ -4,7 +4,7 @@
     <a href="{{docurl}}" title="{{__global.improveThisDoc}}" class="fltbtn btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
     {{/docurl}}
     {{#sourceurl}}
-    <a href="{{sourceurl}}" title="{{__global.viewSource}}" class="fltbtn btn-info pull-right"><i class="fab fa-code"></i></a>
+    <a href="{{sourceurl}}" title="{{__global.viewSource}}" class="fltbtn btn-info pull-right"><i class="fas fa-code"></i></a>
     {{/sourceurl}}
 </div>
 {{/_disableContribution}}

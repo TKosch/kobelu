@@ -37,6 +37,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices.WindowsRuntime;
 using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.Backend.AssembleyZones;
 using KoBeLUAdmin.Backend.Boxes;
@@ -134,6 +135,28 @@ namespace KoBeLUAdmin.GUI.Dialog
             m_ComboboxAdaptivityLevel.ItemsSource = AdaptivityLevel.AdaptivityLevels;
             m_ComboboxAdaptivityLevel.SelectedValue = SettingsManager.Instance.Settings.AdaptivityLevelId;
 
+            //get name, description, category and creator
+            NameBox.Text = EditWorkflowManager.Instance.CurrentWorkflow.Name;
+            DescriptionBox.Text = EditWorkflowManager.Instance.CurrentWorkflow.Description;
+            CategoryBox.Text = EditWorkflowManager.Instance.CurrentWorkflow.Category;
+            CreatorBox.Text = EditWorkflowManager.Instance.CurrentWorkflow.Creator;
+            //load Image from workflow file
+            if (EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail != null)
+            {
+                System.Windows.Media.Imaging.WriteableBitmap bmpPx =
+                    new System.Windows.Media.Imaging.WriteableBitmap(
+                    64,
+                    64,
+                     299.9993896484375, 299.9993896484375, System.Windows.Media.PixelFormats.Bgra32, null);
+
+                int stride = 64 * (System.Windows.Media.PixelFormats.Bgra32.BitsPerPixel) / 8;
+
+                bmpPx.WritePixels(
+                    new Int32Rect(0, 0, 64, 64),
+                    EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail, stride, 0);
+
+                ThumbnailImage.Source = bmpPx;
+            }
 
             AdminView.Instance.refreshDataContext();
             AdminView.Instance.refreshWorkflowUI();
@@ -250,6 +273,11 @@ namespace KoBeLUAdmin.GUI.Dialog
 
         private void saveLayout_Click(object sender, RoutedEventArgs e)
         {
+            EditWorkflowManager.Instance.CurrentWorkflow.Name = NameBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Description = DescriptionBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Category = CategoryBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Creator = CreatorBox.Text;
+
             EditWorkflowManager.Instance.SaveCurrentWorkflow(true);
         }
 
@@ -261,6 +289,11 @@ namespace KoBeLUAdmin.GUI.Dialog
 
         private void applyLayout_Click(object sender, RoutedEventArgs e)
         {
+            EditWorkflowManager.Instance.CurrentWorkflow.Name = NameBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Description = DescriptionBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Category = CategoryBox.Text;
+            EditWorkflowManager.Instance.CurrentWorkflow.Creator = CreatorBox.Text;
+
             Workflow obj = new Workflow();
             UtilitiesCopy.DeepClone<Workflow>(ref obj, EditWorkflowManager.Instance.CurrentWorkflow);
             WorkflowManager.Instance.LoadedWorkflow = obj;
@@ -344,6 +377,55 @@ namespace KoBeLUAdmin.GUI.Dialog
                     //SceneManager.Instance.CurrentScene = step.AdaptiveScenes.FirstOrDefault().Scene;
                     SceneManager.Instance.CurrentScene = step.getAdaptiveScene((int)m_ComboboxAdaptivityLevel.SelectedValue).Scene;
                 }
+            }
+        }
+
+        private void ThumbnailButton_click(object sender, RoutedEventArgs e)
+        {
+            if(ThumbnailImage.Source != null)
+            {
+                ThumbnailImage.Source = null;
+                ThumbnailButton.Content = "Add Thumbnail";
+                EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail = null;
+                return;
+            }
+            System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog()
+            {
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Title = "Select Workflow Thumbnail...",
+                Filter = "Image Files|*.bmp;*.jpg;*.png"
+            };
+            // Process open file dialog box results
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                // Open document
+                string filename = dlg.FileName;
+                System.Windows.Media.Imaging.BitmapImage bmp = new System.Windows.Media.Imaging.BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = new Uri(filename, UriKind.RelativeOrAbsolute);
+                bmp.DecodePixelWidth = 64;
+                bmp.DecodePixelHeight = 64;
+                bmp.EndInit();
+    
+                int stride = bmp.PixelWidth * (bmp.Format.BitsPerPixel) / 8;
+                EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail = new byte[stride * bmp.PixelHeight];
+
+                bmp.CopyPixels(EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail, stride, 0);
+
+                System.Windows.Media.Imaging.WriteableBitmap bmpPx = 
+                    new System.Windows.Media.Imaging.WriteableBitmap(
+                    bmp.PixelWidth,
+                    bmp.PixelHeight,
+                    bmp.DpiX, bmp.DpiY,
+                    bmp.Format, null);
+
+                bmpPx.WritePixels(
+                    new Int32Rect(0, 0, bmp.PixelWidth, bmp.PixelHeight),
+                    EditWorkflowManager.Instance.CurrentWorkflow.Thumbnail, stride, 0);
+
+                ThumbnailImage.Source = bmpPx;
+                ThumbnailButton.Content = "Remove Thumbnail";
             }
         }
 
@@ -620,7 +702,6 @@ namespace KoBeLUAdmin.GUI.Dialog
                     }
                 }
             }
-
         }
 
         private void MenuItemCopyErrorScene_Click(object sender, RoutedEventArgs e)
@@ -655,6 +736,25 @@ namespace KoBeLUAdmin.GUI.Dialog
             }
         }
 
+        private void createFromObjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            Object o = m_listBoxObjectZones.SelectedItem;
+
+            if (o != null)
+            {
+                if (o is ObjectDetectionZone)
+                {
+                    ObjectDetectionZone ob = (ObjectDetectionZone)o;
+
+                    AdaptiveScene easyScene = new AdaptiveScene(EditWorkflowManager.Instance.getObjectAutoScene(ob), AdaptivityLevel.AdaptivityLevels.First());
+                    AdaptiveScene mediumScene = new AdaptiveScene(EditWorkflowManager.Instance.getObjectAutoScene(ob), AdaptivityLevel.AdaptivityLevels.ElementAt(1));
+
+                    var adaptiveScenes = new List<AdaptiveScene> { easyScene, mediumScene };
+
+                    EditWorkflowManager.Instance.createStep(HciLab.KoBeLU.InterfacesAndDataModel.AllEnums.PBD_Mode.ASSEMBLY_DONE, adaptiveScenes, "Object-" + ob.Id, ob.TriggerMessage);
+                }
+            }
+        }
     }
 
 }

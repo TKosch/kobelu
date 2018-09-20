@@ -44,6 +44,7 @@ using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.Backend.ObjectDetection;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
+using HciLab.Kinect;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -53,8 +54,8 @@ namespace KoBeLUAdmin.GUI
     public partial class ObjectsPanel : UserControl
     {
         public static readonly int BOX_BORDERWIDTH = 5;
-        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 50;
-        public static readonly int BOX_MANUALY_INSERT_WIDTH = 50;
+        public static readonly int BOX_MANUALY_INSERT_HEIGHT = 100;
+        public static readonly int BOX_MANUALY_INSERT_WIDTH = 100;
 
         private ObjectDetectionZone m_DraggedObj = null;
 
@@ -67,12 +68,11 @@ namespace KoBeLUAdmin.GUI
         private bool m_TakeScreenShotFromZone = false;
         bool m_TakeBackgroundScreenShot = false;
 
-        // TODO: put elsewhere
-        Image<Gray, Byte> m_BackgroundScreenShot = null;
-
         private ObjectDetectionZone m_SelectedZone = null;
 
         private long m_ScreenshotTakenTimestamp = 0;
+
+        Image<Bgra, Byte> mColorImage;
         
         public ObjectsPanel()
         {
@@ -136,101 +136,8 @@ namespace KoBeLUAdmin.GUI
         //Code to be called within a certain part of the main ProccessFrame Method
         public void Object_ProccessFrame_Draw(bool hasToUpdateUI, Image<Bgra, Byte> pImage)
         {
-            if (m_TakeBackgroundScreenShot)
-            {
-                m_BackgroundScreenShot = pImage.Clone().Convert<Gray, Byte>();
-                m_TakeBackgroundScreenShot = false;
-            }
-
-            if (m_TakeScreenShotFromZone)
-            {
-                if (m_SelectedZone != null)
-                {
-                    long now = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
-                    if (now - m_ScreenshotTakenTimestamp > 200) // take picture after 200ms - frame should be gone by then
-                    {
-                        UMat mask = null;
-                        UMat diff = new UMat(pImage.Size, pImage.ToUMat().Depth, pImage.ToUMat().NumberOfChannels);
-                        if (m_BackgroundScreenShot != null)
-                        {
-                            mask = m_BackgroundScreenShot.AbsDiff(pImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
-                        }
-                        pImage.ToUMat().CopyTo(diff, mask);
-                        pImage = diff.ToImage<Bgra, Byte>();
-                        
-                        
-                        // crop image
-                        Rectangle boundingBox = new Rectangle(m_SelectedZone.X, m_SelectedZone.Y, m_SelectedZone.Width, m_SelectedZone.Height);
-                        pImage.ROI = boundingBox;
-
-                        ObjectDetectionManager.Instance.SaveAndAddObjectToDatabase(pImage);
-
-                        SceneManager.Instance.DisableObjectScenes = false;
-                        m_TakeScreenShotFromZone = false;
-                        m_SelectedZone = null;
-
-                        CvInvoke.cvResetImageROI(pImage);
-                    }
-                }
-            }
-
-            // first clear all the feedback from previous frame
-            SceneManager.Instance.TemporaryObjectsTextScene.Clear();
-
-            // should we check for objects?
-            if (SettingsManager.Instance.Settings.ObjectsRecognizeObject &&
-                ObjectDetectionManager.Instance.CurrentLayout != null &&
-                hasToUpdateUI)
-            {
-                // walk over all zones
-                foreach (ObjectDetectionZone zone in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
-                {
-                    // crop image
-                    Rectangle boundingBox = new Rectangle(zone.X, zone.Y, zone.Width, zone.Height);
-                    pImage.ROI = boundingBox;
-                    Image<Gray, byte> grayscaleImage = pImage.Copy().Convert<Gray, byte>();
-                    CvInvoke.cvResetImageROI(pImage);
-
-                    // walk over all objects
-                    foreach (TrackableObject obj in Database.DatabaseManager.Instance.Objects)
-                    {
-                        Mat homography;
-                        VectorOfKeyPoint modelKeyPoints;
-                        VectorOfKeyPoint observedKeyPoints;
-                        using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
-                        {
-                            Mat mask;
-                            if (ObjectDetectionManager.Instance.RecognizeObject(obj.EmguImage, grayscaleImage,
-                                out modelKeyPoints, out observedKeyPoints, matches,
-                                out mask, out homography))
-                            {
-                                Mat result = new Mat();
-                                Features2DToolbox.DrawMatches(obj.EmguImage, modelKeyPoints, grayscaleImage, observedKeyPoints,
-               matches, result, new MCvScalar(255, 255, 255), new MCvScalar(255, 255, 255), mask);
-
-                                // YAY we found an object
-                                UtilitiesImage.ToImage(featureView, result.ToImage<Bgra, byte>());
-
-                                // trigger stuff
-                                WorkflowManager.Instance.OnObjectRecognized(obj);
-
-                                // update last seen timestamp
-                                obj.LastSeenTimeStamp = DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond;
-                                obj.LastSeenZoneId = zone.Id;
-
-                                // display visual feedback
-                                Scene.SceneText textItem =
-                                    ObjectDetectionManager.Instance.createSceneTextHeadingObjectDetectionZone(zone,
-                                        obj.Name);
-                                SceneManager.Instance.TemporaryObjectsTextScene.Add(textItem);
-
-                            }
-                        }
-                    }
-                    
-                }
-            }
-
+            mColorImage = pImage.Convert<Bgra, Byte>();
+            // display image with visual feedback
             CvInvoke.cvResetImageROI(pImage);
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
             {
@@ -238,15 +145,15 @@ namespace KoBeLUAdmin.GUI
                 {
                     //write boxes
                     //MCvFont font = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
-                    foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+                    foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // draw ID
-                        pImage.Draw(z.Id + "", new System.Drawing.Point(z.X, z.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0,0,0,0));
+                        pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
                         // draw Frame
-                        if (z.wasRecentlyTriggered())
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(0, 255, 255, 0), 2);
+                        if (ob.wasRecentlyTriggered())
+                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(0, 255, 255, 0), 5);
                         else
-                            pImage.Draw(new Rectangle(z.X, z.Y, z.Width, z.Height), new Bgra(255, 255, 255, 0), 2);
+                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(255, 255, 255, 0), 5);
                     }
                 }
 
@@ -256,10 +163,10 @@ namespace KoBeLUAdmin.GUI
                 {
                     SceneManager.Instance.TemporaryObjectsScene.Clear();
                     // add a temporary scene for each box
-                    foreach (ObjectDetectionZone z in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+                    foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // false = call from the display loop
-                        SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(z, false));
+                        SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(ob, false));
                     }
                 }
                 else
@@ -274,20 +181,15 @@ namespace KoBeLUAdmin.GUI
 
             foreach (ObjectDetectionZone o in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
             {
-                m_DragMode = isMouseOnObj(p, o);
-                if (m_DragMode != AllEnums.Direction.NONE)
+                if (o.IsSelected)
                 {
-                    m_DraggedObj = o;
-                    m_DragEnabled = true;
-                    if (m_DragMode == AllEnums.Direction.NORTH || m_DragMode == AllEnums.Direction.SOUTH)
+                    m_DragMode = isMouseOnObj(p, o);
+                    if (m_DragMode != AllEnums.Direction.NONE)
                     {
-                        Cursor = Cursors.SizeNS;
+                        m_DraggedObj = o;
+                        m_DragEnabled = true;
+                        return;
                     }
-                    else if (m_DragMode == AllEnums.Direction.EAST || m_DragMode == AllEnums.Direction.WEST)
-                    {
-                        Cursor = Cursors.SizeWE;
-                    }
-                    return;
                 }
             }
             m_DragEnabled = false;
@@ -295,7 +197,6 @@ namespace KoBeLUAdmin.GUI
 
         private void buttonSaveBoxObjectLayout_Click(object sender, RoutedEventArgs e)
         {
-            ObjectDetectionManager.Instance.CurrentLayout.LayoutName = textBoxName.Text;
             ObjectDetectionManager.Instance.saveObjectDetectionZoneLayoutToFile();
         }
 
@@ -307,17 +208,7 @@ namespace KoBeLUAdmin.GUI
             // also update name
             if (ObjectDetectionManager.Instance.CurrentLayout != null)
             {
-                textBoxName.Text = ObjectDetectionManager.Instance.CurrentLayout.LayoutName;
                 this.m_ListBoxObjects.DataContext = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
-            }
-
-        }
-
-        public void refreshLayoutName()
-        {
-            if (textBoxName != null && (ObjectDetectionManager.Instance.CurrentLayout != null))
-            {
-                textBoxName.Text = ObjectDetectionManager.Instance.CurrentLayout.LayoutName;
             }
         }
 
@@ -331,31 +222,7 @@ namespace KoBeLUAdmin.GUI
             System.Windows.Point p = e.GetPosition(image);
             if (isMouseOnAnyObj(p) == AllEnums.Direction.NONE)
             {
-
-                int width = 0;
-                int height = 0;
-                double x = e.GetPosition(image).X;
-                double y = e.GetPosition(image).Y;
-
-                if (BOX_MANUALY_INSERT_WIDTH + x < image.ActualWidth)
-                {
-                    width = BOX_MANUALY_INSERT_WIDTH;
-                }
-                else
-                {
-                    width = (int)(image.ActualWidth - x);
-                }
-
-                if (BOX_MANUALY_INSERT_HEIGHT + y < image.ActualHeight)
-                {
-                    height = BOX_MANUALY_INSERT_HEIGHT;
-                }
-                else
-                {
-                    height = (int)(image.ActualHeight - y);
-                }
-
-                ObjectDetectionManager.Instance.createObjectDetectionZoneFromFactory((int)x, (int)y, width, height);
+                createANewObj(sender, e);
             }
             else
             {
@@ -363,7 +230,51 @@ namespace KoBeLUAdmin.GUI
             }
         }
 
-         private void image_MouseUp(object sender, MouseButtonEventArgs e)
+        private void createANewObj(object sender, MouseButtonEventArgs e)
+        {
+            int width = 0;
+            int height = 0;
+            double x = e.GetPosition(image).X;
+            double y = e.GetPosition(image).Y;
+            if (mColorImage != null)
+            {
+                if (BOX_MANUALY_INSERT_WIDTH + x < mColorImage.Width)
+                {
+                    width = BOX_MANUALY_INSERT_WIDTH;
+                }
+                else
+                {
+                    width = (int)(mColorImage.Width - x);
+                }
+
+                if (BOX_MANUALY_INSERT_HEIGHT + y < mColorImage.Height)
+                {
+                    height = BOX_MANUALY_INSERT_HEIGHT;
+                }
+                else
+                {
+                    height = (int)(mColorImage.Height - y);
+                }
+
+                ObjectDetectionZone ob = ObjectDetectionManager.Instance.createObjectDetectionZoneFromFactory((int)x, (int)y, width, height);
+
+                ob.X = (int)x;
+                ob.Y = (int)y;
+                ob.Width = width;
+                ob.Height = height;
+
+                Image<Bgra, Byte> croppedImage = mColorImage;
+                croppedImage.ROI = new Rectangle((int)x, (int)y, width, height);
+
+                ob.ObjectColorImage = croppedImage;
+                ob.MatchPercentageOffset = 80;
+
+                ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Add(ob);
+
+            }
+        }
+
+        private void image_MouseUp(object sender, MouseButtonEventArgs e)
         {
             if (m_DragEnabled)
             {
@@ -455,6 +366,10 @@ namespace KoBeLUAdmin.GUI
                         m_DraggedObj.X = ((int)p.X);
                     }
                 }
+                // update picture after resizing the object
+                Image<Bgra, Byte> croppedImage = mColorImage;
+                croppedImage.ROI = new Rectangle(m_DraggedObj.X, m_DraggedObj.Y, m_DraggedObj.Width, m_DraggedObj.Height);
+                m_DraggedObj.ObjectColorImage = croppedImage;
             }
         }
         
@@ -462,10 +377,13 @@ namespace KoBeLUAdmin.GUI
         {
             foreach (ObjectDetectionZone b in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
             {
-                AllEnums.Direction d = isMouseOnObj(p, b);
-                if (d != AllEnums.Direction.NONE)
-                    return d;
+                if (b.IsSelected)
+                {
 
+                    AllEnums.Direction d = isMouseOnObj(p, b);
+                    if (d != AllEnums.Direction.NONE)
+                        return d;
+                }
             }
             return AllEnums.Direction.NONE;
         }
@@ -506,9 +424,9 @@ namespace KoBeLUAdmin.GUI
             var selectedItem = m_ListBoxObjects.SelectedItem;
             if (selectedItem is ObjectDetectionZone)
             {
-                ObjectDetectionZone z = (ObjectDetectionZone)selectedItem;
+                ObjectDetectionZone ob = (ObjectDetectionZone)selectedItem;
 
-                EditObjectDetectionZoneDialog dlg = new EditObjectDetectionZoneDialog(z);
+                EditObjectDetectionZoneDialog dlg = new EditObjectDetectionZoneDialog(ob);
                 dlg.ShowDialog(); // blocking
                 if (dlg.wasOkay())
                 {
@@ -535,6 +453,11 @@ namespace KoBeLUAdmin.GUI
 
         private void buttonObjectScreenShot_Click(object sender, RoutedEventArgs e)
         {
+            updateObjectZones();
+        }
+
+        private void updateObjectZones()
+        {
             var selectedItem = m_ListBoxObjects.SelectedItem;
             if (selectedItem is ObjectDetectionZone)
             {
@@ -546,6 +469,18 @@ namespace KoBeLUAdmin.GUI
                 SceneManager.Instance.DisableObjectScenes = true;
 
             }
+        }
+
+
+        private ObjectDetectionZone GetSelectedObjectZone()
+        {
+            var selectedItem = m_ListBoxObjects.SelectedItem;
+            if (selectedItem is ObjectDetectionZone)
+            {
+                ObjectDetectionZone z = (ObjectDetectionZone)selectedItem;
+                return z;
+            }
+            return null;
         }
 
         private void buttonBackgroundScreenShot_Click(object sender, RoutedEventArgs e)

@@ -9,5 +9,7 @@
         <Label Content="Trigger:" HorizontalAlignment="Left" Margin="13,55,0,87" Name="label2" Width="93" />
         <TextBox Height="25" HorizontalAlignment="Left" Margin="92,20,0,0" Name="textBoxObjectDetectionZoneName" VerticalAlignment="Top" Width="272" />
         <TextBox Height="25" HorizontalAlignment="Left" Margin="92,55,0,0" Name="textBoxObjectDetectionZoneTriggerName" VerticalAlignment="Top" Width="272" />
+        <Label Content="Percentage:" HorizontalAlignment="Left" Margin="13,89,0,53" x:Name="label2_Copy" Width="93" />
+        <TextBox Height="25" HorizontalAlignment="Left" Margin="92,89,0,0" x:Name="MatchPercentageOffset" VerticalAlignment="Top" Width="272" />
     </Grid>
 </Window>

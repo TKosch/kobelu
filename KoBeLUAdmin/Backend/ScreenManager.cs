@@ -28,6 +28,7 @@
 // </patent information>
 // <date> 11/2/2016 12:25:58 PM</date>
 
+using System;
 using System.Drawing;
 
 namespace KoBeLUAdmin.Backend
@@ -44,7 +45,7 @@ namespace KoBeLUAdmin.Backend
             if (isSecondScreenConnected())
             {
                 //As convenience for the developer always choose non-primary Screen
-                int screenID = (System.Windows.Forms.Screen.AllScreens[0].Primary == false) ?  0 : 1;
+                int screenID = (System.Windows.Forms.Screen.AllScreens[0].Primary == false) ? 0 : 1;
                 return System.Windows.Forms.Screen.AllScreens[screenID].WorkingArea;
             }
             else

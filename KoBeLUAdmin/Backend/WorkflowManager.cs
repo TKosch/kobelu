@@ -83,6 +83,7 @@ namespace KoBeLUAdmin.Backend
         public static event Action<TrackableObject> ObjectRecognized;
         public static event Action<Box> BoxTriggered;
         public static event Action<AssemblyZone> AssemblyZoneTriggered;
+        public static event Action<ObjectDetectionZone> ObjectDetectionZoneTriggered;
         /// <summary>
         /// Workstep changed by Condition
         /// </summary>
@@ -154,6 +155,8 @@ namespace KoBeLUAdmin.Backend
             BoxTriggered += checkExtraActions;
             BoxTriggered += PBDManager.Instance.OnBoxTriggeredPBD;
 
+            ObjectDetectionZoneTriggered += checkEndConditionspublic;
+
             ObjectRecognized += this.checkObjectCondition;
 
             //Set adaptivitylevelId from Settings
@@ -201,6 +204,11 @@ namespace KoBeLUAdmin.Backend
             {
                 Console.WriteLine("Triggered Box " + w.Id + " Trigger-Message is: " + w.TriggerMessage);
                 BoxTriggered(w as Box);
+            }
+            else if (w is ObjectDetectionZone)
+            {
+                Console.WriteLine("Detected colormapped Object with ID: " + w.TriggerMessage);
+                ObjectDetectionZoneTriggered(w as ObjectDetectionZone);
             }
         }
 
@@ -251,6 +259,7 @@ namespace KoBeLUAdmin.Backend
             StatsManager.Instance.initialize();
 
             OnWorkflowLoaded();
+
 
             return true;
         }
@@ -305,6 +314,7 @@ namespace KoBeLUAdmin.Backend
             StartWorkflowSerialization startWorkflowSerialization = new StartWorkflowSerialization();
             startWorkflowSerialization.Call = "start_workflow";
             startWorkflowSerialization.WorkflowId = m_LoadedWorkflow.Id;
+            Console.WriteLine(m_LoadedWorkflow.Id);
             string message = JsonConvert.SerializeObject(startWorkflowSerialization);
             NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
         }
@@ -380,7 +390,8 @@ namespace KoBeLUAdmin.Backend
                     m_BoxErrorCounter = 0;
 
 
-                    SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
+                    // FIXME: The line below causes a bug
+                    //SceneManager.Instance.CurrentScene = LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber).getAdaptiveScene(m_adaptivityLevelId).Scene;
                     m_CurrentWorkingStepNumber = m_CurrentWorkingStepNumber + 1;
                     NextWorkingStepSerialization nextWorkingStepSerialization = new NextWorkingStepSerialization();
                     nextWorkingStepSerialization.Call = "next_working_step";
@@ -621,6 +632,23 @@ namespace KoBeLUAdmin.Backend
                                 box.IsBoxErroneous = true;
                             }
                         }
+                    }
+                }
+            }
+        }
+
+
+        public void checkEndConditionspublic(ObjectDetectionZone ob)
+        {
+            if (m_LoadedWorkflow != null)
+            {
+                if (m_CurrentWorkingStepNumber < m_LoadedWorkflow.WorkingSteps.Count)
+                {
+                    WorkingStep step = m_LoadedWorkflow.WorkingSteps.ElementAt(m_CurrentWorkingStepNumber);
+                    if (step.EndConditionObjectName == ("" + ob.TriggerMessage))
+                    {
+                        // trigger next step
+                        NextWorkingStep(AllEnums.WorkingStepEndConditionTrigger.OBJECT);
                     }
                 }
             }
@@ -943,11 +971,9 @@ namespace KoBeLUAdmin.Backend
                 handler(this, e);
             }
 
-
-            WorkflowLoadedSerialization nextWorkingStepSerialization = new WorkflowLoadedSerialization();
-            nextWorkingStepSerialization.Call = "workflow_loaded";
-            nextWorkingStepSerialization.WorkflowId = e.LoadedWorkflow.Id;
-            string message = JsonConvert.SerializeObject(nextWorkingStepSerialization);
+            WorkflowLoadedSerialization workflowLoadedSerialization = new WorkflowLoadedSerialization();
+            workflowLoadedSerialization.Call = "workflow_loaded";
+            string message = JsonConvert.SerializeObject(workflowLoadedSerialization);
             NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, message);
         }
 

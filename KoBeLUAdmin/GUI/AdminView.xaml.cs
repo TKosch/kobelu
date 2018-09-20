@@ -50,6 +50,7 @@ using KoBeLUAdmin.Model.Process;
 using KoBeLUAdmin.Network;
 using Emgu.CV.Util;
 using System.Drawing;
+using System.IO;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -66,6 +67,7 @@ namespace KoBeLUAdmin.GUI
 
         private Image<Gray, Int32> mReferenceDepthImage;
         private bool mReferenceImageCaptured = false;
+        AffectivaFaceDetector mAffectivaManager;
 
         /// <summary>
         /// Singleton Constructor
@@ -118,6 +120,14 @@ namespace KoBeLUAdmin.GUI
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
+
+
+            if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
+            {
+                // initialize affectiva manager
+                AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
+
+            }
         }
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
@@ -269,7 +279,6 @@ namespace KoBeLUAdmin.GUI
 
             m_GUI_ObjectsPanel.Boxes_ProccessFrameObject();
             m_GUI_AssemblyPanel.AssemblyZones_ProccessFrame();
-
 
             if (tabControl1.SelectedItem.Equals(tabItemAssemblyZones))
             {
@@ -442,7 +451,6 @@ namespace KoBeLUAdmin.GUI
         {
             m_GUI_BoxesPanel.refreshLayoutName();
             m_GUI_AssemblyPanel.refreshLayoutName();
-            m_GUI_ObjectsPanel.refreshLayoutName();
         }
 
         private void buttonSettings_Click(object sender, RoutedEventArgs e)
@@ -466,7 +474,11 @@ namespace KoBeLUAdmin.GUI
         /// <param name="e"></param>
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            
+            if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
+            {
+                if (mAffectivaManager != null && mAffectivaManager.CameraDetector != null)
+                    mAffectivaManager.CameraDetector.stop();
+            }
         }
 
         public bool IsEnsensoActive

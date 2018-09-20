@@ -28,13 +28,12 @@
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding ObjectsVisualFeedbackProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxProjectVisualFeedback], FallbackValue='#Project visual feedback'}"  VerticalContentAlignment="Center"/>
             <CheckBox Margin="5,5,5,5" IsChecked="{Binding ObjectsRecognizeObject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding Source={StaticResource localization}, Path=.[Strings.checkboxRecognizeObjects], FallbackValue='#Recognize objects'}" VerticalContentAlignment="Center"/>
             <Label Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.labelName], FallbackValue='#Name:'}" />
-            <TextBox Margin="5,5,5,5" x:Name="textBoxName" x:FieldModifier="protected" Width="150" />
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonSaveDetectionZoneLayout], FallbackValue='#Save detection zonelayout'}" Click="buttonSaveBoxObjectLayout_Click" />
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonLoadDetectionZoneLayout], FallbackValue='#Load detection zonelayout'}" Click="buttonLoadBoxObjectLayout_Click" />
 
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonScreenshot], FallbackValue='#Screenshot'}" Click="buttonObjectScreenShot_Click" IsEnabled="True"/>
-            <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonBackgroundMask], FallbackValue='#BackgroundMask'}" Click="buttonBackgroundScreenShot_Click" IsEnabled="True"/>
-            
+            <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonBackgroundScreenshot], FallbackValue='#Background Screenshot'}" Click="buttonBackgroundScreenShot_Click" IsEnabled="True" Width="141"/>
+
         </StackPanel>
         <Viewbox Grid.Row="1" Grid.Column="0" x:Name="imageViewbox" x:FieldModifier="protected"  Margin="5,5,5,5" MouseMove="image_MouseMove" MouseUp="image_MouseUp" MouseLeftButtonDown="image_MouseDown">
             <Image x:Name="image" x:FieldModifier="protected" />

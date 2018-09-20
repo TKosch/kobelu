@@ -45,6 +45,8 @@ using Emgu.CV.XFeatures2D;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Database;
 using KoBeLUAdmin.GUI;
+using HciLab.Kinect;
+using System.Drawing;
 
 namespace KoBeLUAdmin.Backend.ObjectDetection
 {
@@ -73,17 +75,75 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         /// <summary>
         /// constructor
         /// </summary>
-        private ObjectDetectionManager() 
+        private ObjectDetectionManager()
         {
             m_CurrentLayout = new ObjectDetectionZonesLayout();
+            KinectManager.Instance.orgAllReady += refreshTrigger;
         }
+
+        /// <summary>
+        /// Process object recognition on basis of colors
+        /// </summary>
+        /// <param name="pSource"></param>
+        /// <param name="pColorImage"></param>
+        /// <param name="pDepthImage"></param>
+        private void refreshTrigger(object pSource, Image<Bgra, byte> pColorImage, Image<Gray, short> pDepthImage)
+        {
+            if (this.m_CurrentLayout == null)
+                return;
+
+            lock (this)
+            {
+                foreach (ObjectDetectionZone ob in m_CurrentLayout.ObjectDetectionZones)
+                {
+                    if (ob.ObjectColorImage != null)
+                    {
+                        try
+                        {
+                            // crop image to the same size as the saved picture
+                            Image<Bgra, Byte> croppedColorImage;
+                            croppedColorImage = pColorImage.Copy();
+                            croppedColorImage.ROI = new Rectangle(ob.X, ob.Y, ob.Width, ob.Height);
+                            UMat mask = null;
+                            UMat diff = new UMat(croppedColorImage.Size, croppedColorImage.ToUMat().Depth, croppedColorImage.ToUMat().NumberOfChannels);
+
+                            if (croppedColorImage.Size == ob.ObjectColorImage.Size)
+                            {
+                                mask = ob.ObjectColorImage.Convert<Gray, Byte>().AbsDiff(croppedColorImage.Convert<Gray, Byte>()).ThresholdToZero(new Gray(20)).ToUMat();
+                                Image<Gray, byte> currentGrayImage = mask.ToImage<Gray, Byte>();
+
+                                // check if teached color is the same as the one that was teached in
+                                int[] numNonZero = currentGrayImage.CountNonzero();
+                                int numPixels = ob.ObjectColorImage.Width * ob.ObjectColorImage.Height;
+
+                                double percentage_pixels = (((double)numPixels - (double)numNonZero[0]) / (double)numPixels) * 100.0;
+                                if (percentage_pixels > ob.MatchPercentageOffset)
+                                {
+                                    ob.Trigger();
+                                }
+                                else if (percentage_pixels > 0 && percentage_pixels < ob.MatchPercentageOffset)
+                                {
+                                    //Console.WriteLine("Error detected");
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Singleton Constructor
         /// </summary>
         public static ObjectDetectionManager Instance
         {
-            get 
+            get
             {
                 if (m_Instance == null)
                 {
@@ -100,7 +160,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 this.PropertyChanged(this, new PropertyChangedEventArgs(Obj));
             }
         }
-        
+
         public Scene.SceneRect createSceneRectForObjectDetectionZone(ObjectDetectionZone z, bool isUsedForRecord)
         {
             int x_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X;
@@ -111,39 +171,25 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
-            
-            // TODO: maybe later
-            /*
-            if (b.wasRecentlyTriggered() && !isUsedForRecord)
-            {
-                c = System.Windows.Media.Color.FromRgb(255, 0, 0); // red
-            }
-             */
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
             Scene.SceneRect rect = new Scene.SceneRect(x, y, w, h, c);
             return rect;
         }
 
-        public Scene.SceneRect createSceneBoxForObjectDetectionZone(ObjectDetectionZone z, bool isUsedForRecord)
+        public Scene.SceneRect createSceneBoxForObjectDetectionZone(ObjectDetectionZone ob, bool isUsedForRecord)
         {
             int x_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.X;
             int y_offset = SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Y;
 
-            float h = ((float)z.Height / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
-            float w = ((float)z.Width / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
-            float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
-            float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
+            float h = ((float)ob.Height / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
+            float w = ((float)ob.Width / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
+            float x = ((float)(ob.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
+            float y = 1.0f - h - ((float)(ob.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
 
-            // TODO: maybe later
-            /*
-            if (b.wasRecentlyTriggered() && !isUsedForRecord)
-            {
-                c = System.Windows.Media.Color.FromRgb(255, 0, 0); // red
-            }
-             */
+
             return new Scene.SceneRect(x, y, w, h, c);
         }
 
@@ -157,13 +203,13 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             float x = ((float)(z.X - x_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Width);
             float y = 1.0f - h - ((float)(z.Y - y_offset) / (float)SettingsManager.Instance.Settings.SettingsTable.KinectDrawing_AssemblyArea.Height);
 
-            Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
-            Scene.SceneText textItem = new Scene.SceneText(x, y, text, c, 10.0, new FontFamily("Arial"));
+            System.Windows.Media.Color c = System.Windows.Media.Color.FromRgb(255, 255, 0); // yellow
+            Scene.SceneText textItem = new Scene.SceneText(x, y, text, c, 10.0, new System.Windows.Media.FontFamily("Arial"));
             return textItem;
         }
 
-           
-        public void createObjectDetectionZoneFromFactory(int pX, int pY, int pWidth, int pHeight)
+
+        public ObjectDetectionZone createObjectDetectionZoneFromFactory(int pX, int pY, int pWidth, int pHeight)
         {
             ObjectDetectionZone obj = new ObjectDetectionZone(m_IdCounter);
             obj.Name = "Objekt-Zone " + m_IdCounter + "";
@@ -173,14 +219,15 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             obj.Width = pWidth;
             obj.Height = pHeight;
             m_IdCounter++;
-            this.CurrentLayout.ObjectDetectionZones.Add(obj);
+            obj.trigger += WorkflowManager.Instance.OnTriggered;
+            return obj;
         }
 
         public void loadObjectDetectionZoneLayoutFromFile()
         {
             SetNewLayout(ObjectDetectionZonesLayout.loadObjectDetectionZoneLayout());
         }
-        
+
         public void SetNewLayout(ObjectDetectionZonesLayout pLayout)
         {
             if (pLayout != null)
@@ -193,7 +240,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
                 {
                     m_CurrentLayout.ObjectDetectionZones.Add(z);
 
-                    if(z.Id > highestID)
+                    if (z.Id > highestID)
                     {
                         highestID = z.Id;
                     }
@@ -247,100 +294,100 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             BackendControl.Instance.refreshGUI();
         }
 
-        /// <summary>
-        /// Find an object in a object list
-        /// </summary>
-        /// <param name="currentBlob"></param>
-        /// <param name="viBlobs"></param>
-        /// <returns>BlobID</returns>
-        public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare)
-        {
-            bool isDetect = false;
+        ///// <summary>
+        ///// Find an object in a object list
+        ///// </summary>
+        ///// <param name="currentBlob"></param>
+        ///// <param name="viBlobs"></param>
+        ///// <returns>BlobID</returns>
+        //public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare)
+        //{
+        //    bool isDetect = false;
 
-            // MFunk: Run this a couple of times to get more robust
-            int numRuns = 3;
+        //    // MFunk: Run this a couple of times to get more robust
+        //    int numRuns = 3;
 
-            for (int i = 0; i < numRuns; i++)
-            {
-                using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
-                {
-                    Mat mask;
-                    VectorOfKeyPoint modelKeyPoints;
-                    VectorOfKeyPoint observedKeyPoints;
-                    Mat homography;
-                    isDetect = RecognizeObject(sourceImage, toCompare, out modelKeyPoints, out observedKeyPoints,
-                        matches, out mask, out homography);
+        //    for (int i = 0; i < numRuns; i++)
+        //    {
+        //        using (VectorOfVectorOfDMatch matches = new VectorOfVectorOfDMatch())
+        //        {
+        //            Mat mask;
+        //            VectorOfKeyPoint modelKeyPoints;
+        //            VectorOfKeyPoint observedKeyPoints;
+        //            Mat homography;
+        //            isDetect = RecognizeObject(sourceImage, toCompare, out modelKeyPoints, out observedKeyPoints,
+        //                matches, out mask, out homography);
 
-                }
-                if (isDetect)
-                {
-                    break;
-                }
-            }
-            return isDetect;
-        }
+        //        }
+        //        if (isDetect)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //    return isDetect;
+        //}
 
-        public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
-        {
-            bool isDetect = false;
+        //public bool RecognizeObject(Image<Gray, byte> sourceImage, Image<Gray, byte> toCompare, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        //{
+        //    bool isDetect = false;
 
-            FindMatch(sourceImage.Mat, toCompare.Mat, out modelKeyPoints, out observedKeyPoints, matches, out mask, out homography);
+        //    FindMatch(sourceImage.Mat, toCompare.Mat, out modelKeyPoints, out observedKeyPoints, matches, out mask, out homography);
 
-            if (homography != null)
-            {
-                isDetect = true;
-            }
+        //    if (homography != null)
+        //    {
+        //        isDetect = true;
+        //    }
 
-            return isDetect;
-        }
+        //    return isDetect;
+        //}
 
-        public static void FindMatch(Mat modelImage, Mat observedImage, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
-        {
-            //int k = 2;
-            int k = SettingsManager.Instance.Settings.ObjectDetectParam2;
-            double uniquenessThreshold = 0.8;
-            //double hessianThresh = 300;
-            double hessianThresh = SettingsManager.Instance.Settings.ObjectDetectParam1;
-            int nOctaves = SettingsManager.Instance.Settings.ObjectDetectParam3;
-            int nOctaveLayers = SettingsManager.Instance.Settings.ObjectDetectParam4;
+        //public static void FindMatch(Mat modelImage, Mat observedImage, out VectorOfKeyPoint modelKeyPoints, out VectorOfKeyPoint observedKeyPoints, VectorOfVectorOfDMatch matches, out Mat mask, out Mat homography)
+        //{
+        //    //int k = 2;
+        //    int k = SettingsManager.Instance.Settings.ObjectDetectParam2;
+        //    double uniquenessThreshold = 0.8;
+        //    //double hessianThresh = 300;
+        //    double hessianThresh = SettingsManager.Instance.Settings.ObjectDetectParam1;
+        //    int nOctaves = SettingsManager.Instance.Settings.ObjectDetectParam3;
+        //    int nOctaveLayers = SettingsManager.Instance.Settings.ObjectDetectParam4;
 
-            homography = null;
+        //    homography = null;
 
-            modelKeyPoints = new VectorOfKeyPoint();
-            observedKeyPoints = new VectorOfKeyPoint();
+        //    modelKeyPoints = new VectorOfKeyPoint();
+        //    observedKeyPoints = new VectorOfKeyPoint();
 
-            using (UMat uModelImage = modelImage.ToUMat(AccessType.Read))
-            using (UMat uObservedImage = observedImage.ToUMat(AccessType.Read))
-            {
-                SURF surfCPU = new SURF(hessianThresh, nOctaves, nOctaveLayers);
-                //extract features from the object image
-                UMat modelDescriptors = new UMat();
-                surfCPU.DetectAndCompute(uModelImage, null, modelKeyPoints, modelDescriptors, false);
+        //    using (UMat uModelImage = modelImage.ToUMat(AccessType.Read))
+        //    using (UMat uObservedImage = observedImage.ToUMat(AccessType.Read))
+        //    {
+        //        SURF surfCPU = new SURF(hessianThresh, nOctaves, nOctaveLayers);
+        //        //extract features from the object image
+        //        UMat modelDescriptors = new UMat();
+        //        surfCPU.DetectAndCompute(uModelImage, null, modelKeyPoints, modelDescriptors, false);
 
-                // extract features from the observed image
-                UMat observedDescriptors = new UMat();
-                surfCPU.DetectAndCompute(uObservedImage, null, observedKeyPoints, observedDescriptors, false);
-                BFMatcher matcher = new BFMatcher(DistanceType.L2);
-                matcher.Add(modelDescriptors);
+        //        // extract features from the observed image
+        //        UMat observedDescriptors = new UMat();
+        //        surfCPU.DetectAndCompute(uObservedImage, null, observedKeyPoints, observedDescriptors, false);
+        //        BFMatcher matcher = new BFMatcher(DistanceType.L2);
+        //        matcher.Add(modelDescriptors);
 
-                matcher.KnnMatch(observedDescriptors, matches, k, null);
-                mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
-                mask.SetTo(new MCvScalar(255));
+        //        matcher.KnnMatch(observedDescriptors, matches, k, null);
+        //        mask = new Mat(matches.Size, 1, DepthType.Cv8U, 1);
+        //        mask.SetTo(new MCvScalar(255));
 
-                // filter ambiguous matches
-                Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
+        //        // filter ambiguous matches
+        //        Features2DToolbox.VoteForUniqueness(matches, uniquenessThreshold, mask);
 
-                int nonZeroCount = CvInvoke.CountNonZero(mask);
-                if (nonZeroCount >= 4)
-                {
-                    nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints,
-                        matches, mask, 1.5, 20);
-                    if (nonZeroCount >= 4)
-                        homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
-                            observedKeyPoints, matches, mask, 2);
-                }
-            }
-        }
+        //        int nonZeroCount = CvInvoke.CountNonZero(mask);
+        //        if (nonZeroCount >= 4)
+        //        {
+        //            nonZeroCount = Features2DToolbox.VoteForSizeAndOrientation(modelKeyPoints, observedKeyPoints,
+        //                matches, mask, 1.5, 20);
+        //            if (nonZeroCount >= 4)
+        //                homography = Features2DToolbox.GetHomographyMatrixFromMatchedFeatures(modelKeyPoints,
+        //                    observedKeyPoints, matches, mask, 2);
+        //        }
+        //    }
+        //}
 
 
         public void InitPBDLogic()
@@ -393,14 +440,14 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         public ObjectDetectionZonesLayout CurrentLayout
         {
             get { return m_CurrentLayout; }
-           /* set {
-                m_CurrentLayout = value;
-                NotifyPropertyChanged("CurrentLayout");
-            }*/
+            /* set {
+                 m_CurrentLayout = value;
+                 NotifyPropertyChanged("CurrentLayout");
+             }*/
         }
-        
+
         #endregion
-        
+
         #region vermutlich von paul
 
         /// <summary>
@@ -427,7 +474,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
         public List<BlobObject> MasterBlob
         {
-            get { return m_MasterBlob;}
+            get { return m_MasterBlob; }
             set { m_MasterBlob = value; }
         }
 
@@ -438,7 +485,7 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             {
                 foreach (BlobObject b in m_MasterBlob)
                 {
-                    if (b.Rect.Contains(x, 1-y))
+                    if (b.Rect.Contains(x, 1 - y))
                     {
                         ret = true;
                         break;
@@ -451,5 +498,5 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
 
 
     }
-        #endregion
+    #endregion
 }

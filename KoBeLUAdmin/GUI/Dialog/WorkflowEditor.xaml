@@ -3,14 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         
         xmlns:helpers="clr-namespace:KoBeLUAdmin.Localization"
-        Title="WorkflowEditor" Height="600" Width="924">
+        Title="WorkflowEditor" Height="843.97" Width="924">
 
     <Window.Resources>
         <helpers:LocalizationHelper x:Key="localization"/>
     </Window.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="214" />
             <RowDefinition Height="4*" />
             <RowDefinition Height="6*" />
             <RowDefinition Height="4*" />
@@ -22,7 +22,38 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="150" />
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" Grid.Column="0">
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="4">
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <DockPanel Grid.Column="0" Margin="0,0,5,0">
+                    <Label  Content="Name" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="NameBox" TextWrapping="Wrap" Text="NewWorkflow" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                </DockPanel>
+                <DockPanel Grid.Column="1" Margin="5,0">
+                    <Label  Content="Category" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="CategoryBox" TextWrapping="Wrap" Text="none" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                </DockPanel>
+                <DockPanel Grid.Column="2" Margin="5,0">
+                    <Label  Content="Creator" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+                    <TextBox x:Name="CreatorBox" TextWrapping="Wrap" Text="unknown" VerticalContentAlignment="Center" HorizontalContentAlignment="Right"/>
+                </DockPanel>
+            </Grid>
+            <Label Content="Description" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+            <TextBox x:Name="DescriptionBox" Margin="5,0,5,5" TextWrapping="Wrap" Text="" DockPanel.Dock="Top" RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Visible"/>
+        </DockPanel>
+        <DockPanel Grid.Row="0" Grid.Column="4">
+            <Label Content="Thumbnail" VerticalAlignment="Top" DockPanel.Dock="Top"/>
+            <Image Margin="5" Name="ThumbnailImage" MinHeight="140" MinWidth="140" MaxWidth="140" MaxHeight="140" VerticalAlignment="Top" Width="140" Height="140" DockPanel.Dock="Top"/>
+            <Button Margin="5,5,5,5" Name="ThumbnailButton" Height="28" Content="Add Thumbnail" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="ThumbnailButton_click" />
+        </DockPanel>
+        <DockPanel Grid.Row="1" Grid.Column="0">
             <Label Height="28" Content="Boxes:" Margin="0,0,0,0" DockPanel.Dock="Top"/>
             <Button Margin="5,5,5,5" Name="createBoxButton" Height="28" Content="Create Step from Box" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="createBoxButton_Click" />
             <ListBox  x:Name="listBoxBoxes" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding Boxes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  DockPanel.Dock="Top">
@@ -34,7 +65,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel Grid.Row="0" Grid.Column="1">
+        <DockPanel Grid.Row="1" Grid.Column="1">
             <Label Height="28" Content="AssemblyZones:" Margin="0,0,0,0" DockPanel.Dock="Top"/>
             <Button Margin="5,5,5,5" Name="createAssemblyButton" Height="28" Content="Create Step from AssemblyZone" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="createAssemblyButton_Click" />
             <ListBox x:Name="listBoxAssemblyZones" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding AssemblyZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  DockPanel.Dock="Top">
@@ -54,9 +85,9 @@
             </ListBox>
 
         </DockPanel>
-        <DockPanel Grid.Row="0" Grid.Column="2">
+        <DockPanel Grid.Row="1" Grid.Column="2">
             <Label Height="28" Content="ObjectZones:" Margin="0,0,0,0" DockPanel.Dock="Top"/>
-            <Button Margin="5,5,5,5" Name="createFromObjectButton" Height="28" Content="Create Step from ObjectZone" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" />
+            <Button Margin="5,5,5,5" Name="createFromObjectButton" Height="28" Content="Create Step from ObjectZone" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="createFromObjectButton_Click" />
             <ListBox x:Name="m_listBoxObjectZones" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding ObjectDetectionZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  DockPanel.Dock="Top" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -66,7 +97,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        <DockPanel Grid.Row="0" Grid.Column="3">
+        <DockPanel Grid.Row="1" Grid.Column="3">
             <Label Height="28" Content="NetworkTables:" Margin="0,0,0,0" DockPanel.Dock="Top"/>
             <Button Margin="5,5,5,5" Name="createFromTableButton" Height="28" Content="Create Step from Table" DockPanel.Dock="Bottom" VerticalAlignment="Bottom" Click="createFromTableButton_Click" />
             <ListBox x:Name="listBoxNetworkTables" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding Tables, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="FullName" SelectedValuePath="Id" DockPanel.Dock="Top">
@@ -77,11 +108,11 @@
                 </ListBox.ContextMenu>
             </ListBox>
         </DockPanel>
-        <DockPanel Grid.Row="0" Grid.Column="4">
+        <DockPanel Grid.Row="1" Grid.Column="4">
             <Button Margin="5,35,5,5" Height="28" Name="m_ButtonCreateEndCondition"  Content="Create End Condition" DockPanel.Dock="Bottom" VerticalAlignment="Top" Click="m_ButtonCreateEndCondition_Click" />
         </DockPanel>
 
-        <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" x:Name="m_WorkflowListview" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding WorkingSteps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" SelectionChanged="m_WorkflowListview_SelectionChanged" GotFocus="m_WorkflowListview_GotFocus" ContextMenuOpening="ContextMenu_ContextMenuOpening">
+        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="m_WorkflowListview" Margin="5,5,5,5" SelectionMode="Single" ItemsSource="{Binding WorkingSteps, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Top" SelectionChanged="m_WorkflowListview_SelectionChanged" GotFocus="m_WorkflowListview_GotFocus" ContextMenuOpening="ContextMenu_ContextMenuOpening">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nr" DisplayMemberBinding="{Binding StepNumber}" Width="50" />
@@ -109,7 +140,7 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
-        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4" x:Name="m_FailStatesListView" Margin="5,5,5,5" SelectionMode="Single" SelectionChanged="m_FailstatesListview_SelectionChanged" IsEnabled="False" ContextMenuOpening="ContextMenu_ContextMenuOpening">
+        <ListView Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" x:Name="m_FailStatesListView" Margin="5,5,5,5" SelectionMode="Single" SelectionChanged="m_FailstatesListview_SelectionChanged" IsEnabled="False" ContextMenuOpening="ContextMenu_ContextMenuOpening">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Error State" DisplayMemberBinding="{Binding Name}" Width="200" />
@@ -128,15 +159,16 @@
             </ListView.ContextMenu>
 
         </ListView>
-        <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical" VerticalAlignment="Top">
+        <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" VerticalAlignment="Top">
             <Label Content="Adaptivity Level" Margin="0,0,0,-4" FontSize="11" />
             <ComboBox Margin="5,0,5,5" Name="m_ComboboxAdaptivityLevel" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedIndex="0" SelectionChanged="m_ComboboxAdaptivityLevel_Selected" />
         </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" VerticalAlignment="Bottom">
+        <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Vertical" VerticalAlignment="Bottom">
             <Button Margin="5,5,5,5" Height="28" Content="Save" Click="saveLayout_Click" />
             <Button Margin="5,5,5,5" Height="28" Content="Apply" Click="applyLayout_Click" />
             <Button Margin="5,5,5,5" Height="28" Content="Exit" Click="cancelLayout_Click" />
-            
+
         </StackPanel>
+        
     </Grid>
 </Window>

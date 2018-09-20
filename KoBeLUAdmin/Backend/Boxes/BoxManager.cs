@@ -171,7 +171,6 @@ namespace KoBeLUAdmin.Backend.Boxes
                 foreach (Box b in m_CurrentLayout.Boxes)
                 {
                     double percentage = getPercentageWithinMeanBoundries(calculateCurrentMeanDepth(b), b, pDepthImage);
-
                     if (percentage > ((double)(SettingsManager.Instance.Settings.BoxesInputTriggerPercentage) + b.MatchPercentageOffset) / 100.0)
                     {
                         // box was hit by the user --> go and trigger the action

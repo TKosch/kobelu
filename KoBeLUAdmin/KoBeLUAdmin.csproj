@@ -61,6 +61,9 @@
     <StartupObject>KoBeLUAdmin.Backend.ApplicationCore</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Affdex">
+      <HintPath>lib\Affdex.dll</HintPath>
+    </Reference>
     <Reference Include="Emgu.CV.UI, Version=3.1.0.2282, Culture=neutral, PublicKeyToken=7281126722ab4438, processorArchitecture=MSIL">
       <HintPath>..\packages\EmguCV.3.1.0.1\lib\net30\Emgu.CV.UI.dll</HintPath>
       <Private>True</Private>
@@ -174,6 +177,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Backend\AffectivaFaceDetector.cs" />
     <Compile Include="Backend\TouchManager.cs" />
     <Compile Include="Backend\TuioServer.cs" />
     <Compile Include="Backend\USBCameraDetector.cs" />
@@ -251,14 +255,16 @@
     <Compile Include="Scene\SceneExternalVisualization.cs" />
     <Compile Include="Scene\SceneAudio.cs" />
     <Compile Include="Scene\SceneCollectionExtension.cs" />
+    <Compile Include="Serialization\CameraActiveSerialization.cs" />
     <Compile Include="Serialization\DrawingAreaSerialization.cs" />
     <Compile Include="Serialization\LoadWorkflowSerialization.cs" />
     <Compile Include="Serialization\NextWorkingStepSerialization.cs" />
+    <Compile Include="Serialization\PingSerialization.cs" />
     <Compile Include="Serialization\PreviousWorkingStepSerialization.cs" />
     <Compile Include="Serialization\CurrentWorkingStepSerialization.cs" />
-    <Compile Include="Serialization\WorkflowLoadedSerialization.cs" />
     <Compile Include="Serialization\StartWorkflowSerialization.cs" />
     <Compile Include="Serialization\WorkflowFinishedSerialization.cs" />
+    <Compile Include="Serialization\WorkflowLoadedSerialization.cs" />
     <Compile Include="Statistics\StatsManager.cs" />
     <Compile Include="Statistics\WorkflowStats.cs" />
     <Compile Include="Statistics\WorkingStepStats.cs" />
@@ -608,6 +614,10 @@
   </Target>
   <Import Project="..\packages\EmguCV.3.1.0.1\build\EmguCV.targets" Condition="Exists('..\packages\EmguCV.3.1.0.1\build\EmguCV.targets')" />
   <Import Project="..\packages\Baseclass.Contrib.Nuget.Output.2.3.0\build\net40\Baseclass.Contrib.Nuget.Output.targets" Condition="Exists('..\packages\Baseclass.Contrib.Nuget.Output.2.3.0\build\net40\Baseclass.Contrib.Nuget.Output.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(SolutionDir)KoBeLUAdmin\lib\affdex-native.dll" "$(TargetDir)"
+copy "$(SolutionDir)KoBeLUAdmin\lib\tensorflow.dll" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

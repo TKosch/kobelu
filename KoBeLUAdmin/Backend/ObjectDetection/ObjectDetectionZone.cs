@@ -31,6 +31,8 @@
 using System;
 using System.Runtime.Serialization;
 using System.Windows.Media;
+using Emgu.CV;
+using Emgu.CV.Structure;
 using KoBeLUAdmin.Scene;
 
 namespace KoBeLUAdmin.Backend.ObjectDetection
@@ -40,11 +42,10 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
     {
         private int m_SerVersion = 1;
 
-        private int m_Depth; // something
-
-        private double m_DepthMean;
-
         private long m_LastTriggeredTimestamp = 0;
+
+        private Image<Bgra, Byte> m_ObjectColorImage;
+        private double m_MatchPercentageOffset = 0.0;
 
         public ObjectDetectionZone()
             : base()
@@ -60,14 +61,26 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
             updateScene();
         }
 
+        public ObjectDetectionZone(int pId, double pMatchPercentageOffset)
+            : base(pId)
+        {
+            m_SceneItem = new SceneRect();
+            m_MatchPercentageOffset = pMatchPercentageOffset;
+            updateScene();
+        }
+
         protected ObjectDetectionZone(SerializationInfo pInfo, StreamingContext pContext)
             : base(pInfo, pContext)
         {
             // for version evaluation while deserializing
             int pSerVersion = pInfo.GetInt32("m_SerVersion");
-            m_Depth = pInfo.GetInt32("m_Depth");
-            m_DepthMean = pInfo.GetDouble("m_DepthMean");
-            m_SceneItem = new SceneRect();
+
+            if (pSerVersion >= 1)
+            {
+                m_ObjectColorImage = (Image<Bgra, Byte>)pInfo.GetValue("m_ObjectColorImage", typeof(Image<Bgra, Byte>));
+                m_MatchPercentageOffset = pInfo.GetDouble("m_MatchPercentageOffset");
+            }
+
             updateScene();
         }
 
@@ -75,9 +88,10 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         public new void GetObjectData(SerializationInfo pInfo, StreamingContext pContext)
         {
             base.GetObjectData(pInfo, pContext);
+
             pInfo.AddValue("m_SerVersion", m_SerVersion);
-            pInfo.AddValue("m_Depth", m_Depth);
-            pInfo.AddValue("m_DepthMean", m_DepthMean);
+            pInfo.AddValue("m_ObjectColorImage", m_ObjectColorImage);
+            pInfo.AddValue("m_MatchPercentageOffset", m_MatchPercentageOffset);
         }
 
         public void Trigger()
@@ -121,29 +135,29 @@ namespace KoBeLUAdmin.Backend.ObjectDetection
         }
 
         #region Getter / Setter
-        public int Depth
+
+        public Image<Bgra, Byte> ObjectColorImage
         {
             get
             {
-                return m_Depth;
+                return m_ObjectColorImage;
             }
             set
             {
-                m_Depth = value;
-                NotifyPropertyChanged("Depth");
+                m_ObjectColorImage = value;
+                NotifyPropertyChanged("ObjectColorImage");
             }
         }
 
-        public double DepthMean
+        public double MatchPercentageOffset
         {
-            get
-            {
-                return m_DepthMean;
-            }
+            get { return m_MatchPercentageOffset; }
             set
             {
-                m_DepthMean = value;
-                NotifyPropertyChanged("DepthMean");
+                m_MatchPercentageOffset = value;
+                NotifyPropertyChanged("MatchPercentageOffset");
+                NotifyPropertyChanged("MatchPercentage");
+                NotifyPropertyChanged("NameWithPercentage");
             }
         }
         #endregion

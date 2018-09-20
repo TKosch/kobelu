@@ -81,6 +81,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel
             NETWORK_TABLE = 5,
             TRACKABLE_OBJECT = 6,
             BOXBUTTON = 7,
+            OBJECT = 8,
             HACK = 666
         }
 

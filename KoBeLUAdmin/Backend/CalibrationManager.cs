@@ -28,9 +28,16 @@
 // </patent information>
 // <date> 11/2/2016 12:25:58 PM</date>
 
+using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using KoBeLUAdmin.Frontend;
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 
 namespace KoBeLUAdmin.Backend
 {
@@ -39,12 +46,11 @@ namespace KoBeLUAdmin.Backend
     /// It holds and stores the configuration.
     /// 
     /// </summary>
-    /// 
-    /// 
     public class CalibrationManager : INotifyPropertyChanged
     {
 
         private System.Drawing.Rectangle m_ProjectionArea;
+        private Rectangle mProjectorresolution;
 
         /// <summary>
         /// Singleton instance
@@ -73,13 +79,15 @@ namespace KoBeLUAdmin.Backend
         /// </summary>
         private CalibrationManager()
         {
-            m_ProjectionArea = new System.Drawing.Rectangle(0, 0, 1024, 768);
+            mProjectorresolution = ScreenManager.getProjectorResolution();
+            m_ProjectionArea = new System.Drawing.Rectangle(0, 0, mProjectorresolution.Width, mProjectorresolution.Height);
         }
 
 
         public Boolean IsInCalibrationMode
         {
-            get {
+            get
+            {
                 return m_IsInCalibrationMode;
             }
         }
@@ -87,13 +95,11 @@ namespace KoBeLUAdmin.Backend
         /// <summary>
         /// This method starts the calibration mode and handles everything that is necessary.
         /// </summary>
-        /// 
-        /// 
         public void StartCalibration()
         {
             if (!m_IsInCalibrationMode)
             {
-                m_IsInCalibrationMode = true;              
+                m_IsInCalibrationMode = true;
             }
             OnChangedCalibrationMode(this, m_IsInCalibrationMode, false);
         }
@@ -101,8 +107,6 @@ namespace KoBeLUAdmin.Backend
         /// <summary>
         /// This method stops the calibration mode if the CalibrationManager is in Calibration-Mode
         /// </summary>
-        /// 
-        /// 
         public void StopCalibration(Boolean pSaveCalibration = false)
         {
             if (m_IsInCalibrationMode)
@@ -111,7 +115,7 @@ namespace KoBeLUAdmin.Backend
             }
             OnChangedCalibrationMode(this, m_IsInCalibrationMode, pSaveCalibration);
         }
-         
+
         public System.Drawing.Rectangle GetProjectionArea()
         {
             return m_ProjectionArea;
@@ -132,10 +136,6 @@ namespace KoBeLUAdmin.Backend
             var bm = new System.Drawing.Bitmap(xRes, yRes);
             var g = System.Drawing.Graphics.FromImage(bm);
             System.Drawing.Brush color1, color2;
-
-            //Location (Upper Left Pixel) of the inner corners
-            //checkerboardCorners = new Point[(wFields - 1), (hFields - 1)];
-            //checkerboardCornersNormalized = new PointF[(wFields - 1), (hFields - 1)];
 
             color1 = System.Drawing.Brushes.White;
 
@@ -162,12 +162,6 @@ namespace KoBeLUAdmin.Backend
                         g.FillRectangle(color1, xOffset + (j * wField), yOffset + (i * hField), wField, hField);
                     else
                         g.FillRectangle(color2, xOffset + (j * wField), yOffset + (i * hField), wField, hField);
-
-                    if (i != 0 && j != 0)
-                    {
-                        //checkerboardCorners[(j - 1), (i - 1)] = new Point(xOffset + (j * wField), yOffset + (i * hField));
-                        //checkerboardCornersNormalized[(j - 1), (i - 1)] = new PointF(((float)xOffset + (j * wField)) / xRes, ((float)yOffset + (i * hField)) / yRes);
-                    }
                 }
             }
 
@@ -193,6 +187,24 @@ namespace KoBeLUAdmin.Backend
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(info));
             }
+        }
+
+        /// <summary>
+        /// Automatic calibration of the projectorplane. If a colorful rectangle is recognized, the Kinect adjusts it to the 
+        /// right corner
+        /// </summary>
+        public void AutomaticTableCalibration()
+        {
+            PerspectiveCamera camera = TableWindow3D.Instance.PerspectiveCamera;
+            if (!m_IsInCalibrationMode)
+            {
+                this.StartCalibration();
+            }
+            // Reset the angle. It is assumed, that the depth sensor is looking straight at the surface
+            camera.LookDirection = new Vector3D(0, 0, -0.01);
+            camera.Position = new Point3D(mProjectorresolution.Width * 0.5, mProjectorresolution.Height * 0.5, 1250);
+            camera.FieldOfView = 45;
+            TableWindow3D.Instance.PerspectiveCamera = camera;
         }
     }
 }

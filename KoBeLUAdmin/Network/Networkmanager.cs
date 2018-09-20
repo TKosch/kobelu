@@ -113,6 +113,9 @@ namespace KoBeLUAdmin.Network
                     {
                         switch (call)
                         {
+                            case "ping":
+                                NetworkManager.Instance.SendDataOverUDP(SettingsManager.Instance.Settings.UDPIPTarget, 20000, JsonConvert.SerializeObject(new Serialization.PingSerialization()));
+                                break;
                             case "load_workflow":
                                 string workflowpath = jsonResponse.workflowpath.ToString();
                                 WorkflowManager.Instance.loadWorkflow(workflowpath);
@@ -136,6 +139,13 @@ namespace KoBeLUAdmin.Network
                             case "workflow_difficulty":
                                 string task_difficulty = jsonResponse.difficulty.ToString();
                                 WorkflowManager.Instance.AdaptivityLevelId = int.Parse(task_difficulty);
+                                break;
+                            case "set_camera_active":
+                                bool isactive = jsonResponse.isactive;
+                                if(isactive)
+                                    AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
+                                else
+                                    AffectivaFaceDetector.Instance.StopAffectivaFaceDetector();
                                 break;
                             default:
                                 break;

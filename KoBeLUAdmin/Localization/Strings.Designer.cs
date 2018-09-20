@@ -63,9 +63,18 @@ namespace KoBeLUAdmin.Localization {
         /// <summary>
         ///   Looks up a localized string similar to Audio.
         /// </summary>
-        public static string buttonAudio {
+        public static string b {
             get {
-                return ResourceManager.GetString("buttonAudio", resourceCulture);
+                return ResourceManager.GetString("b", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Background Screenshot.
+        /// </summary>
+        public static string buttonBackgroundScreenshot {
+            get {
+                return ResourceManager.GetString("buttonBackgroundScreenshot", resourceCulture);
             }
         }
         
@@ -714,6 +723,15 @@ namespace KoBeLUAdmin.Localization {
         public static string displayWPFProjectionPlane {
             get {
                 return ResourceManager.GetString("displayWPFProjectionPlane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enable Face Detection.
+        /// </summary>
+        public static string enableFaceDetection {
+            get {
+                return ResourceManager.GetString("enableFaceDetection", resourceCulture);
             }
         }
         

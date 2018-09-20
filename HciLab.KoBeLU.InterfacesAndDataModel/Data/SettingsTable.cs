@@ -82,6 +82,7 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
         private int m_IntegerUpDownMinTouchDepth;
         private int m_IntegerUpDownMaxTouchDepth;
         private bool m_CheckBoxDisplayWPFProjection;
+        private bool m_CheckBoxEnableFaceDetection;
 
         private int m_IntegerUpDownMinTouchArea;
         private int m_IntegerUpDownMaxTouchArea;
@@ -173,6 +174,11 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
 
             m_CheckBoxDisplayWPFProjection = info.GetBoolean("m_CheckBoxDisplayWPFProjection");
 
+            if (SerVersion < 9)
+                return;
+
+            m_CheckBoxEnableFaceDetection = info.GetBoolean("m_CheckBoxEnableFaceDetection");
+
 
         }
 
@@ -219,6 +225,8 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             info.AddValue("m_CheckBoxDetectTouch", m_CheckBoxDetectTouch);
 
             info.AddValue("m_CheckBoxDisplayWPFProjection", m_CheckBoxDisplayWPFProjection);
+
+            info.AddValue("m_CheckBoxEnableFaceDetection", m_CheckBoxEnableFaceDetection);
         }
 
         public delegate void ShowDemoAnimationHandler(object pSource, bool pVisible);
@@ -532,6 +540,14 @@ namespace HciLab.KoBeLU.InterfacesAndDataModel.Data
             }
         }
 
-
+        public bool EnableFaceDetection
+        {
+            get { return m_CheckBoxEnableFaceDetection; }
+            set
+            {
+                m_CheckBoxEnableFaceDetection = value;
+                NotifyPropertyChanged("EnableFaceDetection");
+            }
+        }
     }
 }

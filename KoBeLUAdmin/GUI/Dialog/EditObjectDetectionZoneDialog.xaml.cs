@@ -38,15 +38,16 @@ namespace KoBeLUAdmin.GUI
     /// </summary>
     public partial class EditObjectDetectionZoneDialog : Window
     {
-        private ObjectDetectionZone m_Zone = null;
+        private ObjectDetectionZone objectzone = null;
         private bool wasOk = false;
 
-        public EditObjectDetectionZoneDialog(ObjectDetectionZone z)
+        public EditObjectDetectionZoneDialog(ObjectDetectionZone ob)
         {
             InitializeComponent();
-            m_Zone = z;
-            textBoxObjectDetectionZoneName.Text = m_Zone.Name;
-            textBoxObjectDetectionZoneTriggerName.Text = m_Zone.TriggerMessage;
+            objectzone = ob;
+            textBoxObjectDetectionZoneName.Text = objectzone.Name;
+            textBoxObjectDetectionZoneTriggerName.Text = objectzone.TriggerMessage;
+            MatchPercentageOffset.Text = objectzone.MatchPercentageOffset.ToString();
         }
 
         private void buttonCancel_Click(object sender, RoutedEventArgs e)
@@ -56,8 +57,9 @@ namespace KoBeLUAdmin.GUI
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
         {
-            m_Zone.Name = textBoxObjectDetectionZoneName.Text;
-            m_Zone.TriggerMessage = textBoxObjectDetectionZoneTriggerName.Text;
+            objectzone.Name = textBoxObjectDetectionZoneName.Text;
+            objectzone.TriggerMessage = textBoxObjectDetectionZoneTriggerName.Text;
+            objectzone.MatchPercentageOffset = double.Parse(this.MatchPercentageOffset.Text);
             wasOk = true;
 
             this.Close();
@@ -73,11 +75,11 @@ namespace KoBeLUAdmin.GUI
         {
             get
             {
-                return m_Zone;
+                return objectzone;
             }
             set
             {
-                m_Zone = value;
+                objectzone = value;
             }
         }
     }

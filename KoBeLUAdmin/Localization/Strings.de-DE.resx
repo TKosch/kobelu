@@ -630,4 +630,10 @@
   <data name="displayWPFProjectionPlane" xml:space="preserve">
     <value>Zeige WPF Projektionsebene an</value>
   </data>
+  <data name="buttonBackgroundScreenshot" xml:space="preserve">
+    <value>Hintergrund Screenshot</value>
+  </data>
+  <data name="enableFaceDetection" xml:space="preserve">
+    <value>Gesichtserkennung aktivieren</value>
+  </data>
 </root>

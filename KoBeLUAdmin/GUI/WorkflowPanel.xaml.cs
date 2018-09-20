@@ -210,5 +210,10 @@ namespace KoBeLUAdmin.GUI
                 CommunicationManager.Instance.ServerInfo.SelfStatus.ProducedParts = 0;
             }
         }
+
+        private void ButtonStartFaceDetection_Click(object sender, RoutedEventArgs e)
+        {
+            AffectivaFaceDetector.Instance.StartAffectivaFaceDetector();
+        }
     }
 }

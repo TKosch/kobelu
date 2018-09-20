@@ -56,6 +56,8 @@ namespace KoBeLUAdmin.Backend
             }
         }
 
+        public object Adminview { get; private set; }
+
         public void startUpApplication()
         {
             // load settings
@@ -108,15 +110,13 @@ namespace KoBeLUAdmin.Backend
                 Console.WriteLine("Ensenso Library not found: Have you installed the Ensenso SDK?");
             }
 
-            // kill Leap
-            /*if (LeapManager.Instance != null)
-                LeapManager.Instance.shutDownLeapMotion();*/
-
             // kill Object Recognition
             if (TouchManager.Instance.TuioServer != null)
             {
                 TouchManager.Instance.TuioServer.Close();
             }
+
+
             Environment.Exit(0);
         }
     }

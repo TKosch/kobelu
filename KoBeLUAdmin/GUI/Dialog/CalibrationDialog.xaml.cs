@@ -41,7 +41,7 @@ using System.Windows.Media;
 using KoBeLUAdmin.Backend;
 using KoBeLUAdmin.ContentProviders;
 using KoBeLUAdmin.Frontend;
-
+using System.Windows.Media.Media3D;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -56,6 +56,7 @@ namespace KoBeLUAdmin.GUI
         Rectangle m_RectAssemblyArea = new Rectangle();
         private AllEnums.Direction m_DragMode;
         bool m_DragEnabled = false;
+        bool mGuiInitialized = false;
 
         public static readonly int BOX_BORDERWIDTH = 15;
 
@@ -85,7 +86,7 @@ namespace KoBeLUAdmin.GUI
 
             this.DataContext = SettingsManager.Instance.Settings.SettingsTable;
 
-            
+
         }
 
         /// <summary>
@@ -97,9 +98,8 @@ namespace KoBeLUAdmin.GUI
         /// 
         private void WindowLoaded(object sender, RoutedEventArgs e)
         {
-            // KinectManager.Instance.allFramesReady += new KinectManager.AllFramesReadyHandler(Instance_allFramesReady);
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
-            // Go into Calibration-Mode
+            // enable calibration mode by default
             CalibrationManager.Instance.StartCalibration();
         }
 
@@ -117,8 +117,6 @@ namespace KoBeLUAdmin.GUI
             CalibrationManager.Instance.StopCalibration(false);
         }
 
-        bool gui_inizialized = false;
-
         /// <summary>
         /// Event handler for Kinect sensor's ColorFrameReady event
         /// </summary>
@@ -128,17 +126,17 @@ namespace KoBeLUAdmin.GUI
         {
 
             Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal,
-                new Action(() =>{
+                new Action(() =>
+                {
 
-                    if (gui_inizialized)
+                    if (mGuiInitialized)
                     {
                         m_Image.Height = pColorImage.Height;
                         m_Image.Width = pColorImage.Width;
-                        gui_inizialized = true;
+                        mGuiInitialized = true;
                     }
                     pColorImage.Draw(new Rectangle(m_RectAssemblyArea.X, m_RectAssemblyArea.Y, m_RectAssemblyArea.Width, m_RectAssemblyArea.Height), new Bgra(0, 255, 0, 0), 0);
                     pColorImage.Draw(new Rectangle(m_RectDrawingArea.X, m_RectDrawingArea.Y, m_RectDrawingArea.Width, m_RectDrawingArea.Height), new Bgra(255, 0, 0, 0), 0);
-
                     UtilitiesImage.ToImage(m_Image, pColorImage);
                 })
             );
@@ -146,7 +144,7 @@ namespace KoBeLUAdmin.GUI
 
 
 
-        
+
         /// <summary>
         /// Callback for the mousedown event on the configurationImage
         /// </summary>
@@ -165,7 +163,7 @@ namespace KoBeLUAdmin.GUI
             else
             {
                 System.Windows.Point p = e.GetPosition(m_Image);
-                initializeDrag(p);
+                InitializeDrag(p);
             }
 
         }
@@ -261,8 +259,6 @@ namespace KoBeLUAdmin.GUI
                 SettingsManager.Instance.Settings.SettingsTable.EnsensoDrawing = m_RectDrawingArea;
                 SettingsManager.Instance.Settings.SettingsTable.EnsensoDrawing_AssemblyArea = m_RectAssemblyArea;
             }
-            
-
 
             CalibrationManager.Instance.StopCalibration(true);
             this.Close();
@@ -274,10 +270,7 @@ namespace KoBeLUAdmin.GUI
             this.Close();
         }
 
-        
-
-
-        private void initializeDrag(System.Windows.Point p)
+        private void InitializeDrag(System.Windows.Point p)
         {
             m_DragMode = isMouseonBoxFrame(p, m_Rect);
             if (m_DragMode != AllEnums.Direction.NONE)
@@ -293,7 +286,7 @@ namespace KoBeLUAdmin.GUI
         private AllEnums.Direction isMouseonBoxFrame(System.Windows.Point pPoint, Rectangle pRect)
         {
             if (pPoint.X >= pRect.X && pPoint.X <= (pRect.X + pRect.Width)
-                    && pPoint.Y >= pRect.Y - (BOX_BORDERWIDTH / 2) 
+                    && pPoint.Y >= pRect.Y - (BOX_BORDERWIDTH / 2)
                     && pPoint.Y <= pRect.Y + (BOX_BORDERWIDTH / 2))
             {
                 return AllEnums.Direction.NORTH;
@@ -306,7 +299,7 @@ namespace KoBeLUAdmin.GUI
             }
             else if (pPoint.Y >= pRect.Y && pPoint.Y <= (pRect.Y + pRect.Height)
                     && pPoint.X >= pRect.X - (BOX_BORDERWIDTH / 2)
-                    && pPoint.X  <= pRect.X + (BOX_BORDERWIDTH / 2))
+                    && pPoint.X <= pRect.X + (BOX_BORDERWIDTH / 2))
             {
                 return AllEnums.Direction.WEST;
             }
@@ -338,6 +331,17 @@ namespace KoBeLUAdmin.GUI
         private void m_CbCheckerboard_Unchecked(object sender, RoutedEventArgs e)
         {
             TableWindow3D.Instance.HideCheckerboard();
+        }
+
+        /// <summary>
+        /// Begin the automatic calibration. The automatic calibration adjusts an ortographic camera 
+        /// relative to the projection plane.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void mButtonCalibrate_Click(object sender, RoutedEventArgs e)
+        {
+            CalibrationManager.Instance.AutomaticTableCalibration();
         }
     }
 }

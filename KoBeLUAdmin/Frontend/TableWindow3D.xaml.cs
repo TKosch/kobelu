@@ -72,7 +72,7 @@ namespace KoBeLUAdmin.Frontend
         private ModelVisual3D m_CheckerBoardVisual;
 
         private ModelVisual3D m_BlackPlane = new ModelVisual3D();
-        
+
         private Point3D m_HoveredPoint = new Point3D(0, 0, 0);
 
         private Point3D m_LastHoveredPoint = new Point3D(0, 0, 0);
@@ -85,6 +85,7 @@ namespace KoBeLUAdmin.Frontend
         private bool m_MouseMovesCameraAngle = false;
         private bool m_MouseMovesCameraFOV = false;
         private System.Windows.Point m_LastHoveredPos = new System.Windows.Point(0, 0);
+        private Rectangle mProjectorresolution;
 
 
         public static TableWindow3D Instance
@@ -106,18 +107,18 @@ namespace KoBeLUAdmin.Frontend
             //This serves as a transparent x,y Plane for Editor interaction
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
-            Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, System.Windows.Media.Colors.Black, -0.05);
+            mProjectorresolution = ScreenManager.getProjectorResolution();
+            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, System.Windows.Media.Colors.Black, -0.05);
 
             double w = CalibrationManager.Instance.GetProjectionArea().Width;
             double h = CalibrationManager.Instance.GetProjectionArea().Height;
 
-            m_Camera = new PerspectiveCamera(
+            PerspectiveCamera = new PerspectiveCamera(
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamPosition,
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamLookDirection,
                 new Vector3D(0, 1, 0),
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV);
-            m_Viewport.Camera = m_Camera;
+            m_Viewport.Camera = PerspectiveCamera;
             m_Viewport.Children.Clear();
 
             m_Projection.Positions.Clear();
@@ -127,14 +128,14 @@ namespace KoBeLUAdmin.Frontend
             m_Projection.Positions.Add(new Point3D(w, h, 0));
             m_Projection.Positions.Add(new Point3D(0, h, 0));
             m_Projection.Positions.Add(new Point3D(0, 0, 0));
-            
+
             if (ScreenManager.isSecondScreenConnected())
             {
                 //System.Drawing.Rectangle projectorResolution = ScreenManager.getProjectorResolution();
-                Left = projectorResolution.Left;
-                Top = projectorResolution.Top;
-                Width = projectorResolution.Width;
-                Height = projectorResolution.Height;
+                Left = mProjectorresolution.Left;
+                Top = mProjectorresolution.Top;
+                Width = mProjectorresolution.Width;
+                Height = mProjectorresolution.Height;
             }
             else
             {
@@ -144,20 +145,22 @@ namespace KoBeLUAdmin.Frontend
             }
 
             AllowDrop = true;
-            
+
             CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
 
-            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, projectorResolution.Width, projectorResolution.Height, 0, 0);
+            m_CbImage = CalibrationManager.Instance.renderCheckerboard(32, 20, mProjectorresolution.Width, mProjectorresolution.Height, 0, 0);
 
             m_CheckerBoardVisual = new ModelVisual3D();
-            //m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0, 0, 690.0, 430.0, m_CbImage, -0.01);
-            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, projectorResolution.Width, projectorResolution.Height, m_CbImage, -0.01);
+            m_CheckerBoardVisual.Content = HciLab.Utilities.Mash3D.Image3DGeo.Image(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, m_CbImage, -0.01);
 
             CalibrationManager.Instance.changedCalibrationMode += new CalibrationManager.ChangedCalibrationModeHandler(Instance_changedCalibrationMode);
             this.InvalidateVisual();
         }
 
-        public PerspectiveCamera Camera { get; set; }
+        /// <summary>
+        /// Getter/Setter for the perspective camera
+        /// </summary>
+        public PerspectiveCamera PerspectiveCamera { get => m_Camera; set => m_Camera = value; }
 
         private void ViewPort_Drop(object sender, DragEventArgs e)
         {
@@ -175,11 +178,11 @@ namespace KoBeLUAdmin.Frontend
 
                     Scene.SceneItem s = null;
                     if (item == typeof(SceneRect).ToString())
-                        s = new Scene.SceneRect(x, y, 50, 50, System.Windows.Media.Color.FromRgb(0, 255, 0));       
+                        s = new Scene.SceneRect(x, y, 50, 50, System.Windows.Media.Color.FromRgb(0, 255, 0));
                     else if (item == typeof(SceneText).ToString())
                         s = new Scene.SceneText(x, y, "Text", System.Windows.Media.Color.FromRgb(255, 255, 255), 10.0, new System.Windows.Media.FontFamily("Arial"));
                     else if (item == typeof(SceneTextViewer).ToString())
-                        s = new Scene.SceneTextViewer( x, y, 0.2, 0.2, "Text", new System.Windows.Media.FontFamily("Arial"), 10.0, System.Windows.Media.Color.FromRgb(255, 255, 255));
+                        s = new Scene.SceneTextViewer(x, y, 0.2, 0.2, "Text", new System.Windows.Media.FontFamily("Arial"), 10.0, System.Windows.Media.Color.FromRgb(255, 255, 255));
                     else if (item == typeof(SceneCircle).ToString())
                         s = new Scene.SceneCircle(x, y, 10, 0.0, Math.PI * 2.0, System.Windows.Media.Color.FromRgb(0, 255, 0));
                     else if (item == typeof(SceneImage).ToString())
@@ -187,7 +190,7 @@ namespace KoBeLUAdmin.Frontend
                     else if (item == typeof(SceneVideo).ToString())
                         s = new Scene.SceneVideo(x, y, 100, 100, null);
                     else if (item == typeof(ScenePolygon).ToString())
-                        s = new Scene.ScenePolygon(new Polygon(new Vector2[] { new Vector2(0+x, 0+y), new Vector2(50+x, 50+y), new Vector2(50+x, y) }), System.Windows.Media.Color.FromRgb(0, 255, 0));
+                        s = new Scene.ScenePolygon(new Polygon(new Vector2[] { new Vector2(0 + x, 0 + y), new Vector2(50 + x, 50 + y), new Vector2(50 + x, y) }), System.Windows.Media.Color.FromRgb(0, 255, 0));
                     else if (item == typeof(SceneAudio).ToString())
                         s = new Scene.SceneAudio(null);
                     else if (item == typeof(SceneExternalVisualization).ToString())
@@ -214,24 +217,20 @@ namespace KoBeLUAdmin.Frontend
 
             if (pIsInCalibrationMode == true)
             {
-                //Temporarily disabled displaying of calibration Image
-                //this.Content = m_CalibrattionModeImage;
-
                 m_Mode = Mode.Calibration;
             }
             else
             {
-                //TODO: Do this somewhere else (e.g. CalibrationManager)
                 if (pSaveCalibration)
                 {
-                    SettingsManager.Instance.Settings.SettingsTable.ProjCamPosition = m_Camera.Position;
-                    SettingsManager.Instance.Settings.SettingsTable.ProjCamLookDirection = m_Camera.LookDirection;
-                    SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV = m_Camera.FieldOfView;
+                    SettingsManager.Instance.Settings.SettingsTable.ProjCamPosition = PerspectiveCamera.Position;
+                    SettingsManager.Instance.Settings.SettingsTable.ProjCamLookDirection = PerspectiveCamera.LookDirection;
+                    SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV = PerspectiveCamera.FieldOfView;
                 }
                 m_Mode = Mode.Normal;
                 this.Content = m_Viewport;
             }
-            
+
             this.InvalidateVisual();
         }
 
@@ -240,10 +239,14 @@ namespace KoBeLUAdmin.Frontend
             if (ScreenManager.isSecondScreenConnected())
                 WindowState = WindowState.Maximized;
         }
-        
-        public void ShowCheckerboard() {
-            m_Viewport.Children.Add(m_CheckerBoardVisual);
-            m_Viewport.InvalidateVisual();
+
+        public void ShowCheckerboard()
+        {
+            if (!m_Viewport.Children.Contains(m_CheckerBoardVisual))
+            {
+                m_Viewport.Children.Add(m_CheckerBoardVisual);
+                m_Viewport.InvalidateVisual();
+            }
         }
 
         public void HideCheckerboard()
@@ -251,7 +254,6 @@ namespace KoBeLUAdmin.Frontend
             m_Viewport.Children.Remove(m_CheckerBoardVisual);
             m_Viewport.InvalidateVisual();
         }
-
 
         void CompositionTarget_Rendering(object sender, System.EventArgs e)
         {
@@ -274,7 +276,7 @@ namespace KoBeLUAdmin.Frontend
                             m_Viewport.Children.Add(m);
                             foreach (Scene.SceneItem s in m.Items)
                             {
-                        
+
                                 if (s is Scene.Scene)
                                     Debugger.Break();
                                 if (s != null)
@@ -282,12 +284,12 @@ namespace KoBeLUAdmin.Frontend
                                     {
                                         m_Viewport.Children.Remove(s);
                                     }
-                                    m_Viewport.Children.Add(s);
+                                m_Viewport.Children.Add(s);
 
                                 if (s is Scene.ScenePolygon && (s as Scene.ScenePolygon).IsInEditMode)
                                 {
                                     m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToWireFrame((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z + 1));
-                                    m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToPoints((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z +2));   
+                                    m_Viewport.Children.Add(HciLab.Utilities.Mash3D.PolygonMash3D.newPolygonToPoints((s as Scene.ScenePolygon).Polygon, (s as Scene.ScenePolygon).Z + 2));
                                 }
                             }
                         }
@@ -432,24 +434,24 @@ namespace KoBeLUAdmin.Frontend
                 if (m_MouseMovesCamera)
                 {
                     factor = 0.1;
-                    var cPos = m_Camera.Position;
+                    var cPos = PerspectiveCamera.Position;
                     var newCamPos = new Point3D(cPos.X - factor * xDelta, cPos.Y - factor * yDelta, cPos.Z);
-                    m_Camera.Position = newCamPos;
+                    PerspectiveCamera.Position = newCamPos;
                     SettingsManager.Instance.Settings.SettingsTable.ProjCamPosition = newCamPos;
                 }
                 if (m_MouseMovesCameraAngle)
                 {
                     factor = 0.001;
-                    var cAngle = m_Camera.LookDirection;
+                    var cAngle = PerspectiveCamera.LookDirection;
                     var newCamAngle = new Vector3D(cAngle.X, cAngle.Y - factor * yDelta, cAngle.Z);
-                    m_Camera.LookDirection = newCamAngle;
+                    PerspectiveCamera.LookDirection = newCamAngle;
                     SettingsManager.Instance.Settings.SettingsTable.ProjCamLookDirection = newCamAngle;
                 }
                 if (m_MouseMovesCameraFOV)
                 {
                     factor = 0.01;
-                    double newFOV = m_Camera.FieldOfView + factor * xDelta;
-                    m_Camera.FieldOfView = newFOV;
+                    double newFOV = PerspectiveCamera.FieldOfView + factor * xDelta;
+                    PerspectiveCamera.FieldOfView = newFOV;
                     SettingsManager.Instance.Settings.SettingsTable.ProjCamFOV = newFOV;
                 }
 
@@ -473,7 +475,7 @@ namespace KoBeLUAdmin.Frontend
                     }
                 }
 
-                if (SceneManager.Instance.CurrentScene.SelectedItem != null  && isDragged == true)
+                if (SceneManager.Instance.CurrentScene.SelectedItem != null && isDragged == true)
                 {
                     if (SceneManager.Instance.CurrentScene.SelectedItem is ScenePolygon)
                         (SceneManager.Instance.CurrentScene.SelectedItem as ScenePolygon).Move(m_HoveredPoint.X - m_LastHoveredPoint.X, m_HoveredPoint.Y - m_LastHoveredPoint.Y);
@@ -494,7 +496,7 @@ namespace KoBeLUAdmin.Frontend
             {
                 OnViewDown(rayMeshRes.VisualHit, new Vector2(rayMeshRes.PointHit.X, rayMeshRes.PointHit.Y), e.ChangedButton);
             }
-            
+
 
             if (m_Mode == Mode.Calibration)
             {
@@ -546,7 +548,7 @@ namespace KoBeLUAdmin.Frontend
 
         private void OnViewPortMouseEnter(object sender, MouseEventArgs e)
         {
-            
+
         }
 
         private void OnViewPortMouseLeave(object sender, MouseEventArgs e)
@@ -560,9 +562,9 @@ namespace KoBeLUAdmin.Frontend
         {
             if (m_Mode == Mode.Calibration)
             {
-                var cPos = m_Camera.Position;
+                var cPos = PerspectiveCamera.Position;
                 var newCamPos = new Point3D(cPos.X, cPos.Y, cPos.Z - (e.Delta * 0.05));
-                m_Camera.Position = newCamPos;
+                PerspectiveCamera.Position = newCamPos;
                 SettingsManager.Instance.Settings.SettingsTable.ProjCamPosition = newCamPos;
             }
         }

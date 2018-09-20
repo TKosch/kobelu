@@ -29,3 +29,11 @@ tools/**
 
 # Installer
 [Oo]utput/
+
+# Documentation
+/documention_data/**/DROP/
+/documention_data/**/TEMP/
+/documention_data/**/packages/
+/documention_data/**/bin/
+/documention_data/**/obj/
+/documention_data/_site

@@ -1,0 +1,1675 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Plane
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Plane
+   ">
+    <meta name="generator" content="docfx 2.39.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane">
+  <h1 id="HciLab_Utilities_Mathematics_Geometry3D_Plane" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane">Class Plane
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a plane in 3D space.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">Plane</span></div>
+  </div>
+  
+  
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  
+  <h6><strong>Namespace</strong>: System.Dynamic.ExpandoObject</h6>
+  <h6><strong>Assembly</strong>: HciLab.Utilities.dll</h6>
+  
+  <h5 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+[TypeConverter(typeof(PlaneConverter))]
+public class Plane : ISerializable, ICloneable</code></pre>
+  </div>
+  
+  
+  
+  
+  <h5 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>The plane is described by a normal and a constant (N,D) which
+denotes that the plane is consisting of points Q that
+satisfies (N dot Q)+D = 0.</p>
+</div>
+  
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.%23ctor(HciLab.Utilities.Mathematics.Core.Vector3%2CHciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L78" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor(HciLab.Utilities.Mathematics.Core.Vector3,HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">Plane(Vector3, Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> class using given normal and a point.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane(Vector3 normal, Vector3 point)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">normal</span>
+        <p><p>The plane's normal vector.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">point</span>
+        <p><p>A point on the plane in 3D space.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.%23ctor(HciLab.Utilities.Mathematics.Core.Vector3%2CHciLab.Utilities.Mathematics.Core.Vector3%2CHciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L90" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor(HciLab.Utilities.Mathematics.Core.Vector3,HciLab.Utilities.Mathematics.Core.Vector3,HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">Plane(Vector3, Vector3, Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> class using 3 given points.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane(Vector3 p0, Vector3 p1, Vector3 p2)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">p0</span>
+        <p><p>A point on the plane in 3D space.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">p1</span>
+        <p><p>A point on the plane in 3D space.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">p2</span>
+        <p><p>A point on the plane in 3D space.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.%23ctor(HciLab.Utilities.Mathematics.Core.Vector3%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L67" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor(HciLab.Utilities.Mathematics.Core.Vector3,System.Double)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" class="expander" data-toggle="collapse">Plane(Vector3, Double)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> class using given normal and constant values.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane(Vector3 normal, double constant)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">normal</span>
+        <p><p>The plane's normal vector.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">constant</span>
+        <p><p>The plane's constant value.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Geometry3D_Plane_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.%23ctor(HciLab.Utilities.Mathematics.Geometry3D.Plane)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L101" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Geometry3D_Plane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.#ctor(HciLab.Utilities.Mathematics.Geometry3D.Plane)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="expander" data-toggle="collapse">Plane(Plane)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane__ctor_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> class using given a plane to assign values from.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane(Plane p)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">p</span>
+        <p><p>A 3D plane to assign values from.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Constant.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Constant%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L163" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Constant_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Constant*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Constant" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Constant"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Constant" class="expander" data-toggle="collapse">Constant</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Constant" class="collapse in">
+  <div class="markdown level1 summary"><p>Gets or sets the plane's constant value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double Constant { get; set; }</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Double</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Normal.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Normal%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L155" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Normal_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Normal*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Normal" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Normal"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Normal" class="expander" data-toggle="collapse">Normal</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Normal" class="collapse in">
+  <div class="markdown level1 summary"><p>Gets or sets the plane's normal vector.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Vector3 Normal { get; set; }</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Clone.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L183" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Clone_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Clone*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Clone" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Clone"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Clone" class="expander" data-toggle="collapse">Clone()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Clone" class="collapse in">
+  <div class="markdown level1 summary"><p>Creates an exact copy of this <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane Clone()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p><p>The <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> object this method creates.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateFormFunctionXYCoefficient_System_Double_System_Double_System_Double_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateFormFunctionXYCoefficient(System.Double%2CSystem.Double%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L140" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateFormFunctionXYCoefficient_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateFormFunctionXYCoefficient*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateFormFunctionXYCoefficient_System_Double_System_Double_System_Double_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateFormFunctionXYCoefficient(System.Double,System.Double,System.Double)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateFormFunctionXYCoefficient_System_Double_System_Double_System_Double_" class="expander" data-toggle="collapse">CreateFormFunctionXYCoefficient(Double, Double, Double)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateFormFunctionXYCoefficient_System_Double_System_Double_System_Double_" class="collapse in">
+  <div class="markdown level1 summary"><p>f(x,y) = a <em>x + b</em>y + c</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateFormFunctionXYCoefficient(double pA, double pB, double pC)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">pA</span>
+        <p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">pB</span>
+        <p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">pC</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateParallelPlane_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateParallelPlane(HciLab.Utilities.Mathematics.Geometry3D.Plane%2CHciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L127" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateParallelPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateParallelPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateParallelPlane_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateParallelPlane(HciLab.Utilities.Mathematics.Geometry3D.Plane,HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateParallelPlane_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">CreateParallelPlane(Plane, Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateParallelPlane_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateParallelPlane(Plane pPlane, Vector3 pPoint)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">pPlane</span>
+        <p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">pPoint</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L403" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane" class="expander" data-toggle="collapse">CreateXPlane()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane" class="collapse in">
+  <div class="markdown level1 summary"><p>X Plane based on ZY axis directions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateXPlane()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane(HciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L427" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateXPlane(HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">CreateXPlane(Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateXPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Plane throgut pPoint</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateXPlane(Vector3 pPoint)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">pPoint</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L410" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane" class="expander" data-toggle="collapse">CreateYPlane()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane" class="collapse in">
+  <div class="markdown level1 summary"><p>Y Plane based on XZ axis directions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateYPlane()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane(HciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L437" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateYPlane(HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">CreateYPlane(Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateYPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Plane throgut pPoint</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateYPlane(Vector3 pPoint)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">pPoint</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L417" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane" class="expander" data-toggle="collapse">CreateZPlane()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane" class="collapse in">
+  <div class="markdown level1 summary"><p>Z Plane based on XY axis drections.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateZPlane()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane(HciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L447" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.CreateZPlane(HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">CreateZPlane(Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_CreateZPlane_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Plane throgut pPoint</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane CreateZPlane(Vector3 pPoint)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">pPoint</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Equals_System_Object_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L282" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Equals_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Equals*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Equals_System_Object_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Equals(System.Object)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Equals_System_Object_" class="expander" data-toggle="collapse">Equals(Object)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Equals_System_Object_" class="collapse in">
+  <div class="markdown level1 summary"><p>Returns a value indicating whether this instance is equal to
+the specified object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Object</span></span>
+        <span class="parametername">obj</span>
+        <p><p>An object to compare to this instance.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Boolean</span>
+        <p><p><span class="xref">true</span> if <code data-dev-comment-type="paramref" class="paramref">obj</code> is a <a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2.html">Vector2</a> and has the same values as this instance; otherwise, <span class="xref">false</span>.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.Equals(System.Object)</span></div>
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_equation.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.equation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L329" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_equation_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.equation*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_equation" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.equation"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_equation" class="expander" data-toggle="collapse">equation()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_equation" class="collapse in">
+  <div class="markdown level1 summary"><p>Koordinatengleichung
+ax1 + bx2 + cx3 + d = 0</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public double[] equation()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Double</span>[]
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Flip.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Flip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L231" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Flip_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Flip*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Flip" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Flip"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Flip" class="expander" data-toggle="collapse">Flip()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Flip" class="collapse in">
+  <div class="markdown level1 summary"><p>Flip the plane.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Flip()</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetFlipped.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetFlipped%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L239" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetFlipped_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetFlipped*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetFlipped" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetFlipped"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetFlipped" class="expander" data-toggle="collapse">GetFlipped()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetFlipped" class="collapse in">
+  <div class="markdown level1 summary"><p>Creates a new flipped plane (-normal, constant).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Plane GetFlipped()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p><p>A new <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> instance.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetHashCode.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L272" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetHashCode_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetHashCode*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetHashCode" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetHashCode"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetHashCode" class="expander" data-toggle="collapse">GetHashCode()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetHashCode" class="collapse in">
+  <div class="markdown level1 summary"><p>Returns the hashcode for this instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Int32</span>
+        <p><p>A 32-bit signed integer hash code.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.GetHashCode()</span></div>
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L196" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetObjectData_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetObjectData*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="expander" data-toggle="collapse">GetObjectData(SerializationInfo, StreamingContext)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="collapse in">
+  <div class="markdown level1 summary"><p>Populates a <span class="xref">System.Runtime.Serialization.SerializationInfo</span> with the data needed to serialize the target object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo info, StreamingContext context)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.SerializationInfo</span></span>
+        <span class="parametername">info</span>
+        <p><p>The <span class="xref">System.Runtime.Serialization.SerializationInfo</span> to populate with data.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.StreamingContext</span></span>
+        <span class="parametername">context</span>
+        <p><p>The destination (see <span class="xref">System.Runtime.Serialization.StreamingContext</span>) for this serialization.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  <h5 class="implements">Implements</h5>
+      <div><span class="xref">System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span></div>
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetPointsOnPlane.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetPointsOnPlane%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L366" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetPointsOnPlane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetPointsOnPlane*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetPointsOnPlane" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetPointsOnPlane"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetPointsOnPlane" class="expander" data-toggle="collapse">GetPointsOnPlane()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetPointsOnPlane" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;Vector3&gt; GetPointsOnPlane()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a>&gt;
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign(HciLab.Utilities.Mathematics.Core.Vector3)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L248" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign(HciLab.Utilities.Mathematics.Core.Vector3)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_" class="expander" data-toggle="collapse">GetSign(Vector3)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_" class="collapse in">
+  <div class="markdown level1 summary"><p>Returns the points's position relative to the plane itself (i.e Front/Back/On)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MathFunctions.Sign GetSign(Vector3 p)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">p</span>
+        <p><p>A point in 3D space.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Core.MathFunctions.Sign.html">MathFunctions.Sign</a>
+        <p><p>A <a class="xref" href="HciLab.Utilities.Mathematics.Core.MathFunctions.Sign.html">MathFunctions.Sign</a>.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign(HciLab.Utilities.Mathematics.Core.Vector3%2CSystem.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L261" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.GetSign(HciLab.Utilities.Mathematics.Core.Vector3,System.Double)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" class="expander" data-toggle="collapse">GetSign(Vector3, Double)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_System_Double_" class="collapse in">
+  <div class="markdown level1 summary"><p>Returns the points's position relative to the plane itself (i.e Front/Back/On)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MathFunctions.Sign GetSign(Vector3 p, double tolerance)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector3.html">Vector3</a></span>
+        <span class="parametername">p</span>
+        <p><p>A point in 3D space.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">tolerance</span>
+        <p><p>The tolerance value to use.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Core.MathFunctions.Sign.html">MathFunctions.Sign</a>
+        <p><p>A <a class="xref" href="HciLab.Utilities.Mathematics.Core.MathFunctions.Sign.html">MathFunctions.Sign</a>.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  <h5 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_GetSign_HciLab_Utilities_Mathematics_Core_Vector3_System_Double__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the point's distance from the plane is withon the [-tolerance, tolerance] range, the point is considered to be on the plane.</p>
+</div>
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_Parse_System_String_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.Parse(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L209" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Parse_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Parse*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_Parse_System_String_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.Parse(System.String)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Parse_System_String_" class="expander" data-toggle="collapse">Parse(String)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_Parse_System_String_" class="collapse in">
+  <div class="markdown level1 summary"><p>Converts the specified string to its <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> equivalent.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Plane Parse(string s)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.String</span></span>
+        <span class="parametername">s</span>
+        <p><p>A string representation of a <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a>
+        <p><p>A <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> that represents the vector specified by the <code data-dev-comment-type="paramref" class="paramref">s</code> parameter.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_ToString.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L296" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_ToString_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.ToString*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_ToString" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.ToString"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_ToString" class="expander" data-toggle="collapse">ToString()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_ToString" class="collapse in">
+  <div class="markdown level1 summary"><p>Returns a string representation of this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.String</span>
+        <p><p>A string representation of this object.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="operators">Operators
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Equality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Equality(HciLab.Utilities.Mathematics.Geometry3D.Plane%2CHciLab.Utilities.Mathematics.Geometry3D.Plane)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L309" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Equality_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Equality*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Equality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Equality(HciLab.Utilities.Mathematics.Geometry3D.Plane,HciLab.Utilities.Mathematics.Geometry3D.Plane)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Equality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="expander" data-toggle="collapse">Equality(Plane, Plane)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Equality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="collapse in">
+  <div class="markdown level1 summary"><p>Tests whether two specified planes are equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator ==(Plane a, Plane b)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">a</span>
+        <p><p>The left-hand plane.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">b</span>
+        <p><p>The right-hand plane.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Boolean</span>
+        <p><p><span class="xref">true</span> if the two planes are equal; otherwise, <span class="xref">false</span>.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Inequality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Inequality(HciLab.Utilities.Mathematics.Geometry3D.Plane%2CHciLab.Utilities.Mathematics.Geometry3D.Plane)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L319" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Inequality_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Inequality*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Inequality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.op_Inequality(HciLab.Utilities.Mathematics.Geometry3D.Plane,HciLab.Utilities.Mathematics.Geometry3D.Plane)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Inequality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="expander" data-toggle="collapse">Inequality(Plane, Plane)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_op_Inequality_HciLab_Utilities_Mathematics_Geometry3D_Plane_HciLab_Utilities_Mathematics_Geometry3D_Plane_" class="collapse in">
+  <div class="markdown level1 summary"><p>Tests whether two specified planes are not equal.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static bool operator !=(Plane a, Plane b)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">a</span>
+        <p><p>The left-hand plane.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a></span>
+        <span class="parametername">b</span>
+        <p><p>The right-hand plane.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Boolean</span>
+        <p><p><span class="xref">true</span> if the two planes are not equal; otherwise, <span class="xref">false</span>.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane_System_ICloneable_Clone.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane.System%23ICloneable%23Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L175" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry3D_Plane_System_ICloneable_Clone_" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.System#ICloneable#Clone*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry3D_Plane_System_ICloneable_Clone" data-uid="HciLab.Utilities.Mathematics.Geometry3D.Plane.System#ICloneable#Clone"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_System_ICloneable_Clone" class="expander" data-toggle="collapse">ICloneable.Clone()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry3D_Plane_System_ICloneable_Clone" class="collapse in">
+  <div class="markdown level1 summary"><p>Creates an exact copy of this <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object ICloneable.Clone()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Object</span>
+        <p><p>The <a class="xref" href="HciLab.Utilities.Mathematics.Geometry3D.Plane.html">Plane</a> object this method creates, cast as an object.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  <h5 class="implements">Implements</h5>
+      <div><span class="xref">System.ICloneable.Clone()</span></div>
+  
+  
+  
+  
+  </div>
+  
+  
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry3D_Plane.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry3D.Plane%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc" class="fltbtn btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+              <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry3D/Plane.cs/#L48" title="View Source" class="fltbtn btn-info pull-right"><i class="fab fa-code"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-left">Generated by <strong>DocFX</strong></span>
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>
+                      <span class="fas fa-copyright"></span>
+                      2018, Affective & Cognitive Institute</span>
+                      <a href="https://affective-lab.org" class="fas fa-home"></a>
+                      <a href="https://www.researchgate.net/lab/Affective-and-Cognitive-Institute-Affective-Lab-Oliver-Korn" class="fab fa-researchgate"></a>
+                      <a href="https://www.linkedin.com/company/affective-cognitive-institute/" class="fab fa-linkedin"></a>
+                      <a href="https://www.youtube.com/channel/UCYetO2MEXJ0KMVWyxLXMS1g" class="fab fa-youtube"></a>
+                      <a href="https://github.com/AffectiveCognitiveInstitute" class="fab fa-github"></a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

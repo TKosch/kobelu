@@ -1,0 +1,8 @@
+- name: Setup Guide
+  href: setup.md
+- name: Manual
+  href: manual/
+  homepage: manual/index.md
+- name: Api Documentation
+  href: api/
+  homepage: api/index.md

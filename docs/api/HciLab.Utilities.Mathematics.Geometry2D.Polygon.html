@@ -1,0 +1,824 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class Polygon
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class Polygon
+   ">
+    <meta name="generator" content="docfx 2.39.2.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/logo.png" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon">
+  <h1 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon">Class Polygon
+  </h1>
+  <div class="markdown level0 summary"><p>Represents a polygon in 2 dimentional space.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="HciLab.Utilities.DataBaseClass.html">DataBaseClass</a></div>
+    <div class="level2"><span class="xref">Polygon</span></div>
+  </div>
+  
+  
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="HciLab.Utilities.DataBaseClass.html#HciLab_Utilities_DataBaseClass_PropertyChanged">DataBaseClass.PropertyChanged</a>
+    </div>
+    <div>
+      <a class="xref" href="HciLab.Utilities.DataBaseClass.html#HciLab_Utilities_DataBaseClass_NotifyPropertyChanged_System_String_">DataBaseClass.NotifyPropertyChanged(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="HciLab.Utilities.DataBaseClass.html#HciLab_Utilities_DataBaseClass_m_Id">DataBaseClass.m_Id</a>
+    </div>
+    <div>
+      <a class="xref" href="HciLab.Utilities.DataBaseClass.html#HciLab_Utilities_DataBaseClass_Id">DataBaseClass.Id</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  
+  <h6><strong>Namespace</strong>: System.Dynamic.ExpandoObject</h6>
+  <h6><strong>Assembly</strong>: HciLab.Utilities.dll</h6>
+  
+  <h5 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Serializable]
+public class Polygon : DataBaseClass, INotifyPropertyChanged, ISerializable, ICloneable</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L60" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor" class="expander" data-toggle="collapse">Polygon()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon()</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2___.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor(HciLab.Utilities.Mathematics.Core.Vector2%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L80" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2___" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor(HciLab.Utilities.Mathematics.Core.Vector2[])"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2___" class="expander" data-toggle="collapse">Polygon(Vector2[])</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2___" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> class using an array of coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon(Vector2[] pPoints)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2.html">Vector2</a>[]</span>
+        <span class="parametername">pPoints</span>
+        <p><p>An array of <a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2.html">Vector2</a> coordniates.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2DArrayList_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor(HciLab.Utilities.Mathematics.Core.Vector2DArrayList)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L69" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2DArrayList_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor(HciLab.Utilities.Mathematics.Core.Vector2DArrayList)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2DArrayList_" class="expander" data-toggle="collapse">Polygon(Vector2DArrayList)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Core_Vector2DArrayList_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> class using an array of coordinates.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon(Vector2DArrayList pPoints)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2DArrayList.html">Vector2DArrayList</a></span>
+        <span class="parametername">pPoints</span>
+        <p><p>An <a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2DArrayList.html">Vector2DArrayList</a> instance.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Geometry2D_Polygon_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor(HciLab.Utilities.Mathematics.Geometry2D.Polygon)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L91" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Geometry2D_Polygon_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor(HciLab.Utilities.Mathematics.Geometry2D.Polygon)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Geometry2D_Polygon_" class="expander" data-toggle="collapse">Polygon(Polygon)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_HciLab_Utilities_Mathematics_Geometry2D_Polygon_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> class using coordinates from another instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon(Polygon polygon)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a></span>
+        <span class="parametername">polygon</span>
+        <p><p>A <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> instance.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Collections_Generic_List_HciLab_Utilities_Mathematics_Core_Vector2__.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor(System.Collections.Generic.List%7BHciLab.Utilities.Mathematics.Core.Vector2%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L99" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Collections_Generic_List_HciLab_Utilities_Mathematics_Core_Vector2__" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor(System.Collections.Generic.List{HciLab.Utilities.Mathematics.Core.Vector2})"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Collections_Generic_List_HciLab_Utilities_Mathematics_Core_Vector2__" class="expander" data-toggle="collapse">Polygon(List&lt;Vector2&gt;)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Collections_Generic_List_HciLab_Utilities_Mathematics_Core_Vector2__" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon(List&lt;Vector2&gt; pList)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2.html">Vector2</a>&gt;</span>
+        <span class="parametername">pList</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.%23ctor(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L124" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="expander" data-toggle="collapse">Polygon(SerializationInfo, StreamingContext)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="collapse in">
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> class with serialized data.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected Polygon(SerializationInfo pInfo, StreamingContext pContext)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.SerializationInfo</span></span>
+        <span class="parametername">pInfo</span>
+        <p><p>The object that holds the serialized object data.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.StreamingContext</span></span>
+        <span class="parametername">pContext</span>
+        <p><p>The contextual information about the source or destination.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_Points.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.Points%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L139" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Points_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Points*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Points" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Points"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Points" class="expander" data-toggle="collapse">Points</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Points" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CollectionWithItemNotify&lt;Vector2&gt; Points { get; set; }</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.CollectionWithItemNotify-1.html">CollectionWithItemNotify</a>&lt;<a class="xref" href="HciLab.Utilities.Mathematics.Core.Vector2.html">Vector2</a>&gt;
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_VertexCount.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.VertexCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L210" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_VertexCount_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.VertexCount*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_VertexCount" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.VertexCount"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_VertexCount" class="expander" data-toggle="collapse">VertexCount</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_VertexCount" class="collapse in">
+  <div class="markdown level1 summary"><p>Gets the polygon's vertex count.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int VertexCount { get; }</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  <h5 class="propertyValue">Property Value</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Int32</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_Clone.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L174" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Clone_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Clone*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Clone" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Clone"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Clone" class="expander" data-toggle="collapse">Clone()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Clone" class="collapse in">
+  <div class="markdown level1 summary"><p>Creates an exact copy of this <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon Clone()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a>
+        <p><p>The <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> object this method creates.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_Flip.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.Flip%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L200" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Flip_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Flip*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_Flip" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.Flip"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Flip" class="expander" data-toggle="collapse">Flip()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_Flip" class="collapse in">
+  <div class="markdown level1 summary"><p>Flips the polygon.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Flip()</code></pre>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.GetObjectData(System.Runtime.Serialization.SerializationInfo%2CSystem.Runtime.Serialization.StreamingContext)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L187" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_GetObjectData_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.GetObjectData*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="expander" data-toggle="collapse">GetObjectData(SerializationInfo, StreamingContext)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_GetObjectData_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_" class="collapse in">
+  <div class="markdown level1 summary"><p>Populates a <span class="xref">System.Runtime.Serialization.SerializationInfo</span> with the data needed to serialize this object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void GetObjectData(SerializationInfo pInfo, StreamingContext pContext)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.SerializationInfo</span></span>
+        <span class="parametername">pInfo</span>
+        <p><p>The <span class="xref">System.Runtime.Serialization.SerializationInfo</span> to populate with data.</p>
+</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Runtime.Serialization.StreamingContext</span></span>
+        <span class="parametername">pContext</span>
+        <p><p>The destination (see <span class="xref">System.Runtime.Serialization.StreamingContext</span>) for this serialization.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  <h5 class="implements">Implements</h5>
+      <div><span class="xref">System.Runtime.Serialization.ISerializable.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span></div>
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L216" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit" class="expander" data-toggle="collapse">ToHelixToolkit()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon ToHelixToolkit()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">HelixToolkit.Wpf.Polygon</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit3D_System_Double_.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit3D(System.Double)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L225" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit3D_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit3D*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit3D_System_Double_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.ToHelixToolkit3D(System.Double)"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit3D_System_Double_" class="expander" data-toggle="collapse">ToHelixToolkit3D(Double)</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_ToHelixToolkit3D_System_Double_" class="collapse in">
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Polygon3D ToHelixToolkit3D(double pOffset = 0)</code></pre>
+  </div>
+  
+  <h5 class="parameters">Parameters</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="pull-right"><span class="xref">System.Double</span></span>
+        <span class="parametername">pOffset</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">HelixToolkit.Wpf.Polygon3D</span>
+        <p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  </div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  <span class="small pull-right mobile-hide">
+    <span class="divider"> </span>
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon_System_ICloneable_Clone.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon.System%23ICloneable%23Clone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc"><i class="fas fa-pencil"></i></a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L166" title="View Source"><i class="fas fa-code"></i></a>
+  </span>
+  
+  <a id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_System_ICloneable_Clone_" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.System#ICloneable#Clone*"></a>
+  
+  <h4 id="HciLab_Utilities_Mathematics_Geometry2D_Polygon_System_ICloneable_Clone" data-uid="HciLab.Utilities.Mathematics.Geometry2D.Polygon.System#ICloneable#Clone"><a href="#collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_System_ICloneable_Clone" class="expander" data-toggle="collapse">ICloneable.Clone()</a></h4>
+  
+  <div id="collapsible-HciLab_Utilities_Mathematics_Geometry2D_Polygon_System_ICloneable_Clone" class="collapse in">
+  <div class="markdown level1 summary"><p>Creates an exact copy of this <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object ICloneable.Clone()</code></pre>
+  </div>
+  
+  
+  <h5 class="returns">Returns</h5>
+  <table>
+    <tr>
+      <td>
+        <span class="xref">System.Object</span>
+        <p><p>The <a class="xref" href="HciLab.Utilities.Mathematics.Geometry2D.Polygon.html">Polygon</a> object this method creates, cast as an object.</p>
+</p>
+      </td>
+    </tr>
+  </table>
+  
+  
+  
+  
+  
+  
+  <h5 class="implements">Implements</h5>
+      <div><span class="xref">System.ICloneable.Clone()</span></div>
+  
+  
+  
+  
+  </div>
+  
+  
+</article>
+          </div>
+          <div class="contribution-panel mobile-hide">
+              <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/new/master/apiSpec/new?filename=HciLab_Utilities_Mathematics_Geometry2D_Polygon.md&amp;value=---%0Auid%3A%20HciLab.Utilities.Mathematics.Geometry2D.Polygon%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" title="Improve this Doc" class="fltbtn btn-warning pull-right"><i class="glyphicon glyphicon-pencil"></i></a>
+              <a href="https://github.com/AffectiveCognitiveInstitute/kobelu-core/blob/master/documentation_data/src/HciLab.Utilities/Mathematics/Geometry2D/Polygon.cs/#L42" title="View Source" class="fltbtn btn-info pull-right"><i class="fab fa-code"></i></a>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-left">Generated by <strong>DocFX</strong></span>
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>
+                      <span class="fas fa-copyright"></span>
+                      2018, Affective & Cognitive Institute</span>
+                      <a href="https://affective-lab.org" class="fas fa-home"></a>
+                      <a href="https://www.researchgate.net/lab/Affective-and-Cognitive-Institute-Affective-Lab-Oliver-Korn" class="fab fa-researchgate"></a>
+                      <a href="https://www.linkedin.com/company/affective-cognitive-institute/" class="fab fa-linkedin"></a>
+                      <a href="https://www.youtube.com/channel/UCYetO2MEXJ0KMVWyxLXMS1g" class="fab fa-youtube"></a>
+                      <a href="https://github.com/AffectiveCognitiveInstitute" class="fab fa-github"></a>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+- name: Development Guide
+  href: devGuide.md
+- name: User Manual
+  href: userMan.md

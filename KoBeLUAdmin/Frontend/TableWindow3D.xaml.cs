@@ -108,7 +108,7 @@ namespace KoBeLUAdmin.Frontend
             //Geometry3D backDrop = new Geometry3D();
             //Plane is just a tiny bit set off below the z=0 plane to avoid rendering and interaction overlapping problems
             mProjectorresolution = ScreenManager.getProjectorResolution();
-            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, System.Windows.Media.Colors.Black, -0.05);
+            m_BlackPlane.Content = HciLab.Utilities.Mash3D.Rectangle3DGeo.Rect(0.0, 0.0, mProjectorresolution.Width, mProjectorresolution.Height, System.Windows.Media.Color.FromRgb(40, 40, 40), -0.05 );
 
             double w = CalibrationManager.Instance.GetProjectionArea().Width;
             double h = CalibrationManager.Instance.GetProjectionArea().Height;

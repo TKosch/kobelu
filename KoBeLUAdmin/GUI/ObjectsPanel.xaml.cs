@@ -73,13 +73,13 @@ namespace KoBeLUAdmin.GUI
         private long m_ScreenshotTakenTimestamp = 0;
 
         Image<Bgra, Byte> mColorImage;
-        
+
         public ObjectsPanel()
         {
             InitializeComponent();
             m_TopBar.DataContext = SettingsManager.Instance.Settings;
             m_ButtomBar.DataContext = SettingsManager.Instance.Settings;
-            m_ObjectsListView.DataContext = DatabaseManager.Instance;
+            //m_ObjectsListView.DataContext = DatabaseManager.Instance;
             m_ListBoxObjects.DataContext = ObjectDetectionManager.Instance.CurrentLayout;
         }
 
@@ -92,26 +92,26 @@ namespace KoBeLUAdmin.GUI
         /// 
         private void Menuitem_Delete_Click(object sender, RoutedEventArgs e)
         {
-            if (m_ObjectsListView.SelectedIndex != -1)
-            {
-                TrackableObject obj = (TrackableObject)m_ObjectsListView.SelectedItem;
-                DatabaseManager.Instance.deleteTrackableObject(obj);
-                DatabaseManager.Instance.listTrackableObject(); // refresh
-                m_ObjectsListView.Items.Refresh();
-            }
+            //if (m_ObjectsListView.SelectedIndex != -1)
+            //{
+            //    TrackableObject obj = (TrackableObject)m_ObjectsListView.SelectedItem;
+            //    DatabaseManager.Instance.deleteTrackableObject(obj);
+            //    DatabaseManager.Instance.listTrackableObject(); // refresh
+            //    m_ObjectsListView.Items.Refresh();
+            //}
         }
 
         private void ObjectsListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // check if an object is selected
-            if (m_ObjectsListView.SelectedItems.Count == 1)
-            {
-                foreach (var item in m_ObjectsListView.SelectedItems)
-                {
-                    TrackableObject obj = item as TrackableObject;
-                    ObjectDetectionManager.Instance.DisplayObjectEditDialog(obj);
-                }
-            }
+            //if (m_ObjectsListView.SelectedItems.Count == 1)
+            //{
+            //    foreach (var item in m_ObjectsListView.SelectedItems)
+            //    {
+            //        TrackableObject obj = item as TrackableObject;
+            //        ObjectDetectionManager.Instance.DisplayObjectEditDialog(obj);
+            //    }
+            //}
         }
 
         //Code to be called within the main OnLoaded Method
@@ -147,13 +147,17 @@ namespace KoBeLUAdmin.GUI
                     //MCvFont font = new MCvFont(Emgu.CV.CvEnum.FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
                     foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
-                        // draw ID
-                        pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 0.5, new Bgra(0, 0, 0, 0));
-                        // draw Frame
-                        if (ob.wasRecentlyTriggered())
-                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(0, 255, 255, 0), 5);
-                        else
-                            pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(255, 255, 255, 0), 5);
+                        if (ob.IsSelected)
+                        {
+
+                            // draw ID
+                            pImage.Draw(ob.Id + "", new System.Drawing.Point(ob.X, ob.Y), Emgu.CV.CvEnum.FontFace.HersheySimplex, 2, new Bgra(0, 0, 0, 0));
+                            // draw Frame
+                            if (ob.wasRecentlyTriggered())
+                                pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(0, 255, 255, 0), 5);
+                            else
+                                pImage.Draw(new Rectangle(ob.X, ob.Y, ob.Width, ob.Height), new Bgra(255, 255, 255, 0), 5);
+                        }
                     }
                 }
 
@@ -166,7 +170,10 @@ namespace KoBeLUAdmin.GUI
                     foreach (ObjectDetectionZone ob in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
                     {
                         // false = call from the display loop
-                        SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(ob, false));
+                        if (ob.IsSelected)
+                        {
+                            SceneManager.Instance.TemporaryObjectsScene.Add(ObjectDetectionManager.Instance.createSceneBoxForObjectDetectionZone(ob, false));
+                        }
                     }
                 }
                 else
@@ -268,8 +275,9 @@ namespace KoBeLUAdmin.GUI
 
                 ob.ObjectColorImage = croppedImage;
                 ob.MatchPercentageOffset = 80;
-
+                Resources["checkBoxCollection"] = null;
                 ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones.Add(ob);
+                Resources["checkBoxCollection"] = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
 
             }
         }
@@ -281,7 +289,7 @@ namespace KoBeLUAdmin.GUI
                 ObjectDetectionManager.Instance.UpdateCurrentObjectDetectionZone(m_DraggedObj);
                 m_DragEnabled = false;
             }
-         }
+        }
 
 
         private void image_MouseMove(object sender, MouseEventArgs e)
@@ -372,7 +380,7 @@ namespace KoBeLUAdmin.GUI
                 m_DraggedObj.ObjectColorImage = croppedImage;
             }
         }
-        
+
         private AllEnums.Direction isMouseOnAnyObj(System.Windows.Point p)
         {
             foreach (ObjectDetectionZone b in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
@@ -418,7 +426,7 @@ namespace KoBeLUAdmin.GUI
             return AllEnums.Direction.NONE;
         }
 
-      
+
         private void MenuItem_EditSelectedBoxObject(object sender, RoutedEventArgs e)
         {
             var selectedItem = m_ListBoxObjects.SelectedItem;
@@ -430,8 +438,10 @@ namespace KoBeLUAdmin.GUI
                 dlg.ShowDialog(); // blocking
                 if (dlg.wasOkay())
                 {
+                    Resources["checkBoxCollection"] = null;
                     ObjectDetectionZone editedZone = dlg.EditedObjectDetectionZone;
                     ObjectDetectionManager.Instance.UpdateCurrentObjectDetectionZone(editedZone);
+                    Resources["checkBoxCollection"] = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
                 }
 
             }
@@ -490,7 +500,28 @@ namespace KoBeLUAdmin.GUI
 
         internal void Refresh()
         {
-            m_ObjectsListView.Items.Refresh();
+            //m_ObjectsListView.Items.Refresh();
+            Resources["checkBoxCollection"] = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
+        }
+
+        private void Button_DeselectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Resources["checkBoxCollection"] = null;
+            foreach (ObjectDetectionZone o in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+            {
+                o.IsSelected = false;
+            }
+            Resources["checkBoxCollection"] = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
+        }
+
+        private void Button_SelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            Resources["checkBoxCollection"] = null;
+            foreach (ObjectDetectionZone o in ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones)
+            {
+                o.IsSelected = true;
+            }
+            Resources["checkBoxCollection"] = ObjectDetectionManager.Instance.CurrentLayout.ObjectDetectionZones;
         }
     }
 }

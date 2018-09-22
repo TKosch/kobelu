@@ -51,6 +51,7 @@ using KoBeLUAdmin.Network;
 using Emgu.CV.Util;
 using System.Drawing;
 using System.IO;
+using KoBeLUAdmin.Frontend;
 
 namespace KoBeLUAdmin.GUI
 {
@@ -120,7 +121,7 @@ namespace KoBeLUAdmin.GUI
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
-
+            TableWindow3D.Instance.WindowState = WindowState.Minimized;
 
             if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
             {

@@ -38,6 +38,7 @@ using KoBeLUAdmin.Backend;
 using Newtonsoft.Json;
 using System.Windows;
 using KoBeLUAdmin.GUI;
+using KoBeLUAdmin.Frontend;
 
 namespace KoBeLUAdmin.Network
 {
@@ -129,6 +130,7 @@ namespace KoBeLUAdmin.Network
                                 break;
                             case "stop_workflow":
                                 WorkflowManager.Instance.stopWorkflow();
+                                TableWindow3D.Instance.WindowState = WindowState.Minimized;
                                 break;
                             case "previous_working_step":
                                 WorkflowManager.Instance.PreviousWorkingStep();

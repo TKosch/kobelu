@@ -35,35 +35,9 @@
             <Button Margin="5,5,5,5" Content="{Binding Source={StaticResource localization}, Path=.[Strings.buttonBackgroundScreenshot], FallbackValue='#Background Screenshot'}" Click="buttonBackgroundScreenShot_Click" IsEnabled="True" Width="141"/>
 
         </StackPanel>
-        <Viewbox Grid.Row="1" Grid.Column="0" x:Name="imageViewbox" x:FieldModifier="protected"  Margin="5,5,5,5" MouseMove="image_MouseMove" MouseUp="image_MouseUp" MouseLeftButtonDown="image_MouseDown">
+        <Viewbox Grid.Row="1" Grid.Column="0" x:Name="imageViewbox" x:FieldModifier="protected"  Margin="5,5,5,10" MouseMove="image_MouseMove" MouseUp="image_MouseUp" MouseLeftButtonDown="image_MouseDown" Grid.RowSpan="2">
             <Image x:Name="image" x:FieldModifier="protected" />
         </Viewbox>
-        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Margin="5,5,5,5">
-            <ListView Margin="5,5,5,5" x:Name="m_ObjectsListView" x:FieldModifier="protected" ItemsSource="{Binding Objects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="ObjectsListView_MouseDoubleClick">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Image">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Image Source="{Binding ImageFullPath}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
-                        <GridViewColumn Header="{Binding Source={StaticResource localization}, Path=.[Strings.listViewMessage], FallbackValue='#Message'}" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="{Binding Source={StaticResource localization}, Path=.[Strings.listViewGroup], FallbackValue='#Group'}" DisplayMemberBinding="{Binding Category}" />
-                        <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" />
-                        <GridViewColumn Header="{Binding Source={StaticResource localization}, Path=.[Strings.listViewPath], FallbackValue='#Path'}" DisplayMemberBinding="{Binding Image}" />
-                    </GridView>
-                </ListView.View>
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="{Binding Source={StaticResource localization}, Path=.[Strings.buttonDelete], FallbackValue='#Delete'}" Click="Menuitem_Delete_Click"/>
-                    </ContextMenu>
-                </ListView.ContextMenu>
-            </ListView>
-        </DockPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="3">
             <Viewbox  x:Name="featureViewbox" x:FieldModifier="protected"  Margin="5,5,5,5">
@@ -94,25 +68,31 @@
                 <xctk:IntegerUpDown Grid.Row="1" Grid.Column="3" Margin="5,5,5,5" Value="{Binding ObjectDetectParam4, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </Grid>
+            <Button x:Name="Button_SelectAll" Content="Select All" Click="Button_SelectAll_Click"/>
+            <Button x:Name="Button_DeselectAll" Content="Deselect All" Click="Button_DeselectAll_Click"/>
         </StackPanel>
 
         <DockPanel Grid.Row="1" Grid.Column="1">
-            <ListBox x:Name="m_ListBoxObjects" x:FieldModifier="protected" Margin="5,5,5,5" ItemsSource="{Binding ObjectDetectionZones, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListBox x:Name="m_ListBoxObjects" x:FieldModifier="protected" Margin="5,5,5,5" ItemsSource="{DynamicResource checkBoxCollection}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Name}" Width="100">
-                            <TextBlock.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Click="MenuItem_EditSelectedBoxObject" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemEdit], FallbackValue='#Edit'}" />
-                                    <MenuItem Click="MenuItem_DeleteSelectedObjectDetectionZone" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemDelete], FallbackValue='#Delete'}" />
-                                </ContextMenu>
-                            </TextBlock.ContextMenu>
-                        </TextBlock>
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}">
+                            <TextBlock Text="{Binding Name}" Width="100">
+                                <TextBlock.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Click="MenuItem_EditSelectedBoxObject" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemEdit], FallbackValue='#Edit'}" />
+                                        <MenuItem Click="MenuItem_DeleteSelectedObjectDetectionZone" Header="{Binding Source={StaticResource localization}, Path=.[Strings.menuItemDelete], FallbackValue='#Delete'}" />
+                                    </ContextMenu>
+                                </TextBlock.ContextMenu>
+
+
+                            </TextBlock>
+                        </CheckBox>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </DockPanel>
-        
-        
+
+
     </Grid>
 </UserControl>

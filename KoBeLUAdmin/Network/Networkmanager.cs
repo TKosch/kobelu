@@ -130,7 +130,7 @@ namespace KoBeLUAdmin.Network
                                 break;
                             case "stop_workflow":
                                 WorkflowManager.Instance.stopWorkflow();
-                                TableWindow3D.Instance.WindowState = WindowState.Minimized;
+                                // TableWindow3D.Instance.WindowState = WindowState.Minimized;
                                 break;
                             case "previous_working_step":
                                 WorkflowManager.Instance.PreviousWorkingStep();

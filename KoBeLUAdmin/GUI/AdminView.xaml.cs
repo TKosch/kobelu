@@ -121,7 +121,7 @@ namespace KoBeLUAdmin.GUI
             USBCameraDetector.UpdateConnectedUSBCameras();
             CameraManager.Instance.OnAllFramesReady += Instance_allFramesReady;
             CameraManager.Instance.OnAllOrgFramesReady += Instance_OnAllOrgFramesReady;
-            TableWindow3D.Instance.WindowState = WindowState.Minimized;
+            // TableWindow3D.Instance.WindowState = WindowState.Minimized;
 
             if (SettingsManager.Instance.Settings.SettingsTable.EnableFaceDetection)
             {
